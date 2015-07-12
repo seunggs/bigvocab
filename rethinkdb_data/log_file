@@ -1,0 +1,26 @@
+2015-07-09T01:05:31.895868000 0.606600s notice: Recursively removing directory /Users/seungchanlee/Documents/Projects/bigvocab/rethinkdb_data/tmp
+2015-07-09T01:05:31.897453000 0.608188s notice: Initializing directory /Users/seungchanlee/Documents/Projects/bigvocab/rethinkdb_data
+2015-07-09T01:05:31.897557000 0.608289s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/seungchanlee/Documents/Projects/bigvocab/rethinkdb_data' did not already exist or is empty.)
+2015-07-09T01:05:31.897593000 0.608324s notice: Running rethinkdb 2.0.3 (CLANG 4.2 (clang-425.0.28))...
+2015-07-09T01:05:31.914179000 0.624911s notice: Running on Darwin 14.3.0 x86_64
+2015-07-09T01:05:31.914237000 0.624969s notice: Loading data from directory /Users/seungchanlee/Documents/Projects/bigvocab/rethinkdb_data
+2015-07-09T01:05:32.129025000 0.839756s info: Automatically using cache size of 100 MB
+2015-07-09T01:05:32.129037000 0.839768s warn: Cache size does not leave much memory for server and query overhead (available memory: 457 MB).
+2015-07-09T01:05:32.129045000 0.839776s warn: Cache size is very low and may impact performance.
+2015-07-09T01:05:32.131874000 0.842605s notice: Listening for intracluster connections on port 29015
+2015-07-09T01:05:32.134207000 0.844937s notice: Listening for client driver connections on port 28015
+2015-07-09T01:05:32.134317000 0.845048s notice: Listening for administrative HTTP connections on port 8080
+2015-07-09T01:05:32.134322000 0.845053s notice: Listening on addresses: 127.0.0.1, ::1
+2015-07-09T01:05:32.134342000 0.845073s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2015-07-09T01:05:32.134347000 0.845078s notice: Server ready, "Seungchans_MacBook_Pro_local_a10" 04e1087d-9bff-466f-a398-7d1c1717064e
+2015-07-09T01:05:34.470702000 3.181581s notice: A newer version of the RethinkDB server is available: 2.0.4. You can read the changelog at <https://github.com/rethinkdb/rethinkdb/releases>.
+2015-07-10T15:27:37.678412000 50589.740132s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-10T15:27:47.535383000 50599.597473s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-10T15:28:11.508578000 50623.571559s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-10T15:28:59.505773000 50671.570539s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-10T15:30:27.495558000 50759.563593s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-10T15:33:15.490776000 50927.565053s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-10T15:38:43.496755000 51255.583218s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-10T15:49:31.453502000 51903.563448s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-10T16:10:59.409615000 53191.565709s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-10T17:36:59.889020000 58352.229942s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
