@@ -1,23 +1,23 @@
 'use strict';
 
-let express = require('express'),
-		app = express(),
-		server = require('http').Server(app),
-		morgan = require('morgan'),
-		bodyParser = require('body-parser'),
-		cookieParser = require('cookie-parser'),
-		session = require('express-session'),
-		methodOverride  = require('method-override'),
-		flash = require('connect-flash'),
-		passport = require('passport'),
-		io = require('socket.io')(server);
+var express = require('express');
+var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var methodOverride  = require('method-override');
+var flash = require('connect-flash');
+var passport = require('passport');
 
 // configuration ================================================
 
-const port = process.env.PORT || 8080;
+var port = process.env.PORT || 8000;
 
 // passport configuration
-// require('./config/passport')(passport); // pass passport for configuration
+require('./server/config/passport')(passport); // pass passport for configuration
 
 // set up express
 app.use(morgan('dev')); // log every request to the console
@@ -29,14 +29,18 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(express.static(__dirname + '/app')); 
 
 // required for passport
-app.use(session({secret: 'bigvocabsecret'}));
+app.use(session({
+	secret: 'bigvocabsecretkeyplease',
+	resave: false,
+	saveUninitialized: false
+}));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
 
 
 // routes ========================================================
-require('./server/routes')(app, passport); // configure our routes
+require('./server/routes/routes')(app, passport); // configure our routes
 
 // start app =====================================================
 server.listen(port);

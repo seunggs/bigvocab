@@ -12,6 +12,6 @@
       'ui.router',
       'home',
       'auth',
-      'bigvocab'
+      'mainApp'
     ]);
 }());

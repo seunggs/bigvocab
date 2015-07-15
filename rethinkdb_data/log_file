@@ -24,3 +24,22 @@
 2015-07-10T15:49:31.453502000 51903.563448s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
 2015-07-10T16:10:59.409615000 53191.565709s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
 2015-07-10T17:36:59.889020000 58352.229942s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T09:49:11.302973000 177591.680132s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T09:49:59.193739000 177639.572671s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T09:50:47.170816000 177687.551527s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T09:51:35.187454000 177735.570014s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T09:53:11.193984000 177831.580099s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T09:56:30.226497000 177975.563992s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T10:02:06.186395000 178311.536404s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T10:13:18.194641000 178983.569679s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T10:34:54.140180000 180279.563570s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T11:19:05.897586000 180814.855724s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T12:02:24.600996000 182343.543364s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T12:46:03.752367000 183511.152707s notice: Someone asked for the nonwhitelisted file "/announce.php".  If this should be accessible, add it to the static web assets.
+2015-07-13T22:44:59.185899000 198874.069348s notice: Someone asked for the nonwhitelisted file "/auth/google".  If this should be accessible, add it to the static web assets.
+2015-07-13T22:49:13.596480000 199128.489405s notice: Someone asked for the nonwhitelisted file "/oauth2callback".  If this should be accessible, add it to the static web assets.
+2015-07-13T23:19:07.302617000 200922.262416s notice: Server got SIGINT from pid 218, uid 501; shutting down...
+2015-07-13T23:19:07.302849000 200922.262648s notice: Shutting down client connections...
+2015-07-13T23:19:07.310091000 200922.269890s notice: All client connections closed.
+2015-07-13T23:19:07.310110000 200922.269908s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2015-07-13T23:19:07.321778000 200922.281577s notice: Storage engine shut down.
