@@ -2,11 +2,22 @@
 @import '../../node_modules/basscss-sass/basscss.scss';
 @import 'base/base';
 
-@import 'modules/btn';
-@import 'modules/btn-primary';
-@import 'modules/btn-sizes';
-
+// custom module
 @import 'modules/grid';
+
+@import 'modules/color-base';
+@import 'modules/colors';
 @import 'modules/background-colors';
+
 @import 'modules/utility-typography';
+
 @import 'modules/border-colors';
+@import 'modules/border-styles';
+
+@import 'modules/btn';
+@import 'modules/btn-sizes';
+@import 'modules/btn-primary';
+@import 'modules/btn-icon';
+@import 'modules/btn-text';
+
+@import 'modules/color-forms';

@@ -13,11 +13,23 @@
         controller: 'MainAppCtrl',
         controllerAs: 'mainApp'
       })
-      .state('dashboard', {
-        url: '/dashboard',
-        templateUrl: 'main-app/dashboard.tpl.html',
-        controller: 'DashboardCtrl',
-        controllerAs: 'dashboard'
+      .state('mainApp.collections', {
+        url: '/collections',
+        templateUrl: 'main-app/collections.tpl.html',
+        controller: 'CollectionsCtrl',
+        controllerAs: 'collections'
+      })
+      .state('mainApp.addWords', {
+        url: '/collections/:collectionId/add-words',
+        templateUrl: 'main-app/add-words.tpl.html',
+        controller: 'AddWordsCtrl',
+        controllerAs: 'addWords'
+      })
+      .state('mainApp.reviewWords', {
+        url: '/collections/:collectionId/review-words',
+        templateUrl: 'main-app/review-words.tpl.html',
+        controller: 'ReviewWordsCtrl',
+        controllerAs: 'reviewWords'
       });
   }
 }());

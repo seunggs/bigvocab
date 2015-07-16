@@ -1,0 +1,14 @@
+.field {
+	border-width: $form-field-border-width;
+	border-color: transparent;
+	border-radius: $form-field-border-radius;
+	height: $form-field-height;
+}
+
+.field:focus,
+.field.is-focused {
+  outline: none;
+  border-color: $field-focus-color;
+  box-shadow: 0 0 0 1px color($field-focus-color a(.5));
+}
+

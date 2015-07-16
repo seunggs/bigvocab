@@ -9,9 +9,19 @@
     "angular-messages": "~1.4.*",
     "angular-sanitize": "~1.4.*",
     "angular-touch": "~1.4.*",
-    "angular-ui-router": "~0.2.10"
+    "angular-ui-router": "~0.2.10",
+    "themify-icons": "~0.1.0",
+    "ramda": "~0.16.0"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.*"
+  },
+  "overrides": {
+    "themify-icons": {
+      "main": [
+        "fonts/*",
+        "*.css"
+      ]
+    }
   }
 }

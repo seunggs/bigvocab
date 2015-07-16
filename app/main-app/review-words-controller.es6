@@ -1,21 +1,21 @@
 (() => {
   'use strict';
 
-  class DashboardCtrl {
+  class ReviewWordsCtrl {
     constructor() {
       let vm = this;
-      vm.ctrlName = 'DashboardCtrl';
+      vm.ctrlName = 'ReviewWordsCtrl';
     }
   }
 
   /**
    * @ngdoc object
-   * @name mainApp.controller:DashboardCtrl
+   * @name mainApp.controller:ReviewWordsCtrl
    *
    * @description
    *
    */
   angular
     .module('mainApp')
-    .controller('DashboardCtrl', DashboardCtrl);
+    .controller('ReviewWordsCtrl', ReviewWordsCtrl);
 }());

@@ -1,0 +1,8 @@
+<div class="bg-navy white" style="height: 100vh; z-index: 10;" ng-controller="SidebarCtrl as sidebar">
+	<div class="flex flex-column flex-center py3">
+		<a ui-sref="navItem.link" class="btn btn-icon h2 center p2" ng-repeat="navItem in sidebar.navItems">
+			<span class="{{navItem.icon}}"></span>
+			<!--<p class="h6 mt1">{{navItem.title}}</p>-->
+		</a>
+	</div>
+</div>
