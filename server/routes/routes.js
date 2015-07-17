@@ -30,7 +30,7 @@ module.exports = function (app, passport) {
 	);
 
 	app.get('*', function (req, res) {
-		res.sendfile('./app/index.html');
+		res.sendfile('./build/app/index.html');
 	});
 
 };

@@ -1,7 +1,22 @@
 'use strict';
 
-var r = require('rethinkdb');
+var rethinkdbdash = require('rethinkdbdash');
 
 var config = require('./default');
 
-module.exports = r.connect({ host: config.rethinkdb.host, port: config.rethinkdb.port });
+var r = rethinkdbdash({
+	db: config.rethinkdb.db, 
+	servers: [{
+		host: config.rethinkdb.host,
+		port: config.rethinkdb.port
+	}]
+});
+
+/*
+r.connect({ host: config.rethinkdb.host, port: config.rethinkdb.port }, function(err, conn) {
+  console.log(err);
+  console.log(conn);
+});
+*/
+
+module.exports = r;
