@@ -1,6 +1,7 @@
 (() => {
   'use strict';
 
+    'common'
   angular.module('ramda', []);
   angular.module('ramda').factory('R', function ($window) {
       return $window.R;

@@ -7,8 +7,8 @@ module.exports = {
 		http: 8000
 	},
 	rethinkdb: {
-		host: 'http://127.0.0.3',
-		port: 28015,
+		host: process.env.RDB_HOST,
+		port: process.env.RDB_PORT,
 		db: 'bigvocab'
 	}
 };

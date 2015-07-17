@@ -6,32 +6,32 @@
 
       let vm = this;
 
-      vm.navItems = {
-        collection: {
-          order: 1,
+      vm.navItems = [
+        {
+          id: 1,
           title: 'Collections',
           icon: 'ti-layers-alt',
-          link: 'collections'
+          link: 'mainApp.collections'
         },
-        test: {
-          order: 2,
+        {
+          id: 2,
           title: 'Test',
           icon: 'ti-check-box',
-          link: 'test'
+          link: 'mainApp.test'
         },
-        account: {
-          order: 4,
+        {
+          id: 3,
           title: 'Account',
           icon: 'ti-user',
-          link: 'account'
+          link: 'mainApp.account'
         },
-        logout: {
-          order: 3,
+        {
+          id: 4,
           title: 'Log Out',
           icon: 'ti-arrow-left',
           link: 'logout'
         }
-      };
+      ];
 
     }
   }
