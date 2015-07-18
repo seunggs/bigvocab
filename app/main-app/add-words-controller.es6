@@ -5,11 +5,22 @@
     constructor(Config, Dictionary) {
 
       let vm = this;
-      
-      Dictionary.getDefinition(Config.mashapeKey, vm.word)
-        .then(res => {
-          vm.definitions = res.definitions;
-        });
+
+      vm.wordPlaceholder = 'i.e. audacious';
+      vm.definitionPlaceholder = 'i.e. Fearlessly, often recklessly daring; bold. See Synonyms at adventurous, brave.';
+
+      vm.getDefinition = word => {
+        if (word !== undefined) {
+          Dictionary.getDefinition(Config.mashapeKey, word)
+            .then(res => {
+              vm.definitions = res.data.definitions;
+            });          
+        }
+      };
+
+      vm.copyDefinition = definition => {
+        vm.definition = definition;
+      };
 
     }
   }

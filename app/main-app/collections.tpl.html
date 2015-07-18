@@ -1,29 +1,25 @@
-<div class="bg-darken-1" style="height: 100vh;">
-	<div class="container">
-		<div class="clearfix">
+<div class="clearfix">
 
-			<h1 class="center mt3">Your Collections</h1>
+	<h1 class="mt1 center">Your Collections</h1>
 
-			<div class="md-col-10 lg-col-8 mx-auto px2">
-				<div class="clearfix py1 border-bottom" ng-repeat="item in collections.list | orderBy: 'id'">
+	<div class="md-col-10 lg-col-8 mx-auto px2">
+		<div class="clearfix py1 border-bottom" ng-repeat="item in collections.list | orderBy: 'id'">
 
-					<div class="sm-col sm-col-6">
-						<div class="btn btn-md bold m1" style="cursor: text">{{ item.title }} <span class="gray">({{ item.words }} words)</span></div>
-					</div>
-					<div class="sm-col sm-col-3">
-						<a ui-sref="mainApp.review-words({ collectionId: item.id })" class="btn btn-md btn-primary block center m1 h5">Review Words<span class="ti-arrow-right ml1"></span></a>
-					</div>
-					<div class="sm-col sm-col-3">
-						<a ui-sref="mainApp.add-words({ collectionId: item.id })" class="btn btn-md btn-outline block center dark-gray m1 h5">Add Words<span class="ti-plus ml1"></span></a>
-					</div>
-
-				</div>
-
-				<div class="mt3 center">
-					<a class="btn btn-outline">Add Collection<span class="ti-layers-alt ml1"></span></a>
-				</div>
+			<div class="sm-col sm-col-6">
+				<div class="btn btn-md bold m1" style="cursor: text">{{ item.title }} <span class="gray">({{ item.words }} words)</span></div>
+			</div>
+			<div class="sm-col sm-col-3">
+				<a ui-sref="mainApp.review-words({ collectionId: item.id })" class="btn btn-md btn-primary block center m1 h5">Review Words<span class="ti-arrow-right ml1"></span></a>
+			</div>
+			<div class="sm-col sm-col-3">
+				<a ui-sref="mainApp.add-words({ collectionId: item.id })" class="btn btn-md btn-outline block center dark-gray m1 h5">Add Words<span class="ti-plus ml1"></span></a>
 			</div>
 
 		</div>
+
+		<div class="mt3 center">
+			<a class="btn btn-outline">Add Collection<span class="ti-layers-alt ml1"></span></a>
+		</div>
 	</div>
+
 </div>

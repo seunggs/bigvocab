@@ -10,9 +10,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var vm = this;
 
-    Dictionary.getDefinition(Config.mashapeKey, vm.word).then(function (res) {
-      vm.definitions = res.definitions;
-    });
+    vm.wordPlaceholder = 'i.e. audacious';
+    vm.definitionPlaceholder = 'i.e. Fearlessly, often recklessly daring; bold. See Synonyms at adventurous, brave.';
+
+    vm.getDefinition = function (word) {
+      if (word !== undefined) {
+        Dictionary.getDefinition(Config.mashapeKey, word).then(function (res) {
+          vm.definitions = res.data.definitions;
+        });
+      }
+    };
+
+    vm.copyDefinition = function (definition) {
+      vm.definition = definition;
+    };
   };
 
   /**
