@@ -1,7 +1,0 @@
-<div class="bg-navy fixed white z1" style="height: 100vh" ng-controller="SidebarCtrl as sidebar">
-	<div class="flex flex-column flex-center py3">
-		<a ui-sref="{{ navItem.link }}" tooltips title="{{ navItem.title }}" tooltip-placement="right" class="btn btn-icon h2 center p2" ng-repeat="navItem in sidebar.navItems | orderBy:'id'" tabindex="-1">
-			<span class="{{ navItem.icon }}"></span>
-		</a>
-	</div>
-</div>
