@@ -17,7 +17,7 @@
           id: 2,
           title: 'Test',
           icon: 'ti-check-box',
-          link: 'mainApp.test'
+          link: 'mainApp.test-words'
         },
         {
           id: 3,

@@ -30,13 +30,13 @@ label {
 
 input[type=text], input[type=date], input[type=datetime], input[type=datetime-local], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=time], input[type=url], input[type=week] {
   height: 2.75rem;
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem 0.9rem;
   vertical-align: middle;
   -webkit-appearance: none; }
 
 select {
   line-height: 1.75;
-  padding: 0.5rem 0.5rem; }
+  padding: 0.5rem 0.9rem; }
 
 select:not([multiple]) {
   height: 2.75rem;
@@ -44,7 +44,7 @@ select:not([multiple]) {
 
 textarea {
   line-height: 1.75;
-  padding: 0.5rem 0.5rem; }
+  padding: 0.5rem 0.9rem; }
 
 /* Basscss Defaults */
 /*
@@ -1828,7 +1828,7 @@ input[type=range] {
 .range-light::-webkit-slider-thumb {
   -webkit-appearance: none;
   position: relative;
-  width: 0.5rem;
+  width: 0.9rem;
   height: 1.75rem;
   border-radius: 3px;
   background-color: currentcolor;
@@ -1841,13 +1841,13 @@ input[type=range] {
   display: block;
   position: absolute;
   top: -.5rem;
-  left: -1.125rem;
+  left: -.925rem;
   width: 2.75rem;
   height: 2.75rem;
   opacity: 0; }
 
 .range-light::-moz-range-thumb {
-  width: 0.5rem;
+  width: 0.9rem;
   height: 1.75rem;
   border-radius: 3px;
   border-color: transparent;
@@ -2392,6 +2392,34 @@ a:hover {
 .btn-primary:hover {
   box-shadow: inset 0 0 0 20rem rgba(0, 0, 0, 0.0625); }
 
+.btn-green {
+  color: #fff;
+  background-color: #2ecc40;
+  border-radius: 0; }
+
+.btn-green:hover {
+  box-shadow: inset 0 0 0 20rem rgba(0, 0, 0, 0.0625); }
+
+.btn-green:active {
+  box-shadow: inset 0 0 0 20rem rgba(0, 0, 0, 0.125), inset 0 3px 4px 0 rgba(0, 0, 0, 0.25), 0 0 1px rgba(0, 0, 0, 0.125); }
+
+.btn-green:disabled, .btn-green.is-disabled {
+  opacity: .5; }
+
+.btn-red {
+  color: #fff;
+  background-color: #ff4136;
+  border-radius: 0; }
+
+.btn-red:hover {
+  box-shadow: inset 0 0 0 20rem rgba(0, 0, 0, 0.0625); }
+
+.btn-red:active {
+  box-shadow: inset 0 0 0 20rem rgba(0, 0, 0, 0.125), inset 0 3px 4px 0 rgba(0, 0, 0, 0.25), 0 0 1px rgba(0, 0, 0, 0.125); }
+
+.btn-red:disabled, .btn-red.is-disabled {
+  opacity: .5; }
+
 .btn-icon {
   opacity: 0.6; }
 
@@ -2420,3 +2448,21 @@ a:hover {
   outline: none;
   border-color: #00A2DD;
   box-shadow: 0 0 0 1px color(#00A2DD a(.5)); }
+
+.top-100 {
+  top: 100%; }
+
+.right-100 {
+  right: 100%; }
+
+.bottom-100 {
+  bottom: 100%; }
+
+.left-100 {
+  left: 100%; }
+
+.flex-center-justified {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }

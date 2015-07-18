@@ -5,11 +5,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   'use strict';
 
-  var AddWordsCtrl = function AddWordsCtrl() {
+  var AddWordsCtrl = function AddWordsCtrl(Config, Dictionary) {
     _classCallCheck(this, AddWordsCtrl);
 
     var vm = this;
-    vm.ctrlName = 'AddWordsCtrl';
+
+    Dictionary.getDefinition(Config.mashapeKey, vm.word).then(function (res) {
+      vm.definitions = res.definitions;
+    });
   };
 
   /**

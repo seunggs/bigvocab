@@ -2,9 +2,15 @@
   'use strict';
 
   class AddWordsCtrl {
-    constructor() {
+    constructor(Config, Dictionary) {
+
       let vm = this;
-      vm.ctrlName = 'AddWordsCtrl';
+      
+      Dictionary.getDefinition(Config.mashapeKey, vm.word)
+        .then(res => {
+          vm.definitions = res.definitions;
+        });
+
     }
   }
 

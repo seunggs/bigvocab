@@ -16,16 +16,21 @@
       templateUrl: 'main-app/collections.tpl.html',
       controller: 'CollectionsCtrl',
       controllerAs: 'collections'
-    }).state('mainApp.addWords', {
+    }).state('mainApp.add-words', {
       url: '/collections/:collectionId/add-words',
       templateUrl: 'main-app/add-words.tpl.html',
       controller: 'AddWordsCtrl',
       controllerAs: 'addWords'
-    }).state('mainApp.reviewWords', {
+    }).state('mainApp.review-words', {
       url: '/collections/:collectionId/review-words',
       templateUrl: 'main-app/review-words.tpl.html',
       controller: 'ReviewWordsCtrl',
       controllerAs: 'reviewWords'
+    }).state('mainApp.test-words', {
+      url: '/test-words',
+      templateUrl: 'main-app/test-words.tpl.html',
+      controller: 'TestWordsCtrl',
+      controllerAs: 'testWords'
     });
   }
 })();

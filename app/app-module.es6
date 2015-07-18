@@ -1,12 +1,6 @@
 (() => {
   'use strict';
 
-    'common'
-  angular.module('ramda', []);
-  angular.module('ramda').factory('R', function ($window) {
-      return $window.R;
-  });
-
   /* @ngdoc object
    * @name bigvocab
    * @description
@@ -19,6 +13,15 @@
       'home',
       'auth',
       'mainApp',
-      'ramda'
+      'ramda',
+      'common',
+      '720kb.tooltips'
     ]);
+
+  // ramda module
+  angular.module('ramda', []);
+  angular.module('ramda').factory('R', function ($window) {
+      return $window.R;
+  });
+
 }());

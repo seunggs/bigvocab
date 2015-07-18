@@ -19,7 +19,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       id: 2,
       title: 'Test',
       icon: 'ti-check-box',
-      link: 'mainApp.test'
+      link: 'mainApp.test-words'
     }, {
       id: 3,
       title: 'Account',
