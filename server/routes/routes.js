@@ -29,9 +29,9 @@ module.exports = function (app, passport) {
 		})
 	);
 
-	app.get('*', function (req, res) {
-		res.sendfile('./build/app/index.html');
-	});
+	// app.get('*', function (req, res) {
+	// 	res.sendfile('./build/app/index.html');
+	// });
 
 };
 
