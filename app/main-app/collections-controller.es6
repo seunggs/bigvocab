@@ -2,7 +2,7 @@
   'use strict';
 
   class CollectionsCtrl {
-    constructor(R) {
+    constructor() {
 
       let vm = this;
 

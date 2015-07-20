@@ -1,13 +1,11 @@
 'use strict';
 
-var config = require('../config/default');
-
-var appUrl = config.url + ':' + config.ports.app;
-
 module.exports = function (app, passport) {
 
-	app.get('/account', isLoggedIn, function (req, res) {
-		res.json(req.user);
+	///// AUTHENTICATION ///////////////////////////////////////
+	
+	app.get('/loggedin', function (req, res) {
+		res.send(req.user ? req.user : false);
 	});
 
 	app.get('/logout', function (req, res) {
@@ -15,30 +13,38 @@ module.exports = function (app, passport) {
 		res.redirect('/');
 	});
 
-	app.get('/auth/google', 
-		passport.authenticate('google', { scope: ['profile', 'email'] })
-	);
+	app.get('/auth/google', function (req, res, next) {
+		passport.authenticate('google', { scope : ['profile', 'email'] })
+	});
 
 	// once google has authenticated the user
 	app.get('/auth/google/callback', 
 		passport.authenticate('google', { 
-			successRedirect: appUrl + '/dashboard',
-			failureRedirect: appUrl + '/login',
+			successRedirect: '/#/main-app/collections',
+			failureRedirect: '/#/login',
 			successFlash: 'Welcome!',
 			failureFlash: true
 		})
 	);
+
+	///// API //////////////////////////////////////////////////
+
+	// app.get('/api/users', function (req, res, next) {
+
+	// });
+
+	// app.get('/api/collections', function (req, res, next) {
+
+	// });
+
+	// app.get('/api/words', function (req, res, next) {
+
+	// });
+
+	///// REST HANDLED BY FRONTEND /////////////////////////////
 
 	app.get('*', function (req, res) {
 		res.sendfile('./build/app/index.html');
 	});
 
 };
-
-function isLoggedIn (req, res, next) {
-	if (req.user) {
-		return next();
-	} else {
-		return res.status(401).send('You\'re not logged in');
-	}
-}

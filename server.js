@@ -3,7 +3,7 @@
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
+//var io = require('socket.io')(server);
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -12,9 +12,11 @@ var methodOverride  = require('method-override');
 var flash = require('connect-flash');
 var passport = require('passport');
 
+var config = require('./server/config/default');
+
 // configuration ================================================
 
-var port = process.env.PORT || 8000;
+var port = config.port;
 
 // passport configuration
 require('./server/config/passport')(passport); // pass passport for configuration

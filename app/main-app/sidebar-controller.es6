@@ -6,6 +6,11 @@
 
       let vm = this;
 
+      vm.toggle = false;
+      vm.toggleSidebar = () => {
+        vm.toggle = !vm.toggle;
+      };
+
       vm.navItems = [
         {
           id: 1,

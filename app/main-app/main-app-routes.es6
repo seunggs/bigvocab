@@ -31,6 +31,13 @@
         controller: 'ReviewWordsCtrl',
         controllerAs: 'reviewWords'
       })
+      .state('mainApp.list-words', {
+        url: '/collections/:collectionId/list-words',
+        templateUrl: 'main-app/list-words.tpl.html',
+        controller: 'ListWordsCtrl',
+        controllerAs: 'listWords',
+        params: { collectionTitle: null }
+      })
       .state('mainApp.test-words', {
         url: '/test-words',
         templateUrl: 'main-app/test-words.tpl.html',

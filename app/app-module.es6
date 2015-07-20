@@ -9,6 +9,7 @@
   angular
     .module('bigvocab', [
       'ngAria',
+      'ngAnimate',
       'ui.router',
       'home',
       'auth',

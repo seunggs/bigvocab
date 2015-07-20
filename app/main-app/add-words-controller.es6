@@ -2,16 +2,19 @@
   'use strict';
 
   class AddWordsCtrl {
-    constructor(Config, Dictionary) {
+    constructor(ConfigService, DictionaryService) {
 
       let vm = this;
 
-      vm.wordPlaceholder = 'i.e. audacious';
-      vm.definitionPlaceholder = 'i.e. Fearlessly, often recklessly daring; bold. See Synonyms at adventurous, brave.';
+      vm.formData = {};
+      vm.placeholder = {
+        word: 'i.e. audacious',
+        definition: 'i.e. Fearlessly, often recklessly daring; bold. See Synonyms at adventurous, brave.'
+      };
 
       vm.getDefinition = word => {
         if (word !== undefined) {
-          Dictionary.getDefinition(Config.mashapeKey, word)
+          DictionaryService.getDefinition(ConfigService.mashapeKey, word)
             .then(res => {
               vm.definitions = res.data.definitions;
             });          
@@ -20,6 +23,10 @@
 
       vm.copyDefinition = definition => {
         vm.definition = definition;
+      };
+
+      vm.resetForm = () => {
+        vm.formData = {};
       };
 
     }

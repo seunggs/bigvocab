@@ -1,14 +1,10 @@
 'use strict';
 
 module.exports = {
-	url: 'http://localhost',
-	ports: {
-		app: 3000,
-		http: 8000
-	},
+	port: process.env.PORT || 8000,
 	rethinkdb: {
-		host: process.env.RDB_HOST,
-		port: process.env.RDB_PORT,
+		host: process.env.RDB_HOST || 'localhost',
+		port: process.env.RDB_PORT || 28015,
 		db: 'bigvocab'
 	}
 };

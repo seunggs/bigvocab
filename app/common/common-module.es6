@@ -7,7 +7,5 @@
    *
    */
   angular
-    .module('common', [
-      'ui.router'
-    ]);
+    .module('common', []);
 }());
