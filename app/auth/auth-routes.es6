@@ -7,19 +7,21 @@
 
   function config($stateProvider) {
     $stateProvider
-      .state('auth', {
-        url: '/auth',
-        templateUrl: 'auth/auth.tpl.html',
-        controller: 'AuthCtrl',
-        controllerAs: 'auth'
+      .state('root.auth', {
+        abstract: true,
+        views: {
+          '': {
+            templateUrl: 'auth/auth.tpl.html'
+          }
+        }
       })
-      .state('login', {
+      .state('root.auth.login', {
         url: '/login',
         templateUrl: 'auth/login.tpl.html',
         controller: 'LoginCtrl',
         controllerAs: 'login'
       })
-      .state('register', {
+      .state('root.auth.register', {
         url: '/register',
         templateUrl: 'auth/register.tpl.html',
         controller: 'RegisterCtrl',

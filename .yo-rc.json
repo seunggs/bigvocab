@@ -9,6 +9,6 @@
     "style": "scss",
     "testFramework": "jasmine",
     "testScript": "es6",
-    "lastUsedModule": "auth"
+    "lastUsedModule": "home"
   }
 }
