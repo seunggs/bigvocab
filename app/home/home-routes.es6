@@ -13,11 +13,17 @@
         controller: 'HomeCtrl',
         controllerAs: 'home'
       })
-      .state('nav-home', {
-        url: '/nav-home',
-        templateUrl: 'home/nav-home.tpl.html',
-        controller: 'NavHomeCtrl',
-        controllerAs: 'navHome'
+      .state('root', {
+        abstract: true,
+        url: '',
+        views: {
+          '': {},
+          'nav-home@': {
+            templateUrl: 'home/nav-home.tpl.html',
+            controller: 'NavHomeCtrl',
+            controllerAs: 'navHome'
+          }
+        }
       });
   }
 }());

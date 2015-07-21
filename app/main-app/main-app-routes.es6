@@ -8,10 +8,18 @@
   function config($stateProvider) {
     $stateProvider
       .state('mainApp', {
+        abstract: true,
         url: '/main-app',
-        templateUrl: 'main-app/main-app.tpl.html',
-        controller: 'MainAppCtrl',
-        controllerAs: 'mainApp'
+        views: {
+          '': {
+            templateUrl: 'main-app/main-app.tpl.html',
+          },
+          'sidebar@mainApp': {
+            templateUrl: 'main-app/sidebar.tpl.html',
+            controller: 'SidebarCtrl',
+            controllerAs: 'sidebar'
+          }
+        }
       })
       .state('mainApp.collections', {
         url: '/collections',
