@@ -107,3 +107,8 @@
 2015-07-21T23:47:23.746294000 0.395077s notice: Listening on addresses: 127.0.0.1, 127.0.0.2, 127.0.0.3, ::1
 2015-07-21T23:47:23.746299000 0.395081s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
 2015-07-21T23:47:23.746303000 0.395086s notice: Server ready, "Seungchans_MacBook_Pro_local_a10" 04e1087d-9bff-466f-a398-7d1c1717064e
+2015-07-21T23:54:23.463942000 420.128041s notice: Server got SIGINT from pid 381, uid 501; shutting down...
+2015-07-21T23:54:23.464160000 420.128258s notice: Shutting down client connections...
+2015-07-21T23:54:23.464369000 420.128467s notice: All client connections closed.
+2015-07-21T23:54:23.464382000 420.128481s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2015-07-21T23:54:23.475993000 420.140091s notice: Storage engine shut down.
