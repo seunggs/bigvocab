@@ -26,9 +26,16 @@ module.exports = function (passport) {
 			clientID: configAuth.googleAuth.clientID,
 			clientSecret: configAuth.googleAuth.clientSecret,
 			callbackURL: configAuth.googleAuth.callbackURL
-		}, function (token, refreshToken, profile, done) {
-			return done(null, profile);
-		}
+		}, loginCallbackHandler (function (profile) {
+			return {
+				login: profile.id,
+				email: profile.emails[0].value,
+				firstName: profile.name.givenName,
+				lastName: profile.name.familyName,
+				avatarUrl: profile.image.url,
+				type: 'google'
+			};
+		}, 'google')
 	));
 
 };
