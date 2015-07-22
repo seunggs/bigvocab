@@ -22,6 +22,8 @@ module.exports = function (passport) {
 		 	});
 	});
 
+	//
+
 	passport.use(new GoogleStrategy({
 			clientID: configAuth.googleAuth.clientID,
 			clientSecret: configAuth.googleAuth.clientSecret,
