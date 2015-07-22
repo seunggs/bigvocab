@@ -13,9 +13,7 @@ module.exports = function (app, passport) {
 		res.redirect('/');
 	});
 
-	app.get('/auth/google', function (req, res, next) {
-		passport.authenticate('google', { scope : ['profile', 'email'] })
-	});
+	app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
 	// once google has authenticated the user
 	app.get('/auth/google/callback', 

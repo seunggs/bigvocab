@@ -95,3 +95,15 @@
 2015-07-20T09:12:53.298384000 18580.908606s notice: All client connections closed.
 2015-07-20T09:12:53.298389000 18580.908610s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
 2015-07-20T09:12:53.309715000 18580.919937s notice: Storage engine shut down.
+2015-07-21T23:47:23.667517000 0.316306s notice: Running rethinkdb 2.0.4 (CLANG 4.2 (clang-425.0.28))...
+2015-07-21T23:47:23.686225000 0.335010s notice: Running on Darwin 14.4.0 x86_64
+2015-07-21T23:47:23.686290000 0.335073s notice: Loading data from directory /Users/seungchanlee/Documents/Projects/bigvocab/rethinkdb_data
+2015-07-21T23:47:23.739337000 0.388121s info: Automatically using cache size of 100 MB
+2015-07-21T23:47:23.739349000 0.388132s warn: Cache size does not leave much memory for server and query overhead (available memory: 1033 MB).
+2015-07-21T23:47:23.739355000 0.388138s warn: Cache size is very low and may impact performance.
+2015-07-21T23:47:23.743113000 0.391896s notice: Listening for intracluster connections on port 29015
+2015-07-21T23:47:23.746147000 0.394930s notice: Listening for client driver connections on port 28015
+2015-07-21T23:47:23.746286000 0.395069s notice: Listening for administrative HTTP connections on port 8080
+2015-07-21T23:47:23.746294000 0.395077s notice: Listening on addresses: 127.0.0.1, 127.0.0.2, 127.0.0.3, ::1
+2015-07-21T23:47:23.746299000 0.395081s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2015-07-21T23:47:23.746303000 0.395086s notice: Server ready, "Seungchans_MacBook_Pro_local_a10" 04e1087d-9bff-466f-a398-7d1c1717064e
