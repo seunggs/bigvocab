@@ -1,5 +1,7 @@
 'use strict';
 
+var r = require('../config/rdbdash');
+
 module.exports = function (app, passport) {
 
 	///// AUTHENTICATION ///////////////////////////////////////
@@ -27,15 +29,41 @@ module.exports = function (app, passport) {
 
 	///// API //////////////////////////////////////////////////
 
-	// app.get('/api/users', function (req, res, next) {
+	// app.get('/api/users', function (req, res) {
 
 	// });
 
-	// app.get('/api/collections', function (req, res, next) {
+	/*
+		/api/collections GET :: String -> Promise({Collection})
+	 */
+	app.get('/api/collections', function (req, res) {
+		var collectionId = req.body;
+		console.log(collectionId);
 
-	// });
+		var collection = r.table('collections')
+											.get(collectionId)
+											.run();
 
-	// app.get('/api/words', function (req, res, next) {
+		console.log(collection);
+		res.send(collection);
+	});
+
+	/*
+		/api/collections POST :: {a} -> Promise({a})
+	 */
+	app.post('/api/collections', function (req, res) {
+		var collection = req.body;
+		console.log(collection);
+
+		var addCollection = r.table('collections')
+													.insert(collection)
+													.run();
+
+		console.log(addCollection);
+		res.send(addCollection);
+	});
+
+	// app.get('/api/words', function (req, res) {
 
 	// });
 
