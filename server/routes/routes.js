@@ -2,23 +2,23 @@
 
 var r = require('../config/rdbdash');
 
-module.exports = function (app, passport) {
+module.exports = function (app, passport, router) {
 
-	///// AUTHENTICATION ///////////////////////////////////////
+	// AUTHENTICATION /////////////////////////////////////////////////
 	
-	app.get('/loggedin', function (req, res) {
+	router.get('/loggedin', function (req, res) {
 		res.send(req.user ? req.user : false);
 	});
 
-	app.get('/logout', function (req, res) {
+	router.get('/logout', function (req, res) {
 		req.logut();
 		res.redirect('/');
 	});
 
-	app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+	router.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
 	// once google has authenticated the user
-	app.get('/auth/google/callback', 
+	router.get('/auth/google/callback', 
 		passport.authenticate('google', { 
 			successRedirect: '/#/main-app/collections',
 			failureRedirect: '/#/login',
@@ -27,49 +27,54 @@ module.exports = function (app, passport) {
 		})
 	);
 
-	///// API //////////////////////////////////////////////////
+	// API ////////////////////////////////////////////////////////////
 
 	// app.get('/api/users', function (req, res) {
 
 	// });
 
 	/*
-		/api/collections GET :: String -> Promise({Collection})
+	/api/collections 
 	 */
-	app.get('/api/collections', function (req, res) {
-		var collectionId = req.body;
-		console.log(collectionId);
+	router.route('/collections')
 
-		var collection = r.table('collections')
-											.get(collectionId)
-											.run();
+		// GET :: String -> Promise({Collection})
+		.get('/api/collections', function (req, res) {
+			var collectionId = req.body;
+			console.log(collectionId);
 
-		console.log(collection);
-		res.send(collection);
-	});
+			var collection = r.table('collections')
+												.get(collectionId)
+												.run();
 
-	/*
-		/api/collections POST :: {a} -> Promise({a})
-	 */
-	app.post('/api/collections', function (req, res) {
-		var collection = req.body;
-		console.log(collection);
+			console.log(collection);
+			res.send(collection);
+		});
 
-		var addCollection = r.table('collections')
-													.insert(collection)
-													.run();
+		// POST :: {a} -> Promise({a})
+		.post('/api/collections', function (req, res) {
+			var collection = req.body;
+			console.log(collection);
 
-		console.log(addCollection);
-		res.send(addCollection);
-	});
+			var addCollection = r.table('collections')
+														.insert(collection)
+														.run();
+
+			console.log(addCollection);
+			res.send(addCollection);
+		});
 
 	// app.get('/api/words', function (req, res) {
 
 	// });
+	
+	// REGISTER OUR ROUTES
+	// all of our routes will be prefixed with /api
+	app.use('/api', router);
+	
+	// REST HANDLED BY FRONTEND ///////////////////////////////////////
 
-	///// REST HANDLED BY FRONTEND /////////////////////////////
-
-	app.get('*', function (req, res) {
+	router.get('*', function (req, res) {
 		res.sendfile('./build/app/index.html');
 	});
 

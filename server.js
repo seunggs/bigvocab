@@ -5,6 +5,7 @@ require('dotenv').load();
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
+var router = express.Router();
 //var io = require('socket.io')(server);
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
@@ -44,7 +45,7 @@ app.use(flash());
 
 
 // routes ========================================================
-require('./server/routes/routes')(app, passport); // configure our routes
+require('./server/routes/routes')(app, passport, router); // configure our routes
 
 // start app =====================================================
 server.listen(port);
