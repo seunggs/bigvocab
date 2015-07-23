@@ -3,21 +3,21 @@
 	<h1 class="mt1 center">Your Collections</h1>
 
 	<div class="md-col-10 lg-col-8 mx-auto px2">
-		<div class="clearfix bg-white rounded p1 mb2 ng-animation-fadeInUp" ng-repeat="item in collections.list | orderBy: 'id'">
+		<div class="clearfix bg-white rounded p1 mb2 ng-animation-fadeInUp" ng-repeat="collection in collections.collectionList | orderBy: 'id'">
 
 			<div class="sm-col sm-col-7">
-				<div class="btn btn-md bold m1" style="cursor: text">{{ item.title }} <span class="gray">({{ item.words }} words)</span></div>
+				<div class="btn btn-md bold m1" style="cursor: text">{{ collection.title }} <span class="gray">({{ collection.words }} words)</span></div>
 			</div>
 			<div class="sm-col sm-col-5 flex flex-wrap">
-				<a ui-sref="mainApp.review-words({ collectionId: item.id })" class="btn btn-md btn-primary flex-auto center m1 h5">Study<span class="ti-arrow-right ml1"></span></a>
-				<a ui-sref="mainApp.add-words({ collectionId: item.id })" class="btn btn-md btn-blue-outline center dark-gray m1 h5" tooltips title="Add Words" tooltip-placement="top"><span class="ti-plus"></span></a>
-				<a ui-sref="mainApp.list-words({ collectionId: item.id, collectionTitle: item.title })" class="btn btn-md btn-blue-outline center dark-gray m1 h5" tooltips title="View All Words" tooltip-placement="top"><span class="ti-folder"></span></a>
+				<a ui-sref="mainApp.review-words({ collectionId: collection.id })" class="btn btn-md btn-primary flex-auto center m1 h5">Study<span class="ti-arrow-right ml1"></span></a>
+				<a ui-sref="mainApp.add-words({ collectionId: collection.id })" class="btn btn-md btn-blue-outline center dark-gray m1 h5" tooltips title="Add Words" tooltip-placement="top"><span class="ti-plus"></span></a>
+				<a ui-sref="mainApp.list-words({ collectionId: collection.id, collectionTitle: collection.title })" class="btn btn-md btn-blue-outline center dark-gray m1 h5" tooltips title="View All Words" tooltip-placement="top"><span class="ti-folder"></span></a>
 			</div>
 
 		</div>
 
 		<div class="mt3 center">
-			<a class="btn btn-outline">Add Collection<span class="ti-layers-alt ml1"></span></a>
+			<a ng-click="collections.createCollection()" class="btn btn-outline">Add Collection<span class="ti-layers-alt ml1"></span></a>
 		</div>
 	</div>
 

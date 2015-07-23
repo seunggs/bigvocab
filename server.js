@@ -5,7 +5,6 @@ require('dotenv').load();
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
-//var io = require('socket.io')(server);
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -46,6 +45,7 @@ app.use(flash());
 
 // routes ========================================================
 app.use('/', require('./server/routes'));
+
 
 // start app =====================================================
 server.listen(port);

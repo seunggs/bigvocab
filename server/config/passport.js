@@ -43,25 +43,28 @@ module.exports = function (passport) {
 function loginCallbackHandler (objMapper, type) {
 	return function (token, refreshToken, profile, done) {
 		if (token !== null) {
+			console.log(profile);
+
 			r.table('users')
 				.getAll(profile.id, { index: 'login' })
 				.filter({ type: type })
 				.run()
 				.then(function (users) {
+					console.log(users);
 					if (users.length > 0) {
 						return done(null, users[0]);
 					} else {
-						return r.table('users')
-										.insert(objMapper(profile))
-										.run()
-										.then(function (res) {
-			                return r.table('users')
-						                  .get(res.generated_keys[0])
-						                  .run();
-										})
-										.then(function (newUser) {
-											return done(null, newUser);
-										});
+						r.table('users')
+							.insert(objMapper(profile))
+							.run()
+							.then(function (dbRes) {
+                return r.table('users')
+			                  .get(dbRes.generated_keys[0])
+			                  .run();
+							})
+							.then(function (newUserKey) {
+								return done(null, newUserKey);
+							});
 					}
 				})
 				.catch(function (err) {
