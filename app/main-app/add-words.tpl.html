@@ -16,7 +16,11 @@
 
 				<div class="flex flex-justify">
 					<button ng-click="addWords.resetForm()" class="btn btn-outline mt2 mb2">Reset Form</button>
-					<button type="submit" class="btn btn-primary mt2 mb2">Add Word<span class="ti-plus ml1"></span></button>
+					<button type="submit" class="btn btn-primary mt2 mb2" ng-disabled="addWords.btnState.success || addWords.btnState.loading">
+						<span ng-if="!addWords.btnState.loading && !addWords.btnState.success">Add Word<span class="ti-plus ml1"></span></span>
+						<span ng-if="addWords.btnState.loading"><spinner width="16px"></spinner>Please wait...</span>
+						<span ng-if="addWords.btnState.success"><span class="ti-check mr1"></span>Success!</span>
+					</button>
 				</div>
 
 			</form>

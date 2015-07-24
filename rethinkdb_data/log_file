@@ -125,3 +125,16 @@
 2015-07-23T19:28:55.532928000 0.469065s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
 2015-07-23T19:28:55.532934000 0.469071s notice: Server ready, "Seungchans_MacBook_Pro_local_a10" 04e1087d-9bff-466f-a398-7d1c1717064e
 2015-07-23T23:50:05.338204000 15670.843767s notice: Removing file /Users/seungchanlee/Documents/Projects/bigvocab/rethinkdb_data/c71ab54a-710c-4f9e-8aa9-084db4f0b449
+2015-07-24T12:04:23.561305000 0.373392s notice: Recursively removing directory /Users/slee/Documents/temp/bigvocab/rethinkdb_data/tmp
+2015-07-24T12:04:23.564886000 0.376978s notice: Running rethinkdb 2.0.4 (CLANG 4.2 (clang-425.0.28))...
+2015-07-24T12:04:23.585151000 0.397239s notice: Running on Darwin 14.4.0 x86_64
+2015-07-24T12:04:23.585193000 0.397279s notice: Loading data from directory /Users/slee/Documents/temp/bigvocab/rethinkdb_data
+2015-07-24T12:04:23.628069000 0.440156s info: Automatically using cache size of 100 MB
+2015-07-24T12:04:23.628079000 0.440166s warn: Cache size does not leave much memory for server and query overhead (available memory: 198 MB).
+2015-07-24T12:04:23.628085000 0.440171s warn: Cache size is very low and may impact performance.
+2015-07-24T12:04:23.630668000 0.442754s notice: Listening for intracluster connections on port 29015
+2015-07-24T12:04:23.632972000 0.445059s notice: Listening for client driver connections on port 28015
+2015-07-24T12:04:23.633058000 0.445144s notice: Listening for administrative HTTP connections on port 8080
+2015-07-24T12:04:23.633059000 0.445145s notice: Listening on addresses: 127.0.0.1, ::1
+2015-07-24T12:04:23.633063000 0.445150s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2015-07-24T12:04:23.633064000 0.445150s notice: Server ready, "Seungchans_MacBook_Pro_local_a10" 04e1087d-9bff-466f-a398-7d1c1717064e

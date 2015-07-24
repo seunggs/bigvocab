@@ -15,6 +15,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       word: 'i.e. audacious',
       definition: 'i.e. Fearlessly, often recklessly daring; bold. See Synonyms at adventurous, brave.'
     };
+    vm.btnState = {
+      loading: false,
+      success: false
+    };
 
     vm.getDefinition = function (word) {
       if (word !== undefined) {

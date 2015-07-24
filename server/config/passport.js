@@ -28,11 +28,11 @@ module.exports = function (passport) {
 			callbackURL: configAuth.googleAuth.callbackURL
 		}, loginCallbackHandler (function (profile) {
 			return {
-				login: profile.id,
-				email: profile.emails[0].value,
-				firstName: profile.name.givenName,
-				lastName: profile.name.familyName,
-				avatarUrl: profile.image.url,
+				login: profile._json.id,
+				email: profile._json.email,
+				firstName: profile._json.given_name,
+				lastName: profile._json.family_name,
+				picture: profile._json.picture,
 				type: 'google'
 			};
 		}, 'google')
@@ -44,13 +44,14 @@ function loginCallbackHandler (objMapper, type) {
 	return function (token, refreshToken, profile, done) {
 		if (token !== null) {
 			console.log(profile);
+			console.log('profile id: ', profile.id);
 
 			r.table('users')
 				.getAll(profile.id, { index: 'login' })
 				.filter({ type: type })
 				.run()
 				.then(function (users) {
-					console.log(users);
+					console.log('rdb users', users);
 					if (users.length > 0) {
 						return done(null, users[0]);
 					} else {
@@ -62,8 +63,8 @@ function loginCallbackHandler (objMapper, type) {
 			                  .get(dbRes.generated_keys[0])
 			                  .run();
 							})
-							.then(function (newUserKey) {
-								return done(null, newUserKey);
+							.then(function (newUser) {
+								return done(null, newUser);
 							});
 					}
 				})

@@ -21,7 +21,6 @@
     };
 
     CollectionsServiceBase.create = collection => {
-      console.log(collection);
       return $http.post(ConfigService.appUrl + '/api/collections', collection);
     };
 

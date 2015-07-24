@@ -1305,6 +1305,308 @@ button, button:after, button:before, .button, .button:after, .button:before {
    - Gray Scale
 
 */
+/* Basscss Button Link */
+.button-link {
+  padding-right: 0;
+  padding-left: 0;
+  color: inherit;
+  background-color: transparent;
+  background-size: 100% .25em;
+  background-repeat: repeat-x;
+  background-position: 0 1.5rem;
+  border-radius: 0; }
+
+.button-link:hover, .button-link:focus {
+  box-shadow: none;
+  background-image: -webkit-linear-gradient(transparent 50%, currentcolor 50%);
+  background-image: linear-gradient(transparent 50%, currentcolor 50%); }
+
+.button-link:active, .button-link.is-active {
+  box-shadow: inset 0 -.125em; }
+
+.button-link:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25); }
+
+.button-link:disabled, .button-link.is-disabled {
+  opacity: .5; }
+
+/* Basscss Button Outline */
+.button-outline {
+  position: relative;
+  z-index: 2;
+  color: inherit;
+  background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid currentcolor; }
+
+.button-outline:before {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: -1;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  border: 1px solid transparent;
+  background-color: currentcolor;
+  border-radius: 3px;
+  opacity: 0; }
+
+.button-outline:hover {
+  box-shadow: none; }
+
+.button-outline:hover:before, .button-outline:focus:before {
+  opacity: .125; }
+
+.button-outline:focus {
+  outline: none;
+  border: 1px solid currentcolor;
+  box-shadow: 0 0 0 2px; }
+
+.button-outline:active, .button-outline.is-active {
+  box-shadow: inset 0 1px 5px 0, 0 0 1px; }
+
+.button-outline:disabled, .button-outline.is-disabled {
+  opacity: .5; }
+
+/* Basscss Defaults */
+/*
+
+   COLOR VARIABLES
+
+   - Cool
+   - Warm
+   - Gray Scale
+
+*/
+/* Basscss UI Utility Button Sizes */
+.button-small {
+  padding: 0.25rem 0.5rem; }
+
+.button-big {
+  padding: 1rem 1.25rem; }
+
+.button-narrow {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem; }
+
+/* Basscss Defaults */
+/*
+
+   COLOR VARIABLES
+
+   - Cool
+   - Warm
+   - Gray Scale
+
+*/
+/* Basscss Button Solid */
+.button {
+  color: #fff;
+  background-color: #00A2DD;
+  border-radius: 3px; }
+
+.button:hover {
+  box-shadow: inset 0 0 0 20rem rgba(0, 0, 0, 0.0625); }
+
+.button:focus {
+  outline: none;
+  border-color: rgba(0, 0, 0, 0.125);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.25); }
+
+.button:active, .button.is-active {
+  box-shadow: inset 0 0 0 20rem rgba(0, 0, 0, 0.125), inset 0 3px 4px 0 rgba(0, 0, 0, 0.25), 0 0 1px rgba(0, 0, 0, 0.125); }
+
+.button:disabled, .button.is-disabled {
+  opacity: .5; }
+
+/* Basscss Defaults */
+/*
+
+   COLOR VARIABLES
+
+   - Cool
+   - Warm
+   - Gray Scale
+
+*/
+/* Basscss Button Transparent */
+.button-transparent {
+  position: relative;
+  z-index: 2;
+  color: inherit;
+  background-color: transparent;
+  border-radius: 0;
+  border: 1px solid transparent; }
+
+.button-transparent:before {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: -1;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  border: 1px solid transparent;
+  background-color: currentcolor;
+  opacity: 0; }
+
+.button-transparent:hover {
+  box-shadow: none; }
+
+.button-transparent:hover:before, .button-transparent:focus:before {
+  opacity: .09375; }
+
+.button-transparent:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow: 0 0 0 2px; }
+
+.button-transparent:active, .button-transparent.is-active {
+  box-shadow: none; }
+
+.button-transparent:active:before, .button-transparent.is-active:before {
+  opacity: .0625; }
+
+.button-transparent:disabled, .button-transparent.is-disabled {
+  opacity: .5; }
+
+/* Basscss Defaults */
+/*
+
+   COLOR VARIABLES
+
+   - Cool
+   - Warm
+   - Gray Scale
+
+*/
+/* Basscss Color Buttons */
+/* Basscss Button Blue */
+.button-blue {
+  color: white;
+  background-color: #00A2DD;
+  border-radius: 3px;
+  -webkit-transition-duration: .1s;
+  transition-duration: .1s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+  -webkit-transition-property: box-shadow, background-color;
+  transition-property: box-shadow, background-color; }
+
+.button-blue:hover {
+  opacity: .875; }
+
+.button-blue:active, .button-blue.is-active {
+  box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.125), inset 0 2px 3px 0 rgba(0, 0, 0, 0.25); }
+
+.button-blue:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5), 0 0 1px 4px rgba(0, 162, 221, 0.5); }
+
+.button-blue:disabled, .button-blue.is-disabled {
+  opacity: .5; }
+
+/* Basscss Button Blue Outline */
+.button-blue-outline {
+  color: #00A2DD;
+  background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid #00A2DD;
+  -webkit-transition-duration: .1s;
+  transition-duration: .1s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+  -webkit-transition-property: box-shadow, background-color;
+  transition-property: box-shadow, background-color; }
+
+.button-blue-outline:hover, .button-blue-outline.is-active {
+  color: white;
+  background-color: #00A2DD; }
+
+.button-blue-outline:active {
+  box-shadow: inset 0 3px 3px 0 rgba(0, 0, 0, 0.25); }
+
+.button-blue-outline:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5), 0 0 1px 4px rgba(0, 162, 221, 0.5); }
+
+.button-blue-outline:disabled, .button-blue-outline.is-disabled {
+  color: #00A2DD;
+  background-color: transparent;
+  opacity: .5; }
+
+/* Basscss Button Red */
+.button-red {
+  color: white;
+  background-color: #ff4136;
+  border-radius: 3px;
+  -webkit-transition-duration: .1s;
+  transition-duration: .1s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+  -webkit-transition-property: box-shadow, background-color;
+  transition-property: box-shadow, background-color; }
+
+.button-red:hover {
+  opacity: .875; }
+
+.button-red:active, .button-red.is-active {
+  box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.125), inset 0 2px 3px 0 rgba(0, 0, 0, 0.25); }
+
+.button-red:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5), 0 0 1px 4px rgba(255, 65, 54, 0.5); }
+
+.button-red:disabled, .button-red.is-disabled {
+  opacity: .5; }
+
+/* Basscss Button Light Gray */
+.button-light-gray {
+  color: #888;
+  background-color: #ccc;
+  border-radius: 3px;
+  -webkit-transition-duration: .1s;
+  transition-duration: .1s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+  -webkit-transition-property: box-shadow, background-color;
+  transition-property: box-shadow, background-color; }
+
+.button-light-gray:hover {
+  opacity: .875; }
+
+.button-light-gray:active, .button-light-gray:is-active {
+  box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.125), inset 0 2px 3px 0 rgba(0, 0, 0, 0.25); }
+
+.button-light-gray:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px white, 0 0 1px 4px rgba(0, 162, 221, 0.5); }
+
+.button-light-gray:disabled, .button-light-gray.is-disabled {
+  opacity: .5; }
+
+/* Basscss Button Nav Light */
+.button-nav-light:hover {
+  background-color: rgba(0, 0, 0, 0.0625); }
+
+.button-nav-light:active, .button-nav-light.is-active {
+  color: #888; }
+
+/* Basscss Button Nav Dark */
+.button-nav-dark {
+  color: white; }
+
+.button-nav-dark:hover {
+  background-color: rgba(0, 0, 0, 0.125); }
+
+.button-nav-dark:active, .button-nav-dark.is-active {
+  background-color: rgba(0, 0, 0, 0.125); }
+
 /* Basscss Color Forms Dark */
 .field-dark {
   color: white;

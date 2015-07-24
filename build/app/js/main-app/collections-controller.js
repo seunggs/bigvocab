@@ -17,8 +17,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     };
     vm.btnState = {
       loading: false,
-      success: false,
-      fail: false
+      success: false
     };
 
     // init
@@ -42,11 +41,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         console.log(dbRes);
       })['catch'](function (err) {
-        vm.btnState.fail = true;
-        $timeout(function () {
-          vm.btnState.fail = false;
-        }, 1500);
-
         console.log('Something went wrong: ', err);
       })['finally'](function () {
         vm.btnState.loading = false;

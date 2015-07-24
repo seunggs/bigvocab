@@ -13,9 +13,8 @@
       };
       vm.btnState = {
         loading: false,
-        success: false,
-        fail: false
-      }
+        success: false
+      };
 
       // init
       CollectionsService.getAll()
@@ -42,11 +41,6 @@
             console.log(dbRes);
           })
           .catch(err => {
-            vm.btnState.fail = true;
-            $timeout(() => {
-              vm.btnState.fail = false;
-            }, 1500);
-
             console.log('Something went wrong: ', err);
           })
           .finally(() => {

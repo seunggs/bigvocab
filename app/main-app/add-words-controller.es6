@@ -11,6 +11,10 @@
         word: 'i.e. audacious',
         definition: 'i.e. Fearlessly, often recklessly daring; bold. See Synonyms at adventurous, brave.'
       };
+      vm.btnState = {
+        loading: false,
+        success: false
+      };
 
       vm.getDefinition = word => {
         if (word !== undefined) {

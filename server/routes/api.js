@@ -4,10 +4,34 @@ var express = require('express');
 var router = express.Router();
 var r = require('../config/rdbdash');
 
-// Users routes ----------------------
-// router.route('/users');
+// Users routes ///////////////////////////////////////////////////////
+router.route('/users')
 
-// Colletions routes ----------------------
+	// GET :: () -> [users]
+	.get(function (req, res) {
+		r.table('users')
+			.run()
+			.then(function (users) {
+				res.json(users);
+			})
+			.catch(function (err) {
+				res.send(err);
+			});
+	});
+
+router.route('/users/:userId')
+
+	// GET :: Params(String) -> {user}
+	.get(function (req, res) {
+
+	})
+
+	// PUT :: Params(String) -> {user} -> {dbRes}
+	.put(function (req, res) {
+
+	});
+
+// Colletions routes //////////////////////////////////////////////////
 router.route('/collections')
 
 	// GET :: () -> [collections]
@@ -96,7 +120,7 @@ router.route('/collections/:colletionId')
 			});
 	});
 
-// Words routes ----------------------
+// Words routes ///////////////////////////////////////////////////////
 // router.route('/words');
 
 module.exports = router;
