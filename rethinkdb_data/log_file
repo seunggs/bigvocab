@@ -124,3 +124,4 @@
 2015-07-23T19:28:55.532927000 0.469063s notice: Listening on addresses: 127.0.0.1, 127.0.0.2, 127.0.0.3, ::1
 2015-07-23T19:28:55.532928000 0.469065s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
 2015-07-23T19:28:55.532934000 0.469071s notice: Server ready, "Seungchans_MacBook_Pro_local_a10" 04e1087d-9bff-466f-a398-7d1c1717064e
+2015-07-23T23:50:05.338204000 15670.843767s notice: Removing file /Users/seungchanlee/Documents/Projects/bigvocab/rethinkdb_data/c71ab54a-710c-4f9e-8aa9-084db4f0b449

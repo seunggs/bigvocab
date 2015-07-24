@@ -34,8 +34,10 @@
 				</div>
 
 				<div class="sm-col sm-col-4 p1">
-					<button type="submit" ng-click="collections.createCollection(collections.newCollection)" class="btn btn-form btn-green-outline col-12">
-						Add Collection<span class="ti-layers-alt ml1"></span>
+					<button type="submit" ng-click="collections.createCollection({ userId: 1, wordCount: 0, title: collections.formData.collectionTitle })" class="btn btn-form btn-green col-12" ng-disabled="collections.btnState.success || collections.btnState.loading">
+						<span ng-if="!collections.btnState.loading && !collections.btnState.success">Add Collection</span>
+						<span ng-if="collections.btnState.loading"><spinner width="16px"></spinner>Please wait...</span>
+						<span ng-if="collections.btnState.success"><span class="ti-check mr1"></span>Success!</span>
 					</button>
 				</div>
 

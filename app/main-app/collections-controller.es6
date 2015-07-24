@@ -2,37 +2,56 @@
   'use strict';
 
   class CollectionsCtrl {
-    constructor(CollectionsService) {
+    constructor(CollectionsService, $timeout) {
 
       let vm = this;
 
+      // setup
       vm.formData = {};
       vm.placeholder = {
         collectionTitle: 'Enter Collection name here'
       };
+      vm.btnState = {
+        loading: false,
+        success: false,
+        fail: false
+      }
 
+      // init
       CollectionsService.getAll()
         .then(res => {
-          vm.collectionList = angular.fromJson(res);
+          console.log(angular.fromJson(res).data);
+          vm.collectionList = angular.fromJson(res).data;
         })
-        .catch(errHandler);
+        .catch(err => {
+          console.log('Something went wrong: ', err);
+        });
 
-      vm.newCollection = {
-        userId: '',
-        title: '',
-        wordCount: 0
-      };
-
+      // main
       vm.createCollection = collection => {
-        CollectionsService.create()
+        console.log(collection);
+        vm.btnState.loading = true;
+
+        CollectionsService.create(collection)
           .then(dbRes => {
+            vm.btnState.success = true;
+            $timeout(() => {
+              vm.btnState.success = false;
+            }, 1500);
+
             console.log(dbRes);
           })
-          .catch(errHandler);
-      };
+          .catch(err => {
+            vm.btnState.fail = true;
+            $timeout(() => {
+              vm.btnState.fail = false;
+            }, 1500);
 
-      var errHandler = err => {
-        console.log(err);
+            console.log('Something went wrong: ', err);
+          })
+          .finally(() => {
+            vm.btnState.loading = false;
+          });
       };
 
     }

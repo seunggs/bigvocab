@@ -20,15 +20,16 @@
       return $http.get(ConfigService.appUrl + '/api/collections');
     };
 
-    CollectionsServiceBase.create = (collection) => {
+    CollectionsServiceBase.create = collection => {
+      console.log(collection);
       return $http.post(ConfigService.appUrl + '/api/collections', collection);
     };
 
-    CollectionsServiceBase.get = (collectionId) => {
+    CollectionsServiceBase.get = collectionId => {
       return $http.get(ConfigService.appUrl + '/api/collections/' + collectionId);
     };
 
-    CollectionsServiceBase.update = (collectionId) => {
+    CollectionsServiceBase.update = collectionId => {
       return $http.put(ConfigService.appUrl + '/api/collections/' + collectionId);
     };
 

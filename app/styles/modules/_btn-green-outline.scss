@@ -22,8 +22,8 @@
 }
 
 .btn-green-outline:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(white, .5), 0 0 1px 4px rgba($green, .5);
+  color: white;
+  background-color: $green;
 }
 
 .btn-green-outline:disabled,

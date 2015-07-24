@@ -5,34 +5,52 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   'use strict';
 
-  var CollectionsCtrl = function CollectionsCtrl(CollectionsService) {
+  var CollectionsCtrl = function CollectionsCtrl(CollectionsService, $timeout) {
     _classCallCheck(this, CollectionsCtrl);
 
     var vm = this;
 
+    // setup
     vm.formData = {};
     vm.placeholder = {
       collectionTitle: 'Enter Collection name here'
     };
+    vm.btnState = {
+      loading: false,
+      success: false,
+      fail: false
+    };
 
+    // init
     CollectionsService.getAll().then(function (res) {
-      vm.collectionList = angular.fromJson(res);
-    })['catch'](errHandler);
+      console.log(angular.fromJson(res).data);
+      vm.collectionList = angular.fromJson(res).data;
+    })['catch'](function (err) {
+      console.log('Something went wrong: ', err);
+    });
 
-    vm.newCollection = {
-      userId: '',
-      title: '',
-      wordCount: 0
-    };
-
+    // main
     vm.createCollection = function (collection) {
-      CollectionsService.create().then(function (dbRes) {
-        console.log(dbRes);
-      })['catch'](errHandler);
-    };
+      console.log(collection);
+      vm.btnState.loading = true;
 
-    var errHandler = function errHandler(err) {
-      console.log(err);
+      CollectionsService.create(collection).then(function (dbRes) {
+        vm.btnState.success = true;
+        $timeout(function () {
+          vm.btnState.success = false;
+        }, 1500);
+
+        console.log(dbRes);
+      })['catch'](function (err) {
+        vm.btnState.fail = true;
+        $timeout(function () {
+          vm.btnState.fail = false;
+        }, 1500);
+
+        console.log('Something went wrong: ', err);
+      })['finally'](function () {
+        vm.btnState.loading = false;
+      });
     };
   };
 
