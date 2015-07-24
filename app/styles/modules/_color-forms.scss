@@ -12,3 +12,10 @@
   box-shadow: 0 0 0 1px color($field-focus-color a(.5));
 }
 
+.label {
+	display: block;
+	font-size: $label-font-size;
+	color: $label-font-color;
+	font-weight: $label-font-weight;
+	margin-bottom: 0.3rem;
+}

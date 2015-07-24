@@ -12,12 +12,12 @@
    */
   angular.module('auth').factory('AuthService', AuthService);
 
-  function AuthService($http, $q, $location) {
+  function AuthService(ConfigService, $http, $q, $location) {
 
     var AuthServiceBase = {};
 
     AuthServiceBase.checkLoggedIn = function () {
-      $http.get('/loggedin').then(function (user) {
+      $http.get(ConfigService.appUrl + '/auth/loggedin').then(function (user) {
         if (user !== false) {
           deferred.resolve();
         } else {

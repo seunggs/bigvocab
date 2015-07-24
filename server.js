@@ -12,16 +12,13 @@ var session = require('express-session');
 var methodOverride  = require('method-override');
 var flash = require('connect-flash');
 var passport = require('passport');
+var favicon = require('serve-favicon');
 
 var config = require('./server/config/default');
 
 
 // configuration ================================================
-
 var port = config.port;
-
-// passport configuration
-require('./server/config/passport')(passport); // pass passport for configuration
 
 // set up express
 app.use(morgan('dev')); // log every request to the console
@@ -31,8 +28,11 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(methodOverride('X-HTTP-Method-Override')); 
 app.use(express.static(__dirname + '/build/app')); 
+app.use(favicon(__dirname + '/build/images/favicon/favicon.ico'));
 
-// required for passport
+// set up passport
+require('./server/config/passport')(passport); // pass passport for configuration
+
 app.use(session({
 	secret: 'bigvocabsecretkeyplease',
 	resave: false,

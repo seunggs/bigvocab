@@ -5,27 +5,34 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   'use strict';
 
-  var CollectionsCtrl = function CollectionsCtrl() {
+  var CollectionsCtrl = function CollectionsCtrl(CollectionsService) {
     _classCallCheck(this, CollectionsCtrl);
 
     var vm = this;
 
-    vm.list = {
-      collection1: {
-        id: 1,
-        title: 'Nami\'s Collection',
-        words: 1234
-      },
-      collection2: {
-        id: 2,
-        title: 'Nami\'s Second Collection',
-        words: 19
-      },
-      collection3: {
-        id: 3,
-        title: 'Nami\'s Third Collection',
-        words: 124
-      }
+    vm.formData = {};
+    vm.placeholder = {
+      collectionTitle: 'Enter Collection name here'
+    };
+
+    CollectionsService.getAll().then(function (res) {
+      vm.collectionList = angular.fromJson(res);
+    })['catch'](errHandler);
+
+    vm.newCollection = {
+      userId: '',
+      title: '',
+      wordCount: 0
+    };
+
+    vm.createCollection = function (collection) {
+      CollectionsService.create().then(function (dbRes) {
+        console.log(dbRes);
+      })['catch'](errHandler);
+    };
+
+    var errHandler = function errHandler(err) {
+      console.log(err);
     };
   };
 

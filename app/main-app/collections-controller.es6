@@ -6,15 +6,28 @@
 
       let vm = this;
 
+      vm.formData = {};
+      vm.placeholder = {
+        collectionTitle: 'Enter Collection name here'
+      };
+
       CollectionsService.getAll()
         .then(res => {
-          vm.collectionList = res;
+          vm.collectionList = angular.fromJson(res);
         })
         .catch(errHandler);
 
+      vm.newCollection = {
+        userId: '',
+        title: '',
+        wordCount: 0
+      };
+
       vm.createCollection = collection => {
         CollectionsService.create()
-          .then()
+          .then(dbRes => {
+            console.log(dbRes);
+          })
           .catch(errHandler);
       };
 

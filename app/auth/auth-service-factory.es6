@@ -12,12 +12,12 @@
     .module('auth')
     .factory('AuthService', AuthService);
 
-  function AuthService($http, $q, $location) {
+  function AuthService(ConfigService, $http, $q, $location) {
 
     let AuthServiceBase = {};
 
     AuthServiceBase.checkLoggedIn = () => {
-      $http.get('/loggedin')
+      $http.get(ConfigService.appUrl + '/auth/loggedin')
         .then(user => {
           if (user !== false) {
             deferred.resolve();

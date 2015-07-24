@@ -1,13 +1,16 @@
 <div class="clearfix">
 
-	<h1 class="mt1 center">Your Collections</h1>
+	<h1 class="mt1 center">My Collections</h1>
 
-	<div class="md-col-10 lg-col-8 mx-auto px2">
+	<div class="md-col-10 lg-col-8 mx-auto px2 mt3">
+
+		<!-- collection list -->
 		<div class="clearfix bg-white rounded p1 mb2 ng-animation-fadeInUp" ng-repeat="collection in collections.collectionList | orderBy: 'id'">
 
 			<div class="sm-col sm-col-7">
-				<div class="btn btn-md bold m1" style="cursor: text">{{ collection.title }} <span class="gray">({{ collection.words }} words)</span></div>
+				<div class="btn btn-md bold m1" style="cursor: text">{{ collection.title }} <span class="gray">({{ collection.wordCount }} words)</span></div>
 			</div>
+
 			<div class="sm-col sm-col-5 flex flex-wrap">
 				<a ui-sref="mainApp.review-words({ collectionId: collection.id })" class="btn btn-md btn-primary flex-auto center m1 h5">Study<span class="ti-arrow-right ml1"></span></a>
 				<a ui-sref="mainApp.add-words({ collectionId: collection.id })" class="btn btn-md btn-blue-outline center dark-gray m1 h5" tooltips title="Add Words" tooltip-placement="top"><span class="ti-plus"></span></a>
@@ -15,10 +18,33 @@
 			</div>
 
 		</div>
+		<!-- end: collection list -->
 
-		<div class="mt3 center">
-			<a ng-click="collections.createCollection()" class="btn btn-outline">Add Collection<span class="ti-layers-alt ml1"></span></a>
+		<!-- add collection -->
+		<div class="clearfix bg-light-green px2 py2 mt3 rounded">
+
+			<div class="center">
+				<div class="caps bold m1">Add Collection</div>
+			</div>
+
+			<form name="addCollectionForm">
+
+				<div class="sm-col sm-col-8 p1">
+					<input name="collectionTitle" type="text" ng-model="collections.formData.collectionTitle" class="field col-12" placeholder="{{ collections.placeholder.collectionTitle }}">
+				</div>
+
+				<div class="sm-col sm-col-4 p1">
+					<button type="submit" ng-click="collections.createCollection(collections.newCollection)" class="btn btn-form btn-green-outline col-12">
+						Add Collection<span class="ti-layers-alt ml1"></span>
+					</button>
+				</div>
+
+				</div>
+
+			</form>
 		</div>
+		<!-- end: add collection -->
+
 	</div>
 
 </div>

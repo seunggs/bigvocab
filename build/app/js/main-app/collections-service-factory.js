@@ -12,12 +12,28 @@
    */
   angular.module('mainApp').factory('CollectionsService', CollectionsService);
 
-  function CollectionsService($http) {
+  function CollectionsService(ConfigService, $http) {
 
     var CollectionsServiceBase = {};
 
+    CollectionsServiceBase.getAll = function () {
+      return $http.get(ConfigService.appUrl + '/api/collections');
+    };
+
+    CollectionsServiceBase.create = function (collection) {
+      return $http.post(ConfigService.appUrl + '/api/collections', collection);
+    };
+
     CollectionsServiceBase.get = function (collectionId) {
-      return $http.get('/api/collections');
+      return $http.get(ConfigService.appUrl + '/api/collections/' + collectionId);
+    };
+
+    CollectionsServiceBase.update = function (collectionId) {
+      return $http.put(ConfigService.appUrl + '/api/collections/' + collectionId);
+    };
+
+    CollectionsServiceBase['delete'] = function (collectionId, newCollection) {
+      return $http['delete'](ConfigService.appUrl + '/api/collections/' + collectionId, newCollection);
     };
 
     return CollectionsServiceBase;

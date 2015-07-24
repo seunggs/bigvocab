@@ -16,6 +16,8 @@
 
     let ConfigServiceBase = {};
     
+    ConfigServiceBase.appUrl = 'http://www.bigvocab.com';
+
     ConfigServiceBase.mashapeKey = 'S4DvXSr43Cmsh5Kww0kOuX9QxNbXp1hjhkYjsn84TFraf8SlG3';
     
     return ConfigServiceBase;
