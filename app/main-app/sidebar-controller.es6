@@ -26,15 +26,9 @@
         },
         {
           id: 3,
-          title: 'Account',
-          icon: 'ti-user',
-          link: 'mainApp.account'
-        },
-        {
-          id: 4,
           title: 'Log Out',
           icon: 'ti-arrow-left',
-          link: 'logout'
+          link: 'mainApp.logout'
         }
       ];
 

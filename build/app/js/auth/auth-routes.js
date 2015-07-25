@@ -23,6 +23,11 @@
       templateUrl: 'auth/register.tpl.html',
       controller: 'RegisterCtrl',
       controllerAs: 'register'
+    }).state('root.auth.logout', {
+      url: '/logout',
+      templateUrl: 'auth/logout.tpl.html',
+      controller: 'LogoutCtrl',
+      controllerAs: 'logout'
     });
   }
 })();

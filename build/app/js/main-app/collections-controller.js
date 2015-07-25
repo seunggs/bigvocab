@@ -5,7 +5,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   'use strict';
 
-  var CollectionsCtrl = function CollectionsCtrl(CollectionsService, $timeout) {
+  var CollectionsCtrl = function CollectionsCtrl(CollectionsService, $timeout, user) {
     _classCallCheck(this, CollectionsCtrl);
 
     var vm = this;
@@ -19,31 +19,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       loading: false,
       success: false
     };
+    vm.user = user;
 
     // init
-    CollectionsService.getAll().then(function (res) {
-      console.log(angular.fromJson(res).data);
-      vm.collectionList = angular.fromJson(res).data;
-    })['catch'](function (err) {
-      console.log('Something went wrong: ', err);
-    });
+    getAllCollections();
 
     // main
     vm.createCollection = function (collection) {
-      console.log(collection);
       vm.btnState.loading = true;
 
       CollectionsService.create(collection).then(function (dbRes) {
         vm.btnState.success = true;
+        getAllCollections();
+
         $timeout(function () {
           vm.btnState.success = false;
         }, 1500);
-
-        console.log(dbRes);
       })['catch'](function (err) {
         console.log('Something went wrong: ', err);
       })['finally'](function () {
         vm.btnState.loading = false;
+        vm.formData = {};
+      });
+    };
+
+    // helper functions
+    function getAllCollections() {
+      CollectionsService.getAll().then(function (res) {
+        vm.collectionList = angular.fromJson(res).data;
+      })['catch'](function (err) {
+        console.log('Something went wrong: ', err);
       });
     };
   };

@@ -18,6 +18,11 @@
           controller: 'SidebarCtrl',
           controllerAs: 'sidebar'
         }
+      },
+      resolve: {
+        user: function user(AuthService) {
+          return AuthService.checkLoggedIn();
+        }
       }
     }).state('mainApp.collections', {
       url: '/collections',
@@ -45,6 +50,11 @@
       templateUrl: 'main-app/test-words.tpl.html',
       controller: 'TestWordsCtrl',
       controllerAs: 'testWords'
+    }).state('mainApp.logout', {
+      url: '/logout',
+      templateUrl: 'main-app/logout.tpl.html',
+      controller: 'LogoutCtrl',
+      controllerAs: 'logout'
     });
   }
 })();

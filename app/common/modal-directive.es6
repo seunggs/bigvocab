@@ -10,11 +10,8 @@
    * @description
    *
    * @example
-     <example module="common">
-       <file name="index.html">
-        <modal></modal>
-       </file>
-     </example>
+     <modal modal-bg="bg-red" yesCb="confirm()" noCb="abort()">
+     </modal>
    *
    */
   angular
@@ -24,17 +21,21 @@
   function modal() {
     return {
       restrict: 'EA',
-      scope: {},
+      scope: {
+        yesCb: '&',
+        noCb: '&'
+      },
       templateUrl: 'common/modal-directive.tpl.html',
       replace: false,
-      controllerAs: 'modal',
-      controller() {
-        let vm = this;
-        vm.name = 'modal';
-      },
+      transclude: true,
       link(scope, element, attrs) {
         /*jshint unused:false */
         /*eslint "no-unused-vars": [2, {"args": "none"}]*/
+        scope.modalBg = attrs.modalBg || '';
+
+        if (scope.yesCb === undefined && scope.noCb === undefined) {
+
+        }
       }
     };
   }

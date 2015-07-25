@@ -5,11 +5,27 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   'use strict';
 
-  var NavHomeCtrl = function NavHomeCtrl() {
+  var NavHomeCtrl = function NavHomeCtrl(AuthService, $window) {
     _classCallCheck(this, NavHomeCtrl);
 
     var vm = this;
-    vm.ctrlName = 'NavHomeCtrl';
+
+    // config
+    vm.user = false;
+
+    vm.setActive = function (page) {
+      vm.active = page;
+    };
+
+    // init
+    AuthService.isLoggedIn().then(function (user) {
+      if (user.data !== false) {
+        vm.user = true;
+        $window.location = '/#/main-app/collections';
+      }
+    })['catch'](function (err) {
+      console.log('Something went wrong: ', err);
+    });
   };
 
   /**

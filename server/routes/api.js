@@ -21,14 +21,36 @@ router.route('/users')
 
 router.route('/users/:userId')
 
-	// GET :: Params(String) -> {user}
+	// GET :: Params -> {user}
 	.get(function (req, res) {
+		var userId = req.params.userId;
 
+		r.table('users')
+			.get(userId)
+			.run()
+			.then(function (user) {
+				res.json(user);
+			})
+			.catch(function (err) {
+				res.send(err);
+			});
 	})
 
-	// PUT :: Params(String) -> {user} -> {dbRes}
+	// PUT :: Params -> {user} -> {dbRes}
 	.put(function (req, res) {
+		var userId = req.params.userId;
+		var user = req.body;
 
+		r.table('users')
+			.get(userId)
+			.update(user)
+			.run()
+			.then(function (dbRes) {
+				res.json(dbRes);
+			})
+			.catch(function (err) {
+				res.send(err);
+			});
 	});
 
 // Colletions routes //////////////////////////////////////////////////
@@ -49,13 +71,11 @@ router.route('/collections')
 	// POST :: {collection} -> {dbRes}
 	.post(function (req, res) {
 		var collection = req.body;
-		console.log(collection);
 
 		r.table('collections')
 			.insert(collection)
 			.run()
 			.then(function (dbRes) {
-				console.log(dbRes);
 				res.json(dbRes);
 			})
 			.catch(function (err) {
@@ -65,16 +85,14 @@ router.route('/collections')
 
 router.route('/collections/:colletionId')
 
-	// GET :: Params(String) -> {collection}
+	// GET :: Params -> {collection}
 	.get(function (req, res) {
 		var collectionId = req.params.collectionId;
-		console.log(collectionId);
 
 		r.table('collections')
 			.get(collectionId)
 			.run()
 			.then(function (collection) {
-				console.log(collection);
 				res.json(collection);
 			})
 			.catch(function (err) {
@@ -82,19 +100,16 @@ router.route('/collections/:colletionId')
 			});
 	})
 
-	// PUT :: Params(String) -> {collection} -> {dbRes}
+	// PUT :: Params -> {collection} -> {dbRes}
 	.put(function (req, res) {
 		var collectionId = req.params.collectionId;
 		var newCollection = req.body;
-		console.log(collectionId);
-		console.log(newCollection);
 
 		r.table('collections')
 			.get(collectionId)
 			.update(newCollection)
 			.run()
 			.then(function (dbRes) {
-				console.log(dbRes);
 				res.json(dbRes);
 			})
 			.catch(function (err) {
@@ -102,17 +117,15 @@ router.route('/collections/:colletionId')
 			});
 	})
 
-	// DELETE :: Params(String) -> {dbRes}
+	// DELETE :: Params -> {dbRes}
 	.delete(function (req, res) {
 		var collectionId = req.params.collectionId;
-		console.log(collectionId);
 
 		r.table('collections')
 			.get(collectionId)
 			.delete()
 			.run()
 			.then(function (dbRes) {
-				console.log(dbRes);
 				res.json(dbRes);
 			})
 			.catch(function (err) {
@@ -121,6 +134,71 @@ router.route('/collections/:colletionId')
 	});
 
 // Words routes ///////////////////////////////////////////////////////
-// router.route('/words');
+router.route('/words')
+
+	// GET :: () -> [words]
+	.get(function (req, res) {
+		r.table('words')
+			.run()
+			.then(function (words) {
+				res.json(words);
+			})
+			.catch(function (err) {
+				res.send(err);
+			});
+	})
+
+	// POST :: {word} -> {dbRes}
+	.post(function (req, res) {
+		var word = req.body;
+
+		r.table('words')
+			.insert(word)
+			.run()
+			.then(function (dbRes) {
+				res.json(dbRes);
+			})
+			.catch(function (err) {
+				res.send(err);
+			});
+	});
+
+router.route('/words/:word')
+
+	// PUT :: Params -> {word} -> {dbRes}
+	.put(function (req, res) {
+		var word = req.params.word;
+		var newWord = req.body;
+
+		r.table('words')
+			.getAll(word, { index: 'word' })
+			.update(newWord)
+			.run()
+			.then(function (dbRes) {
+				res.json(dbRes);
+			})
+			.catch(function (err) {
+				res.send(err);
+			});
+	})
+
+	// DETELE :: Params -> {dbRes}
+	.delete(function (req, res) {
+		var word = req.params.word;
+
+		r.table('words')
+			.getAll(word, { index: 'word' })
+			.delete()
+			.run()
+			.then(function (dbRes) {
+				res.json(dbRes);
+			})
+			.catch(function (err) {
+				res.send(err);
+			});
+	});
+
+// Tests routes ///////////////////////////////////////////////////////
+// router.route('/tests')
 
 module.exports = router;

@@ -2315,6 +2315,18 @@ body {
 a:hover {
   text-decoration: none; }
 
+.lighten-1 {
+  color: rgba(255, 255, 255, 0.0625); }
+
+.lighten-2 {
+  color: rgba(255, 255, 255, 0.125); }
+
+.lighten-3 {
+  color: rgba(255, 255, 255, 0.25); }
+
+.lighten-4 {
+  color: rgba(255, 255, 255, 0.5); }
+
 .dark-gray {
   color: #888; }
 
@@ -2327,14 +2339,17 @@ a:hover {
 .light-green {
   color: #D3F0D7; }
 
+.muted-0 {
+  opacity: 1 !important; }
+
 .muted-1 {
-  opacity: .25; }
+  opacity: .75 !important; }
 
 .muted-2 {
-  opacity: .5; }
+  opacity: .5 !important; }
 
 .muted-3 {
-  opacity: .75; }
+  opacity: .25 !important; }
 
 .bg-gradient-home {
   background: -webkit-linear-gradient(top, rgba(17, 2, 49, 0.75), rgba(17, 2, 49, 0)), -webkit-linear-gradient(bottom left, #eb6670, #f67f7c, #f9ac97, #f1b79f, #e1bea7, #c3bcb0, #8aabb2, #4e95b2, #2588b6);

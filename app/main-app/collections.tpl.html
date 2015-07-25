@@ -27,14 +27,19 @@
 				<div class="caps bold m1">Add Collection</div>
 			</div>
 
-			<form name="addCollectionForm">
+			<form name="addCollectionForm" 
+						ng-submit="collections.createCollection({ 
+							userId: collections.user.id, 
+							wordCount: 0, 
+							title: collections.formData.collectionTitle 
+						})">
 
 				<div class="sm-col sm-col-8 p1">
 					<input name="collectionTitle" type="text" ng-model="collections.formData.collectionTitle" class="field col-12" placeholder="{{ collections.placeholder.collectionTitle }}">
 				</div>
 
 				<div class="sm-col sm-col-4 p1">
-					<button type="submit" ng-click="collections.createCollection({ userId: 1, wordCount: 0, title: collections.formData.collectionTitle })" class="btn btn-form btn-green col-12" ng-disabled="collections.btnState.success || collections.btnState.loading">
+					<button type="submit" class="btn btn-form btn-green col-12" ng-disabled="collections.btnState.success || collections.btnState.loading">
 						<span ng-if="!collections.btnState.loading && !collections.btnState.success">Add Collection</span>
 						<span ng-if="collections.btnState.loading"><spinner width="16px"></spinner>Please wait...</span>
 						<span ng-if="collections.btnState.success"><span class="ti-check mr1"></span>Success!</span>
