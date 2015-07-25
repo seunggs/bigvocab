@@ -16,8 +16,8 @@
 
     let CollectionsServiceBase = {};
 
-    CollectionsServiceBase.getAll = () => {
-      return $http.get('/api/collections');
+    CollectionsServiceBase.getAll = userId => {
+      return $http.get('/api/collections/' + userId);
     };
 
     CollectionsServiceBase.create = collection => {
@@ -28,12 +28,12 @@
       return $http.get('/api/collections/' + collectionId);
     };
 
-    CollectionsServiceBase.update = collectionId => {
-      return $http.put('/api/collections/' + collectionId);
+    CollectionsServiceBase.update = (collectionId, newCollection) => {
+      return $http.put('/api/collections/' + collectionId, newCollection);
     };
 
-    CollectionsServiceBase.delete = (collectionId, newCollection) => {
-      return $http.delete('/api/collections/' + collectionId, newCollection);
+    CollectionsServiceBase.delete = collectionId => {
+      return $http.delete('/api/collections/' + collectionId);
     };
 
     return CollectionsServiceBase;

@@ -5,8 +5,6 @@ var outDir = 'build/';
 module.exports = {
   host: 'localhost',
   port: 3000,
-  serverPort: 8000,
-  appUrl: 'http://www.bigvocab.com',
 
   // app directories
   appDir: 'app',

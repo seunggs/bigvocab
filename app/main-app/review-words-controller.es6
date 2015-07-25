@@ -3,8 +3,11 @@
 
   class ReviewWordsCtrl {
     constructor() {
+
       let vm = this;
-      vm.ctrlName = 'ReviewWordsCtrl';
+      
+      
+      
     }
   }
 

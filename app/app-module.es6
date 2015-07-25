@@ -10,13 +10,15 @@
     .module('bigvocab', [
       'ngAria',
       'ngAnimate',
+      'ngMessages',
       'ui.router',
+      '720kb.tooltips',
+      'angular-momentjs',
       'home',
       'auth',
       'mainApp',
       'ramda',
-      'common',
-      '720kb.tooltips'
+      'common'
     ]);
 
   // ramda module

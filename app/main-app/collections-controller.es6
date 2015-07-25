@@ -21,7 +21,9 @@
       getAllCollections();
 
       // main
-      vm.createCollection = collection => {
+      vm.createCollection = (isValid, collection) => {
+        if (!isValid) { return; }
+
         vm.btnState.loading = true;
 
         CollectionsService.create(collection)
@@ -38,21 +40,25 @@
           })
           .finally(() => {
             vm.btnState.loading = false;
-            vm.formData = {};
           });
       };
 
       // helper functions
-      function getAllCollections() {
-        CollectionsService.getAll()
+      function getAllCollections () {
+        CollectionsService.getAll(user.id)
           .then(res => {
             vm.collectionList = angular.fromJson(res).data;
           })
           .catch(err => {
             console.log('Something went wrong: ', err);
           });
-      };
+      }
 
+      function resetForm () {
+        vm.addCollectionForm.collectionTitle.$touched = false;
+        vm.addCollectionForm.$submitted = false;
+        vm.formData = {};
+      }
     }
   }
 

@@ -8,7 +8,7 @@
    * @description
    *
    */
-  angular.module('bigvocab', ['ngAria', 'ngAnimate', 'ui.router', 'home', 'auth', 'mainApp', 'ramda', 'common', '720kb.tooltips']);
+  angular.module('bigvocab', ['ngAria', 'ngAnimate', 'ngMessages', 'ui.router', '720kb.tooltips', 'angular-momentjs', 'home', 'auth', 'mainApp', 'ramda', 'common']);
 
   // ramda module
   angular.module('ramda', []);

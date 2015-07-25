@@ -54,11 +54,14 @@ router.route('/users/:userId')
 	});
 
 // Colletions routes //////////////////////////////////////////////////
-router.route('/collections')
+router.route('/collections/:userId')
 
-	// GET :: () -> [collections]
+	// GET :: Params -> [collections]
 	.get(function (req, res) {
+		var userId = req.params.userId;
+
 		r.table('collections')
+			.filter({ userId: userId })
 			.run()
 			.then(function (collections) {
 				res.json(collections);
@@ -66,7 +69,9 @@ router.route('/collections')
 			.catch(function (err) {
 				res.send(err);
 			});
-	})
+	});
+
+router.route('/collections')	
 
 	// POST :: {collection} -> {dbRes}
 	.post(function (req, res) {
@@ -134,11 +139,14 @@ router.route('/collections/:colletionId')
 	});
 
 // Words routes ///////////////////////////////////////////////////////
-router.route('/words')
+router.route('/words/:collectionId')
 
-	// GET :: () -> [words]
+	// GET :: Params -> [words]
 	.get(function (req, res) {
+		var collectionId = req.params.collectionId;
+
 		r.table('words')
+			.filter({ collectionId: collectionId })
 			.run()
 			.then(function (words) {
 				res.json(words);
@@ -146,7 +154,9 @@ router.route('/words')
 			.catch(function (err) {
 				res.send(err);
 			});
-	})
+	});
+
+router.route('/words')
 
 	// POST :: {word} -> {dbRes}
 	.post(function (req, res) {
@@ -157,6 +167,23 @@ router.route('/words')
 			.run()
 			.then(function (dbRes) {
 				res.json(dbRes);
+			})
+			.catch(function (err) {
+				res.send(err);
+			});
+	});
+
+router.route('/words/today/:collectionId')
+
+	// GET :: Params -> [words]
+	.get(function (req, res) {
+		var collectionId = req.params.collectionId;
+
+		r.table('words')
+			.filter({ collectionId: collectionId })
+			.run()
+			.then(function (words) {
+				res.json(words);
 			})
 			.catch(function (err) {
 				res.send(err);
