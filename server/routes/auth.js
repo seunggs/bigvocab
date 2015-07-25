@@ -9,8 +9,8 @@ router.get('/loggedin', function (req, res) {
 });
 
 router.get('/logout', function (req, res) {
-	req.logut();
-	res.redirect('/');
+	req.logout();
+	res.send('Logout successful');
 });
 
 router.get('/google', passport.authenticate('google', { scope : ['profile', 'email'] }));

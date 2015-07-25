@@ -16,8 +16,6 @@
 
     let ConfigServiceBase = {};
     
-    ConfigServiceBase.appUrl = 'http://localhost:8000';
-
     ConfigServiceBase.mashapeKey = 'S4DvXSr43Cmsh5Kww0kOuX9QxNbXp1hjhkYjsn84TFraf8SlG3';
     
     return ConfigServiceBase;
