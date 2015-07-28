@@ -14,7 +14,7 @@ router.route('/users')
 			.then(function (users) {
 				res.json(users);
 			})
-			.catch(function (err) {
+			.catch(function (err) {	
 				res.send(err);
 			});
 	});
@@ -61,7 +61,7 @@ router.route('/collections/:userId')
 		var userId = req.params.userId;
 
 		r.table('collections')
-			.filter({ userId: userId })
+			.getAll(userId, { index: 'userId' })
 			.run()
 			.then(function (collections) {
 				res.json(collections);
@@ -142,18 +142,81 @@ router.route('/collections/:colletionId')
 router.route('/words/:collectionId')
 
 	// GET :: Params -> [words]
+	// GET :: Params -> Query('filter') -> [words]
 	.get(function (req, res) {
+
 		var collectionId = req.params.collectionId;
 
-		r.table('words')
-			.filter({ collectionId: collectionId })
-			.run()
-			.then(function (words) {
-				res.json(words);
-			})
-			.catch(function (err) {
-				res.send(err);
-			});
+		// get all words in the collection
+		switch (req.query.filter) {
+
+			case undefined:
+				r.table('words')
+					.getAll(collectionId, { index: 'collectionId' })
+					.run()
+					.then(function (words) {
+						res.json(words);
+					})
+					.catch(function (err) {
+						res.send(err);
+					});
+				break;
+
+			case 'dueToday':
+				r.table('words')
+					.getAll(collectionId, { index: 'collectionId' })
+					.filter(r.row('nextReviewEpochTime').lt(r.now().toEpochTime()))
+					.run()
+					.then(function (words) {
+						res.json(words);
+					})
+					.catch(function (err) {
+						res.send(err);
+					});
+				break;
+
+		}
+
+	});
+
+router.route('/words/count/:collectionId')
+
+	// GET :: Params -> Integer
+	// GET :: Params -> Query('filter') -> Integer
+	.get(function (req, res) {
+
+		var collectionId = req.params.collectionId;
+
+		switch (req.query.filter) {
+			
+			case undefined:
+				r.table('words')
+					.getAll(collectionId, { index: 'collectionId' })
+					.count()
+					.run()
+					.then(function (wordCount) {
+						res.json(wordCount);
+					})
+					.catch(function (err) {
+						res.send(err);
+					});
+				break;
+
+			case 'dueToday':
+				r.table('words')
+					.getAll(collectionId, { index: 'collectionId' })
+					.filter(r.row('nextReviewEpochTime').lt(r.now().toEpochTime()))
+					.count()
+					.run()
+					.then(function (dueWordCount) {
+						res.json(dueWordCount);
+					})
+					.catch(function (err) {
+						res.send(err);
+					});
+				break;
+		}
+
 	});
 
 router.route('/words')
@@ -173,33 +236,18 @@ router.route('/words')
 			});
 	});
 
-router.route('/words/today/:collectionId')
-
-	// GET :: Params -> [words]
-	.get(function (req, res) {
-		var collectionId = req.params.collectionId;
-
-		r.table('words')
-			.filter({ collectionId: collectionId })
-			.run()
-			.then(function (words) {
-				res.json(words);
-			})
-			.catch(function (err) {
-				res.send(err);
-			});
-	});
-
-router.route('/words/:word')
+router.route('/words/:wordId')
 
 	// PUT :: Params -> {word} -> {dbRes}
 	.put(function (req, res) {
-		var word = req.params.word;
-		var newWord = req.body;
+		var wordId = req.params.wordId;
+		var wordUpdate = req.body;
+
+		console.log(wordUpdate);
 
 		r.table('words')
-			.getAll(word, { index: 'word' })
-			.update(newWord)
+			.get(wordId)
+			.update(wordUpdate)
 			.run()
 			.then(function (dbRes) {
 				res.json(dbRes);
@@ -211,10 +259,10 @@ router.route('/words/:word')
 
 	// DETELE :: Params -> {dbRes}
 	.delete(function (req, res) {
-		var word = req.params.word;
+		var wordId = req.params.wordId;
 
 		r.table('words')
-			.getAll(word, { index: 'word' })
+			.get(wordId)
 			.delete()
 			.run()
 			.then(function (dbRes) {

@@ -6,7 +6,7 @@ var cors = require('cors');
 
 // set up cors
 var corsOptions = {
-	origin: 'http://localhost:3000'
+	origin: 'http://localhost:8000'
 };
 
 router.use(cors(corsOptions));

@@ -28,8 +28,23 @@
       return $http.get('/api/words/' + wordId);
     };
 
-    WordsServiceBase.update = (wordId, word) => {
-      return $http.put('/api/words/' + wordId, word);
+    // get only the words to be reviewed today
+    WordsServiceBase.getDue = collectionId => {
+      return $http.get('/api/words/' + collectionId + '/?filter=dueToday');
+    };
+
+    // getCount :: String -> Integer
+    WordsServiceBase.getCount = collectionId => {
+      return $http.get('/api/words/count/' + collectionId);
+    };
+
+    // getDueCount :: String -> Integer
+    WordsServiceBase.getDueCount = collectionId => {
+      return $http.get('/api/words/count/' + collectionId + '/?filter=dueToday');
+    };
+
+    WordsServiceBase.update = (wordId, wordUpdate) => {
+      return $http.put('/api/words/' + wordId, wordUpdate);
     };
 
     WordsServiceBase.delete = wordId => {

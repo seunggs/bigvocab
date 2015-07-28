@@ -29,7 +29,7 @@
 		<div class="flex flex-column py2 mt4">
 			
 			<div style="margin-left:20px"><img class="mb2" src="../images/logo/bigvocab-logo-color.svg" width="56px"></div>
-			<a ui-sref="{{ navItem.link }}" class="btn btn-icon py2 px3 flex flex-center" ng-repeat="navItem in sidebar.navItems | orderBy:'id'" tabindex="-1">
+			<a ui-sref="{{ navItem.link }}" ng-click="sidebar.toggleSidebar();" class="btn btn-icon py2 px3 flex flex-center" ng-repeat="navItem in sidebar.navItems | orderBy:'id'" tabindex="-1">
 				<div class="{{ navItem.icon }} h3 mr2"></div>
 				<div class="h5">{{ navItem.title }}</div>
 			</a>

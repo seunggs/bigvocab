@@ -5,12 +5,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   'use strict';
 
-  var CollectionsCtrl = function CollectionsCtrl(CollectionsService, $timeout, user) {
+  var CollectionsCtrl = function CollectionsCtrl(CollectionsService, WordsService, $timeout, user) {
     _classCallCheck(this, CollectionsCtrl);
 
     var vm = this;
 
-    // setup
+    // config ///////////////////////////////////////////////////////////////////////////
+
     vm.formData = {};
     vm.placeholder = {
       collectionTitle: 'Enter Collection name here'
@@ -21,10 +22,46 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     };
     vm.user = user;
 
-    // init
+    // init /////////////////////////////////////////////////////////////////////////////
+
     getAllCollections();
 
-    // main
+    // helper functions //////////////////////////////////////////////////////////////////
+
+    function getAllCollections() {
+      CollectionsService.getAll(user.id).then(function (res) {
+        var tempCollections = angular.fromJson(res).data;
+
+        vm.collectionList = tempCollections.map(function (collection) {
+          collection.dueWordCount = getDueWordCount(collection.id);
+          console.log(collection.dueWordCount);
+          return collection;
+        });
+
+        console.log(vm.collectionList);
+      })['catch'](function (err) {
+        console.log('Something went wrong: ', err);
+      });
+    }
+
+    function getDueWordCount(collectionId) {
+      console.log(collectionId);
+      WordsService.getDueCount(collectionId).then(function (dueWordCount) {
+        return angular.fromJson(dueWordCount).data;
+      })['catch'](function (err) {
+        console.log('Something went wrong: ', err);
+      });
+    }
+    console.log(getDueWordCount('095c1429-f5d9-49ff-996f-0d5368395658'));
+
+    function resetForm() {
+      vm.addCollectionForm.collectionTitle.$touched = false;
+      vm.addCollectionForm.$submitted = false;
+      vm.formData = {};
+    }
+
+    // main /////////////////////////////////////////////////////////////////////////////
+
     vm.createCollection = function (isValid, collection) {
       if (!isValid) {
         return;
@@ -45,21 +82,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         vm.btnState.loading = false;
       });
     };
-
-    // helper functions
-    function getAllCollections() {
-      CollectionsService.getAll(user.id).then(function (res) {
-        vm.collectionList = angular.fromJson(res).data;
-      })['catch'](function (err) {
-        console.log('Something went wrong: ', err);
-      });
-    }
-
-    function resetForm() {
-      vm.addCollectionForm.collectionTitle.$touched = false;
-      vm.addCollectionForm.$submitted = false;
-      vm.formData = {};
-    }
   };
 
   /**

@@ -7,22 +7,7 @@
 		<div class="md-col md-col-6 px2">
 
 			<form name="addWords.addWordForm" 
-						ng-submit="addWords.addWord(addWords.addWordForm.$valid, {
-							word: addWords.formData.word,
-							definition: addWords.formData.definition,
-							collectionId: addWords.collectionId,
-							lastReviewed: addWords.lastReviewed,
-							nextReview: addWords.nextReview,
-							phase: 'learning',
-							reviewRes: {
-								again: 0,
-								hard: 0,
-								good: 0,
-								easy: 0
-							},
-							easeFactor: 2.5,
-							lapsedTime: addWords.lapsedTime
-						}); addWords.resetForm()"
+						ng-submit="addWords.addWord(addWords.addWordForm.$valid, addWords.formData)"
 						novalidate>
 
 				<div class="mb1 bold">WORD</div>

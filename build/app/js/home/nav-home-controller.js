@@ -10,19 +10,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var vm = this;
 
-    // config
+    // config //////////////////////////////////////////////////////////////////////////
+
     vm.user = false;
 
     vm.setActive = function (page) {
       vm.active = page;
     };
 
-    // init
+    // init ////////////////////////////////////////////////////////////////////////////
+
     AuthService.isLoggedIn().then(function (user) {
       if (user.data !== false) {
         vm.user = true;
         $window.location = '/#/main-app/collections';
       }
+
+      console.log('Logged in?', vm.user);
     })['catch'](function (err) {
       console.log('Something went wrong: ', err);
     });

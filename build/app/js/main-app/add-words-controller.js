@@ -10,7 +10,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var vm = this;
 
-    // config
+    // config //////////////////////////////////////////////////////////////////////////
+
     vm.formData = {};
     vm.placeholder = {
       word: 'i.e. audacious',
@@ -20,25 +21,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       loading: false,
       success: false
     };
-    vm.collectionId = $stateParams.collectionId;
+    var collectionId = $stateParams.collectionId;
 
-    vm.lastReviewed = $moment();
-    vm.nextReview = $moment().add(1, 'minutes');
-    vm.lapsedTime = vm.lastReviewed.diff(vm.nextReview);
+    // helper functions //////////////////////////////////////////////////////////////////
 
-    // helper functions
-    vm.getDefinition = function (word) {
-      if (word !== undefined) {
-        DictionaryService.getDefinition(ConfigService.mashapeKey, word).then(function (res) {
-          vm.definitions = res.data.definitions;
-        });
-      }
-    };
-
-    vm.addWord = function (isValid, word) {
-      if (!isValid) {
-        return;
-      }
+    function addWord(word) {
+      vm.definitions = []; // reset definition list
 
       WordsService.create(word).then(function (dbRes) {
         vm.btnState.success = true;
@@ -52,16 +40,61 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       });
     };
 
-    vm.copyDefinition = function (definition) {
-      vm.formData.definition = definition;
-      vm.definitions = []; // reset definition list
-    };
-
-    vm.resetForm = function () {
+    function resetForm() {
       vm.addWordForm.word.$touched = false;
       vm.addWordForm.definition.$touched = false;
       vm.addWordForm.$submitted = false;
       vm.formData = {};
+    };
+
+    // main ////////////////////////////////////////////////////////////////////////////
+
+    vm.getDefinition = function (word) {
+      if (word !== undefined) {
+        DictionaryService.getDefinition(ConfigService.mashapeKey, word).then(function (res) {
+          vm.definitions = res.data.definitions;
+        });
+      }
+    };
+
+    vm.addWord = function (isValid, formData) {
+      if (!isValid) {
+        return;
+      }
+
+      var lastReviewed = $moment();
+      var nextReview = $moment().add(1, 'minutes');
+      var nextReviewEpochTime = nextReview.unix();
+
+      var word = {
+        word: formData.word,
+        definition: formData.definition,
+        collectionId: collectionId,
+        lastReviewed: lastReviewed,
+        interval: 1,
+        nextReview: nextReview,
+        nextReviewEpochTime: nextReviewEpochTime,
+        phase: 'learning',
+        reviewRes: {
+          again: 0,
+          hard: 0,
+          good: 0,
+          easy: 0
+        },
+        easeFactor: 2.5
+      };
+
+      addWord(word);
+
+      resetForm();
+    };
+
+    vm.copyDefinition = function (definition) {
+      vm.formData.definition = definition;
+    };
+
+    vm.resetForm = function () {
+      resetForm();
     };
   };
 

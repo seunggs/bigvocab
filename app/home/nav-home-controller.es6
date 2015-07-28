@@ -6,20 +6,24 @@
 
       let vm = this;
 
-      // config
+      // config //////////////////////////////////////////////////////////////////////////
+
       vm.user = false;
 
       vm.setActive = page => {
         vm.active = page;
       };
+
+      // init ////////////////////////////////////////////////////////////////////////////
       
-      // init
       AuthService.isLoggedIn()
         .then(user => {
           if (user.data !== false) {
             vm.user = true;
             $window.location = '/#/main-app/collections';
           } 
+
+          console.log('Logged in?', vm.user);
         })
         .catch(err => {
           console.log('Something went wrong: ', err);
