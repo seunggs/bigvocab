@@ -96,8 +96,14 @@ router.route('/collections/:colletionId')
 
 		r.table('collections')
 			.get(collectionId)
+			.merge({
+				totalWordCount: r.table('words')
+													.getAll(collectionId, { index: 'collectionId' })
+													.count()
+			})
 			.run()
 			.then(function (collection) {
+				console.log(collection);
 				res.json(collection);
 			})
 			.catch(function (err) {
@@ -175,46 +181,6 @@ router.route('/words/:collectionId')
 					});
 				break;
 
-		}
-
-	});
-
-router.route('/words/count/:collectionId')
-
-	// GET :: Params -> Integer
-	// GET :: Params -> Query('filter') -> Integer
-	.get(function (req, res) {
-
-		var collectionId = req.params.collectionId;
-
-		switch (req.query.filter) {
-			
-			case undefined:
-				r.table('words')
-					.getAll(collectionId, { index: 'collectionId' })
-					.count()
-					.run()
-					.then(function (wordCount) {
-						res.json(wordCount);
-					})
-					.catch(function (err) {
-						res.send(err);
-					});
-				break;
-
-			case 'dueToday':
-				r.table('words')
-					.getAll(collectionId, { index: 'collectionId' })
-					.filter(r.row('nextReviewEpochTime').lt(r.now().toEpochTime()))
-					.count()
-					.run()
-					.then(function (dueWordCount) {
-						res.json(dueWordCount);
-					})
-					.catch(function (err) {
-						res.send(err);
-					});
-				break;
 		}
 
 	});

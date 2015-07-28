@@ -138,3 +138,42 @@
 2015-07-24T12:04:23.633059000 0.445145s notice: Listening on addresses: 127.0.0.1, ::1
 2015-07-24T12:04:23.633063000 0.445150s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
 2015-07-24T12:04:23.633064000 0.445150s notice: Server ready, "Seungchans_MacBook_Pro_local_a10" 04e1087d-9bff-466f-a398-7d1c1717064e
+2015-07-27T09:57:34.292379000 17581.519943s notice: Server got SIGINT from pid 458, uid 503; shutting down...
+2015-07-27T09:57:34.293857000 17581.521419s notice: Shutting down client connections...
+2015-07-27T09:57:34.294027000 17581.521588s notice: All client connections closed.
+2015-07-27T09:57:34.294030000 17581.521592s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2015-07-27T09:57:34.323383000 17581.550945s notice: Storage engine shut down.
+2015-07-27T09:57:35.733913000 0.005950s notice: Running rethinkdb 2.0.4 (CLANG 4.2 (clang-425.0.28))...
+2015-07-27T09:57:35.743688000 0.015723s notice: Running on Darwin 14.4.0 x86_64
+2015-07-27T09:57:35.743730000 0.015764s notice: Loading data from directory /Users/slee/Documents/temp/bigvocab/rethinkdb_data
+2015-07-27T09:57:35.787601000 0.059635s info: Automatically using cache size of 100 MB
+2015-07-27T09:57:35.787607000 0.059641s warn: Cache size does not leave much memory for server and query overhead (available memory: 763 MB).
+2015-07-27T09:57:35.787611000 0.059645s warn: Cache size is very low and may impact performance.
+2015-07-27T09:57:35.788142000 0.060176s notice: Listening for intracluster connections on port 29015
+2015-07-27T09:57:35.789721000 0.061755s notice: Listening for client driver connections on port 28015
+2015-07-27T09:57:35.789851000 0.061885s notice: Listening for administrative HTTP connections on port 8080
+2015-07-27T09:57:35.789852000 0.061886s notice: Listening on addresses: 127.0.0.1, ::1
+2015-07-27T09:57:35.789857000 0.061890s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2015-07-27T09:57:35.789858000 0.061891s notice: Server ready, "Seungchans_MacBook_Pro_local_a10" 04e1087d-9bff-466f-a398-7d1c1717064e
+2015-07-27T09:57:40.569868000 4.841788s notice: Server got SIGINT from pid 458, uid 503; shutting down...
+2015-07-27T09:57:40.570072000 4.841992s notice: Shutting down client connections...
+2015-07-27T09:57:40.570230000 4.842150s notice: All client connections closed.
+2015-07-27T09:57:40.570240000 4.842160s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2015-07-27T09:57:40.584126000 4.856046s notice: Storage engine shut down.
+2015-07-28T13:57:37.349934000 0.365903s notice: Running rethinkdb 2.0.4 (CLANG 4.2 (clang-425.0.28))...
+2015-07-28T13:57:37.355562000 0.371529s notice: Running on Darwin 14.4.0 x86_64
+2015-07-28T13:57:37.355606000 0.371571s notice: Loading data from directory /Users/slee/Documents/temp/bigvocab/rethinkdb_data
+2015-07-28T13:57:37.412935000 0.428900s info: Automatically using cache size of 100 MB
+2015-07-28T13:57:37.412943000 0.428908s warn: Cache size is larger than available memory.
+2015-07-28T13:57:37.412947000 0.428912s warn: Cache size is very low and may impact performance.
+2015-07-28T13:57:37.415522000 0.431487s notice: Listening for intracluster connections on port 29015
+2015-07-28T13:57:37.421239000 0.437205s notice: Listening for client driver connections on port 28015
+2015-07-28T13:57:37.421470000 0.437435s notice: Listening for administrative HTTP connections on port 8080
+2015-07-28T13:57:37.421478000 0.437444s notice: Listening on addresses: 127.0.0.1, ::1
+2015-07-28T13:57:37.421480000 0.437445s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2015-07-28T13:57:37.421484000 0.437449s notice: Server ready, "Seungchans_MacBook_Pro_local_a10" 04e1087d-9bff-466f-a398-7d1c1717064e
+2015-07-28T13:59:01.085879000 84.099257s notice: Server got SIGINT from pid 458, uid 503; shutting down...
+2015-07-28T13:59:01.086392000 84.099771s notice: Shutting down client connections...
+2015-07-28T13:59:01.087640000 84.101018s notice: All client connections closed.
+2015-07-28T13:59:01.087657000 84.101035s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2015-07-28T13:59:01.112537000 84.125916s notice: Storage engine shut down.
