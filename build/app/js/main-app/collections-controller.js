@@ -30,29 +30,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     function getAllCollections() {
       CollectionsService.getAll(user.id).then(function (res) {
-        var tempCollections = angular.fromJson(res).data;
-
-        vm.collectionList = tempCollections.map(function (collection) {
-          collection.dueWordCount = getDueWordCount(collection.id);
-          console.log(collection.dueWordCount);
-          return collection;
-        });
-
-        console.log(vm.collectionList);
+        vm.collectionList = angular.fromJson(res).data;
       })['catch'](function (err) {
         console.log('Something went wrong: ', err);
       });
     }
-
-    function getDueWordCount(collectionId) {
-      console.log(collectionId);
-      WordsService.getDueCount(collectionId).then(function (dueWordCount) {
-        return angular.fromJson(dueWordCount).data;
-      })['catch'](function (err) {
-        console.log('Something went wrong: ', err);
-      });
-    }
-    console.log(getDueWordCount('095c1429-f5d9-49ff-996f-0d5368395658'));
 
     function resetForm() {
       vm.addCollectionForm.collectionTitle.$touched = false;

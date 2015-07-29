@@ -8,7 +8,7 @@
 		<div class="clearfix bg-white rounded p1 mb2 ng-animation-fadeInUp" ng-repeat="collection in collections.collectionList | orderBy: 'id'">
 
 			<div class="sm-col sm-col-7">
-				<div class="btn btn-md bold m1" style="cursor: text">{{ collection.title }} <span class="gray">(due: {{ collections.dueCount }}, new: {{ collections.newCount }} )</span></div>
+				<div class="btn btn-md bold m1" style="cursor: text">{{ collection.title }} <span class="gray">(due: {{ collection.dueWordCount }}, new: {{ collection.newWordCount }} )</span></div>
 			</div>
 
 			<div class="sm-col sm-col-5 flex flex-wrap">

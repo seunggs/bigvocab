@@ -33,16 +33,6 @@
       return $http.get('/api/words/' + collectionId + '/?filter=dueToday');
     };
 
-    // getCount :: String -> Integer
-    WordsServiceBase.getCount = function (collectionId) {
-      return $http.get('/api/words/count/' + collectionId);
-    };
-
-    // getDueCount :: String -> Integer
-    WordsServiceBase.getDueCount = function (collectionId) {
-      return $http.get('/api/words/count/' + collectionId + '/?filter=dueToday');
-    };
-
     WordsServiceBase.update = function (wordId, wordUpdate) {
       return $http.put('/api/words/' + wordId, wordUpdate);
     };

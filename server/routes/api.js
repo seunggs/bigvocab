@@ -62,8 +62,41 @@ router.route('/collections/:userId')
 
 		r.table('collections')
 			.getAll(userId, { index: 'userId' })
+			.map(function (collection) {
+				return collection.merge({
+					totalWordCount: r.table('words')
+						.getAll(collection('id'), { index: 'collectionId' })
+						.count()
+				});
+			})
+			.map(function (collection) {
+				return collection.merge({
+					dueWordCount: r.table('words')
+						.getAll(collection('id'), { index: 'collectionId' })
+						.filter(function (word) {
+							return word('nextReviewEpochTime').lt(r.now().toEpochTime())
+						})
+						.count()
+				});
+			})
+			.map(function (collection) {
+				return collection.merge({
+					newWordCount: r.table('words')
+						.getAll(collection('id'), { index: 'collectionId' })
+						.filter({
+							reviewRes: {
+								again: 0,
+								hard: 0,
+								good: 0,
+								easy: 0
+							}
+						})
+						.count()
+				});
+			})
 			.run()
 			.then(function (collections) {
+				console.log(collections);
 				res.json(collections);
 			})
 			.catch(function (err) {
@@ -96,26 +129,8 @@ router.route('/collections/:colletionId')
 
 		r.table('collections')
 			.get(collectionId)
-			.merge({
-				totalWordCount: r.table('words')
-					.getAll(collectionId, { index: 'collectionId' })
-					.count()
-			})
-			.merge({
-				dueWordCount: r.table('words')
-					.getAll(collectionId, { index: 'collectionId' })
-					.filter(r.row('nextReviewEpochTime').lt(r.now().toEpochTime()))
-					.count()
-			})
-			.merge({
-				newWordCount: r.table('words')
-					.getAll(collectionId, { index: 'collectionId' })
-					.filter(r.row('reviewRes').eq({ again: 0, hard: 0, good: 0, easy: 0 }))
-					.count()
-			})
 			.run()
 			.then(function (collection) {
-				console.log(collection);
 				res.json(collection);
 			})
 			.catch(function (err) {
