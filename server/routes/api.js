@@ -98,8 +98,20 @@ router.route('/collections/:colletionId')
 			.get(collectionId)
 			.merge({
 				totalWordCount: r.table('words')
-													.getAll(collectionId, { index: 'collectionId' })
-													.count()
+					.getAll(collectionId, { index: 'collectionId' })
+					.count()
+			})
+			.merge({
+				dueWordCount: r.table('words')
+					.getAll(collectionId, { index: 'collectionId' })
+					.filter(r.row('nextReviewEpochTime').lt(r.now().toEpochTime()))
+					.count()
+			})
+			.merge({
+				newWordCount: r.table('words')
+					.getAll(collectionId, { index: 'collectionId' })
+					.filter(r.row('reviewRes').eq({ again: 0, hard: 0, good: 0, easy: 0 }))
+					.count()
 			})
 			.run()
 			.then(function (collection) {
