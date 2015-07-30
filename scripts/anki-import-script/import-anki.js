@@ -3,7 +3,7 @@
 var fs = require('fs');
 var R = require('ramda');
 
-var log = function (x) { console.log(x); return x; };
+// var log = function (x) { console.log(x); return x; };
 
 fs.readFile('./anki-books-2015.txt', function (err, data) {
 	
