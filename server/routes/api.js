@@ -3,6 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var r = require('../config/rdbdash');
+var moment = require('moment');
 var R = require('ramda');
 
 // Users routes ///////////////////////////////////////////////////////
@@ -97,7 +98,6 @@ router.route('/collections/:userId')
 			})
 			.run()
 			.then(function (collections) {
-				console.log(collections);
 				res.json(collections);
 			})
 			.catch(function (err) {
@@ -237,8 +237,6 @@ router.route('/words/:wordId')
 		var wordId = req.params.wordId;
 		var wordUpdate = req.body;
 
-		console.log(wordUpdate);
-
 		r.table('words')
 			.get(wordId)
 			.update(wordUpdate)
@@ -272,19 +270,22 @@ router.route('/import/anki/:userId')
 
 	// POST :: {collectionId, [files]} -> Params -> {dbRes}
 	.post(function (req, res) {
-		// TODO: first create collection in collections table; then get collectionId and create words in words table
+
 		var collection = {
 			userId: req.params.userId,
-			collectionTitle: req.body.collectionTitle
+			title: req.body.collectionTitle
 		};
 
 		var files = req.body.files;
 
-		// createWordPairs :: String -> [[a, a]]
-		var createWordPairs = R.compose(R.map(R.split('\t')), R.split('\n'));
+		// convert txt file content to word pairs
+		// createWordPairs :: {a} -> [[String, String]]
+		var createWordPairs = R.compose(R.map(R.split('\t')), R.split('\n'), R.prop('content'));
 
-		// convert txt to word pairs and merge all files
-		var mergedWordPairs = R.chain(createWordPairs, files);
+		// merge multiple word pair collections from multiple files
+		// mergeWordPairs :: [[[String, String]]] -> [[String, String]]
+		var mergeWordPairs = R.chain(createWordPairs);
+		var mergedWordPairs = mergeWordPairs(files);
 
 		r.table('collections')
 			.insert(collection)
@@ -293,33 +294,36 @@ router.route('/import/anki/:userId')
 
 				var words = mergedWordPairs.map(function (wordPair) {
 					
-	        var lastReviewed = moment();
-	        var nextReview = moment().add(1, 'minutes');
-	        var nextReviewEpochTime = nextReview.unix();
-
+		      var lastReviewed = moment();
+		      var lastReviewedEpochTime = lastReviewed.unix();
+		      var nextReview = moment().add(1, 'minutes');
+		      var nextReviewEpochTime = nextReview.unix();
+					
 					var word = {
 						word: wordPair[0],
 						definition: wordPair[1],
 						collectionId: dbRes.generated_keys[0],
-	          lastReviewed: lastReviewed,
-	          interval: 1,
-	          nextReview: nextReview,
-	          nextReviewEpochTime: nextReviewEpochTime,
-	          phase: 'learning',
-	          reviewRes: {
-	            again: 0,
-	            hard: 0,
-	            good: 0,
-	            easy: 0
-	          },
-	          easeFactor: 2.5
+						lastReviewed: lastReviewedEpochTime,
+						interval: 1,
+						nextReviewEpochTime: nextReviewEpochTime,
+						phase: 'learning',
+						reviewRes: {
+							again: 0,
+							hard: 0,
+							good: 0,
+							easy: 0
+						},
+						easeFactor: 2.5
 					};
 
 					return word;
 
+				})
+				.filter(function (wordPair) {
+					return wordPair.word !== '';
 				});
 
-				console.log(words);
+				console.log(words[0]);
 
 				r.table('words')
 					.insert(words)

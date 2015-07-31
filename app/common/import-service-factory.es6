@@ -12,12 +12,12 @@
     .module('common')
     .factory('ImportService', ImportService);
 
-  function ImportService() {
+  function ImportService($http) {
     let ImportServiceBase = {};
 
     // anki :: String -> { collectionTitle, [files] } -> {dbRes}
     ImportServiceBase.anki = (userId, data) => {
-      return $http.post('/import/anki/' + userId, data);
+      return $http.post('/api/import/anki/' + userId, data);
     };
 
     return ImportServiceBase;

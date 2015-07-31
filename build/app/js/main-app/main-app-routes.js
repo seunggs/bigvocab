@@ -55,6 +55,11 @@
       templateUrl: 'main-app/logout.tpl.html',
       controller: 'LogoutCtrl',
       controllerAs: 'logout'
+    }).state('mainApp.import', {
+      url: '/import',
+      templateUrl: 'main-app/import.tpl.html',
+      controller: 'ImportCtrl',
+      controllerAs: 'import'
     });
   }
 })();

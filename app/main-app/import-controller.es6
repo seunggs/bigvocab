@@ -2,7 +2,7 @@
   'use strict';
 
   class ImportCtrl {
-    constructor(ImportService) {
+    constructor(ImportService, user, $scope, R) {
 
       let vm = this;
       
@@ -23,8 +23,8 @@
       function importTextfile (userId, data) {
         ImportService.anki(userId, data)
           .then(res => {
-            var wordPairs = angular.fromJson(res).data;
-            console.log(wordPairs);
+            var dbRes = angular.fromJson(res).data;
+            console.log(dbRes);
           })
           .catch(err => {
             console.log('Something went wrong: ', err);
@@ -34,10 +34,12 @@
       // main /////////////////////////////////////////////////////////////////////////////
 
       vm.importTextfile = (isValid, formData) => {
+
         if (!isValid) { return; }
 
         console.log(formData);
-        importTextfile(userId, formData);
+        importTextfile(user.id, formData);
+
       };
 
     }

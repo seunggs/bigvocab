@@ -27,6 +27,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       link: 'mainApp.test-words'
     }, {
       id: 3,
+      title: 'Import',
+      icon: 'ti-import',
+      link: 'mainApp.import'
+    }, {
+      id: 4,
       title: 'Log Out',
       icon: 'ti-arrow-left',
       link: 'mainApp.logout'

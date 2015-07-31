@@ -23,7 +23,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     };
     var collectionId = $stateParams.collectionId;
 
-    // helper functions //////////////////////////////////////////////////////////////////
+    // helper functions /////////////////////////////////////////////////////////////////
 
     function addWord(word) {
       vm.definitions = []; // reset definition list
@@ -47,7 +47,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       vm.formData = {};
     };
 
-    // main ////////////////////////////////////////////////////////////////////////////
+    // main /////////////////////////////////////////////////////////////////////////////
 
     vm.getDefinition = function (word) {
       if (word !== undefined) {
@@ -63,6 +63,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       var lastReviewed = $moment();
+      var lastReviewedEpochTime = lastReviewed.unix();
       var nextReview = $moment().add(1, 'minutes');
       var nextReviewEpochTime = nextReview.unix();
 
@@ -70,9 +71,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         word: formData.word,
         definition: formData.definition,
         collectionId: collectionId,
-        lastReviewed: lastReviewed,
+        lastReviewedEpochTime: lastReviewedEpochTime,
         interval: 1,
-        nextReview: nextReview,
         nextReviewEpochTime: nextReviewEpochTime,
         phase: 'learning',
         reviewRes: {

@@ -61,6 +61,7 @@
         if (!isValid) { return; }
         
         let lastReviewed = $moment();
+        let lastReviewedEpochTime = lastReviewed.unix();
         let nextReview = $moment().add(1, 'minutes');
         let nextReviewEpochTime = nextReview.unix();
 
@@ -68,9 +69,8 @@
           word: formData.word,
           definition: formData.definition,
           collectionId: collectionId,
-          lastReviewed: lastReviewed,
+          lastReviewedEpochTime: lastReviewedEpochTime,
           interval: 1,
-          nextReview: nextReview,
           nextReviewEpochTime: nextReviewEpochTime,
           phase: 'learning',
           reviewRes: {

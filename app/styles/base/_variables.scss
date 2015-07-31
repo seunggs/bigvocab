@@ -1,5 +1,6 @@
 $aqua: #7fdbff !default;
 $blue: #00A2DD !default;
+$dark-blue: #0088B9 !default;
 $navy: #001f3f !default;
 $teal: #39cccc !default;
 $light-green: #D3F0D7 !default;
@@ -87,3 +88,7 @@ $field-focus-color: $blue !default;
 $label-font-size: 0.9rem !default;
 $label-font-color: $gray !default;
 $label-font-weight: 500 !default;
+$file-input-padding-y: .6rem !default;
+$file-input-padding-x: 0.9rem !default;
+$file-input-color: $blue;
+$file-input-hover-color: $dark-blue;
