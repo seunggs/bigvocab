@@ -20,6 +20,7 @@
     // Learning phase: 1min / 10min
     // Review phase default: 4 days
     // I(n) = I(n-1) * EF
+    // Minimum EF: 1.3
 
     // Review response:
     // Again: reset phase to learning + -20% to EF
@@ -33,13 +34,16 @@
     Sm2ServiceBase.calcEaseFactor = (easeFactor, choice) => {
       let oldEaseFactor = easeFactor;
       let newEaseFactor;
+      let minEaseFactor = 1.3;
 
       switch (choice) {
         case 'again':
           newEaseFactor = oldEaseFactor - 0.2;
+          newEaseFactor = newEaseFactor < minEaseFactor ? minEaseFactor : newEaseFactor;
           break;
         case 'hard':
           newEaseFactor = oldEaseFactor - 0.15;
+          newEaseFactor = newEaseFactor < minEaseFactor ? minEaseFactor : newEaseFactor;
           break;
         case 'good':
           newEaseFactor = oldEaseFactor;
