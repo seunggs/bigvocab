@@ -303,6 +303,8 @@ router.route('/import/anki/:userId')
 
 		      var lastReviewed = moment();
 		      var lastReviewedEpochTime = lastReviewed.unix();
+
+		      // start 100 words per day
 		      var nextReview = moment().add(1, 'minutes').add(Math.floor(counter / wordsPerDay), 'days');
 		      var nextReviewEpochTime = nextReview.unix();
 
