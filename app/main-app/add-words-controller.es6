@@ -22,20 +22,21 @@
       // helper functions /////////////////////////////////////////////////////////////////
 
       function addWord (word) {
+        vm.btnState.loading = true;
+
         vm.definitions = []; // reset definition list
 
         WordsService.create(word)
           .then(dbRes => {
+            vm.btnState.loading = false;
             vm.btnState.success = true;
             $timeout(() => {
               vm.btnState.success = false;
             }, 1500);
           })
           .catch(err => {
-            console.log('Something went wrong: ', err);
-          })
-          .finally(() => {
             vm.btnState.loading = false;
+            console.log('Something went wrong: ', err);
           });
       };
 

@@ -49,6 +49,7 @@
 
         CollectionsService.create(collection)
           .then(dbRes => {
+            vm.btnState.loading = false;
             vm.btnState.success = true;
             getAllCollections();
 
@@ -57,10 +58,8 @@
             }, 1500);
           })
           .catch(err => {
-            console.log('Something went wrong: ', err);
-          })
-          .finally(() => {
             vm.btnState.loading = false;
+            console.log('Something went wrong: ', err);
           });
       };
 

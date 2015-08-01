@@ -10,6 +10,7 @@
 
       let collectionId = $stateParams.collectionId;
       vm.wordCounter = 0; // keeps track of which word user is reviewing
+      vm.showAnswer = false;
       
       // init //////////////////////////////////////////////////////////////////////////////
 
@@ -25,11 +26,17 @@
 
       // main //////////////////////////////////////////////////////////////////////////////
 
+      vm.toggleAnswer = () => {
+        vm.showAnswer = !vm.showAnswer;
+      };
+
       vm.submitRes = (word, choice) => {
 
         let newEaseFactor = Sm2Service.calcEaseFactor(word.easeFactor, choice);
         let newPhase = Sm2Service.calcPhase(word.phase, word.interval, choice);
         let newInterval = Sm2Service.calcInterval(word.phase, word.interval, word.easeFactor, choice);
+        let lastReviewed = $moment();
+        let lastReviewedEpochTime = lastReviewed.unix();
         let newNextReview = Sm2Service.calcNextReview(newInterval);
         let newNextReviewEpochTime = newNextReview.unix();
 
@@ -38,11 +45,10 @@
 
         let wordUpdate = {
           reviewRes: newReviewRes,
-          lastReviewed: $moment(),
+          lastReviewedEpochTime: lastReviewedEpochTime,
           easeFactor: newEaseFactor,
           phase: newPhase,
           interval: newInterval,
-          nextReview: newNextReview,
           nextReviewEpochTime: newNextReviewEpochTime
         };
 
@@ -50,9 +56,11 @@
           .then((dbRes) => {
             vm.wordCounter++;
             vm.currentWord = vm.words[vm.wordCounter];
+            vm.toggleAnswer();
           })
           .catch(err => {
             console.log('Something went wrong: ', err);
+            vm.toggleAnswer();
           });
       
       };
