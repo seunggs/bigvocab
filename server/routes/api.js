@@ -287,18 +287,25 @@ router.route('/import/anki/:userId')
 		var mergeWordPairs = R.chain(createWordPairs);
 		var mergedWordPairs = mergeWordPairs(files);
 
+		// set up the import to start 100 words per day
+		var wordsPerDay = 100; 
+
 		r.table('collections')
 			.insert(collection)
 			.run()
 			.then(function (dbRes) {
 
+				var counter = 0;
+
 				var words = mergedWordPairs.map(function (wordPair) {
-					
+
+					counter++
+
 		      var lastReviewed = moment();
 		      var lastReviewedEpochTime = lastReviewed.unix();
-		      var nextReview = moment().add(1, 'minutes');
+		      var nextReview = moment().add(1, 'minutes').add(Math.floor(counter / wordsPerDay), 'days');
 		      var nextReviewEpochTime = nextReview.unix();
-					
+
 					var word = {
 						word: wordPair[0],
 						definition: wordPair[1],
@@ -322,8 +329,6 @@ router.route('/import/anki/:userId')
 				.filter(function (wordPair) {
 					return wordPair.word !== '';
 				});
-
-				console.log(words[0]);
 
 				r.table('words')
 					.insert(words)
