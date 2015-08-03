@@ -54,6 +54,9 @@
           DictionaryService.getDefinition(ConfigService.mashapeKey, word)
             .then(res => {
               vm.definitions = res.data.definitions;
+            })
+            .catch(err => {
+              console.log('Something went wrong; ', err);
             });
         }
       };

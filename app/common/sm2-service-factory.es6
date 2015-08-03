@@ -15,19 +15,21 @@
   function Sm2Service($moment) {
     let Sm2ServiceBase = {};
 
-    // SM2 (Super Memo 2) Algorithm
+    /*    
+      SM2 (Super Memo 2) Algorithm
 
-    // Learning phase: 1min / 10min
-    // Review phase default: 4 days
-    // I(n) = I(n-1) * EF
-    // Minimum EF: 1.3
+      Learning phase: 1min / 10min
+      Review phase default: 4 days
+      I(n) = I(n-1) * EF
+      Minimum EF: 1.3
 
-    // Review response:
-    // Again: reset phase to learning + -20% to EF
-    // Hard: -15% to EF
-    // Good: do nothing
-    // Easy: +15% to EF
-
+      Review response:
+      Again: reset phase to learning + -20% to EF
+      Hard: -15% to EF
+      Good: do nothing
+      Easy: +15% to EF
+    */
+   
     // main //////////////////////////////////////////////////////////////////////////////
 
     // calcEaseFactor :: Float -> String -> Float

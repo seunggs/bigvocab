@@ -13,18 +13,19 @@
       'ngMessages',
       'ui.router',
       '720kb.tooltips',
+      'ngAudio',
       'angular-momentjs',
       'home',
       'auth',
       'mainApp',
-      'ramda',
+      // 'ramda',
       'common'
     ]);
 
   // ramda module
-  angular.module('ramda', []);
-  angular.module('ramda').factory('R', function ($window) {
-      return $window.R;
-  });
+  // angular.module('ramda', []);
+  // angular.module('ramda').factory('R', function ($window) {
+  //     return $window.R;
+  // });
 
 }());
