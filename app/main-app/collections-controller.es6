@@ -2,7 +2,7 @@
   'use strict';
 
   class CollectionsCtrl {
-    constructor(CollectionsService, WordsService, $timeout, user) {
+    constructor(CollectionsService, WordsService, $timeout, user, $q) {
 
       let vm = this;
 
@@ -17,21 +17,72 @@
         success: false
       };
       vm.user = user;
+      vm.checks = {};
+      vm.showEdit = false;
+      vm.notification = {
+        success: false,
+        error: false
+      };
+      vm.msg = {
+        success: 'Success!',
+        error: 'Something went wrong - please try again.',
+        mergeError: 'Please select two or more collections.',
+        noneSelectedError: 'Please select one or more collections.'
+      };
+      vm.showModal = false;
 
       // init /////////////////////////////////////////////////////////////////////////////
       
-      getAllCollections();
+      getAllCollections(user);
 
       // helper functions //////////////////////////////////////////////////////////////////
       
-      function getAllCollections () {
+      function getAllCollections (user) {
         CollectionsService.getAll(user.id)
           .then(res => {
             vm.collectionList = angular.fromJson(res).data;
+
+            // intiialize checks to all false
+            vm.checks = initChecks(vm.collectionList);
           })
           .catch(err => {
             console.log('Something went wrong: ', err);
           });
+      }
+
+      function mergeCollections (collectionIds) {
+        let mainCollectionId = collectionIds[0];
+        let remainingCollectionIds = collectionIds.filter(collectionId => {
+          return collectionId !== mainCollectionId;
+        });
+
+        let promises = [];
+
+        remainingCollectionIds.forEach(collectionId => {
+          promises.push(CollectionsService.merge(collectionId, { newCollectionId: mainCollectionId }));
+        });
+
+        return $q.all(promises);
+      }
+
+      function deleteCollections (collectionIds) {
+        let promises = [];
+
+        collectionIds.forEach(collectionId => {
+          promises.push(CollectionsService.delete(collectionId));
+        });
+
+        return $q.all(promises);
+      }
+
+      function initChecks(collections) {
+        let checks = {};
+
+        collections.forEach(collection => {
+          checks[collection.id] = false;
+        });
+
+        return checks;
       }
 
       function resetForm () {
@@ -39,19 +90,34 @@
         vm.addCollectionForm.$submitted = false;
         vm.formData = {};
       }
-      
+
       // main /////////////////////////////////////////////////////////////////////////////
       
+      vm.toggleEdit = () => {
+        vm.showEdit = !vm.showEdit;
+      };
+
+      vm.toggleSuccessNotification = (successMessage) => {
+        vm.notification.success = true;
+        vm.notificationSuccessMsg = successMessage;
+      };
+
+      vm.toggleErrorNotification = (errorMessage) => {
+        vm.notification.error = true;
+        vm.notificationErrorMsg = errorMessage;
+      };
+
       vm.createCollection = (isValid, collection) => {
         if (!isValid) { return; }
 
         vm.btnState.loading = true;
 
         CollectionsService.create(collection)
-          .then(dbRes => {
+          .then(() => {
             vm.btnState.loading = false;
             vm.btnState.success = true;
-            getAllCollections();
+            getAllCollections(user);
+            resetForm();
 
             $timeout(() => {
               vm.btnState.success = false;
@@ -61,6 +127,70 @@
             vm.btnState.loading = false;
             console.log('Something went wrong: ', err);
           });
+      };
+
+      vm.mergeCollections = (collections, checks) => {
+
+        let mergeList = [];
+
+        collections.forEach((collection) => {
+          if (checks[collection.id] === true) {
+            mergeList.push(collection.id);
+          }
+        });
+
+        if (mergeList.length >= 2) {
+          mergeCollections(mergeList)
+            .then(() => {
+              vm.toggleSuccessNotification(vm.msg.success);
+              getAllCollections(user);
+            })
+            .catch(err => {
+              vm.toggleErrorNotification(vm.msg.error);
+              console.log('Something went wrong: ', err);
+            });
+        } else {
+          vm.toggleErrorNotification(vm.msg.mergeError);
+        }
+
+      };
+
+      vm.deleteCollections = (collections, checks) => {
+
+        let deleteList = [];
+
+        collections.forEach((collection) => {
+          if (checks[collection.id] === true) {
+            deleteList.push(collection.id);
+          }
+        });
+
+        if (deleteList.length >= 1) {
+          deleteCollections(deleteList)
+            .then(() => {
+              vm.toggleSuccessNotification(vm.msg.success);
+              getAllCollections(user);
+            })
+            .catch(err => {
+              vm.toggleErrorNotification(vm.msg.error);
+              console.log('Something went wrong: ', err);
+            });
+        } else {
+          vm.toggleErrorNotification(vm.msg.noneSelectedError);
+        }
+
+      };
+
+      vm.showConfirmDeleteModal = () => {
+        vm.showModal = true;
+      };
+
+      vm.confirmModal = () => {
+        vm.deleteCollections(vm.collectionList, vm.checks);
+      };
+
+      vm.closeModal = () => {
+        vm.showModal = false;
       };
 
     }

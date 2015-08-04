@@ -15,7 +15,7 @@
 .ng-animation-fadeInUp.ng-enter,
 .ng-animation-fadeInUp.ng-move { 
   opacity: 0;
-  transform: translate3d(0, 100%, 0);
+  transform: translate3d(0, 50%, 0);
 }
 
 .ng-animation-fadeInUp.ng-enter.ng-enter-active,
@@ -31,5 +31,5 @@
 
 .ng-animation-fadeInUp.ng-leave.ng-leave-active { 
   opacity: 0;
-  transform: translate3d(0, 100%, 0);
+  transform: translate3d(0, 50%, 0);
 }

@@ -34,6 +34,7 @@
     };
 
     WordsServiceBase.update = function (wordId, wordUpdate) {
+      console.log(wordId);
       return $http.put('/api/words/' + wordId, wordUpdate);
     };
 

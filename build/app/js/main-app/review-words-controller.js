@@ -19,11 +19,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     // init //////////////////////////////////////////////////////////////////////////////
 
     WordsService.getDue(collectionId).then(function (res) {
-
       vm.words = angular.fromJson(res).data;
       vm.totalWordsCount = vm.words.length;
       vm.currentWord = vm.words[vm.wordCounter];
-      getPronunciation(vm.currentWord.word);
+      vm.pronunciation = vm.currentWord !== undefined ? getPronunciation(vm.currentWord) : null;
     })['catch'](function (err) {
       console.log('Something went wrong: ', err);
     });
@@ -31,15 +30,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     // helper functions /////////////////////////////////////////////////////////////////
 
     function getPronunciation(word) {
-      if (word !== undefined) {
-        DictionaryService.getPronunciation(ConfigService.forvoKey, word).then(function (res) {
-          console.log(res);
-          var pronunciationData = angular.fromJson(res).data;
-          vm.pronunciation = pronunciationData.attributes.total !== 0 ? ngAudio.load(pronunciationData.items[0].pathmp3) : null;
-        })['catch'](function (err) {
-          console.log('Something went wrong; ', err);
-        });
+      if (word === undefined || word.pronunciationPath === undefined || word.pronunciationPath === null) {
+        return null;
       }
+
+      return ngAudio.load(word.pronunciationPath);
     }
 
     // main //////////////////////////////////////////////////////////////////////////////
@@ -74,11 +69,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         nextReviewEpochTime: newNextReviewEpochTime
       };
 
-      WordsService.update(word.id, wordUpdate).then(function () {
+      console.log('word id: ', word.id);
+
+      WordsService.update(word.id, wordUpdate).then(function (dbRes) {
         vm.wordCounter++;
         vm.currentWord = vm.words[vm.wordCounter];
+        console.log('vm.currentWord: ', vm.currentWord);
+        vm.pronunciation = getPronunciation(vm.currentWord);
         vm.toggleAnswer();
-        getPronunciation(vm.currentWord.word);
       })['catch'](function (err) {
         console.log('Something went wrong: ', err);
         vm.toggleAnswer();

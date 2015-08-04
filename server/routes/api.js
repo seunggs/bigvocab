@@ -76,7 +76,7 @@ router.route('/collections/:userId')
 					dueWordCount: r.table('words')
 						.getAll(collection('id'), { index: 'collectionId' })
 						.filter(function (word) {
-							return word('nextReviewEpochTime').lt(r.now().toEpochTime())
+							return word('nextReviewEpochTime').lt(r.now().toEpochTime());
 						})
 						.count()
 				});
@@ -122,7 +122,7 @@ router.route('/collections')
 			});
 	});
 
-router.route('/collections/:colletionId')
+router.route('/collections/:collectionId')
 
 	// GET :: Params -> {collection}
 	.get(function (req, res) {
@@ -165,6 +165,14 @@ router.route('/collections/:colletionId')
 			.delete()
 			.run()
 			.then(function (dbRes) {
+				console.log(dbRes);
+				return r.table('words')
+								.getAll(collectionId, { index: 'collectionId' })
+								.delete()
+								.run();
+			})
+			.then(function (dbRes) {
+				console.log(dbRes);
 				res.json(dbRes);
 			})
 			.catch(function (err) {
@@ -172,6 +180,35 @@ router.route('/collections/:colletionId')
 			});
 	});
 
+router.route('/collections/merge/:collectionId')
+
+	// PUT :: Params -> String -> {dbRes}
+	.put(function (req, res) {
+
+		var collectionId = req.params.collectionId;
+		var newCollectionId = req.body.newCollectionId;
+
+		console.log('collectionId: ', collectionId);
+		console.log('newCollectionId: ', newCollectionId);
+
+		r.table('words')
+			.getAll(collectionId, { index: 'collectionId' })
+			.update({ collectionId: newCollectionId })
+			.run()
+			.then(function () {
+				return r.table('collections')
+								.get(collectionId)
+								.delete()
+								.run();
+			})
+			.then(function (dbRes) {
+				res.json(dbRes);
+			})
+			.catch(function (err) {
+				res.send(err);
+			});
+
+	});
 // Words routes ///////////////////////////////////////////////////////
 router.route('/words/:collectionId')
 
@@ -237,6 +274,9 @@ router.route('/words/:wordId')
 		var wordId = req.params.wordId;
 		var wordUpdate = req.body;
 
+		console.log('wordId: ', wordId);
+		console.log('wordUpdate: ', wordUpdate);
+
 		r.table('words')
 			.get(wordId)
 			.update(wordUpdate)
@@ -264,6 +304,7 @@ router.route('/words/:wordId')
 				res.send(err);
 			});
 	});
+
 
 // Import routes //////////////////////////////////////////////////////
 router.route('/import/anki/:userId')
@@ -297,50 +338,51 @@ router.route('/import/anki/:userId')
 
 				var counter = 0;
 
-				var words = mergedWordPairs.map(function (wordPair) {
+				var words = mergedWordPairs
+					.filter(function (wordPair) {
+						return wordPair[0] !== '';
+					})
+					.map(function (wordPair) {
 
-					counter++
+						counter++;
 
-		      var lastReviewed = moment();
-		      var lastReviewedEpochTime = lastReviewed.unix();
+			      var lastReviewed = moment();
+			      var lastReviewedEpochTime = lastReviewed.unix();
 
-		      // start 100 words per day
-		      var nextReview = moment().add(1, 'minutes').add(Math.floor(counter / wordsPerDay), 'days');
-		      var nextReviewEpochTime = nextReview.unix();
+			      // start 100 words per day
+			      var nextReview = moment().add(1, 'minutes').add(Math.floor(counter / wordsPerDay), 'days');
+			      var nextReviewEpochTime = nextReview.unix();
 
-					var word = {
-						word: wordPair[0],
-						definition: wordPair[1],
-						collectionId: dbRes.generated_keys[0],
-						lastReviewed: lastReviewedEpochTime,
-						interval: 1,
-						nextReviewEpochTime: nextReviewEpochTime,
-						phase: 'learning',
-						reviewRes: {
-							again: 0,
-							hard: 0,
-							good: 0,
-							easy: 0
-						},
-						easeFactor: 2.5
-					};
+						var word = {
+							word: wordPair[0],
+							definition: wordPair[1],
+							collectionId: dbRes.generated_keys[0],
+							lastReviewed: lastReviewedEpochTime,
+							interval: 1,
+							nextReviewEpochTime: nextReviewEpochTime,
+							phase: 'learning',
+							reviewRes: {
+								again: 0,
+								hard: 0,
+								good: 0,
+								easy: 0
+							},
+							easeFactor: 2.5
+						};
 
-					return word;
+						return word;
 
-				})
-				.filter(function (wordPair) {
-					return wordPair.word !== '';
-				});
+					});
 
 				r.table('words')
 					.insert(words)
 					.run()
-					.then(function (dbRes) {
+					.then(function () {
 						res.json(dbRes);
 					})
 					.catch(function (err) {
 						res.send(err);
-					})
+					});
 
 			})
 			.catch(function (err) {

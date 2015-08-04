@@ -27,7 +27,7 @@
         vm.definitions = []; // reset definition list
 
         WordsService.create(word)
-          .then(dbRes => {
+          .then(() => {
             vm.btnState.loading = false;
             vm.btnState.success = true;
             $timeout(() => {
@@ -38,14 +38,20 @@
             vm.btnState.loading = false;
             console.log('Something went wrong: ', err);
           });
-      };
+      }
+
+      function getPronunciation (forvoKey, word) {
+        if (word !== undefined) {
+          return DictionaryService.getPronunciation(forvoKey, word);
+        }
+      }
 
       function resetForm () {
         vm.addWordForm.word.$touched = false;
         vm.addWordForm.definition.$touched = false;
         vm.addWordForm.$submitted = false;
         vm.formData = {};
-      };
+      }
 
       // main /////////////////////////////////////////////////////////////////////////////
 
@@ -64,32 +70,43 @@
       vm.addWord = (isValid, formData) => {
         if (!isValid) { return; }
         
-        let lastReviewed = $moment();
-        let lastReviewedEpochTime = lastReviewed.unix();
-        let nextReview = $moment().add(1, 'minutes');
-        let nextReviewEpochTime = nextReview.unix();
+        getPronunciation(ConfigService.forvoKey, formData.word)
+          .then(res => {
+            let pronunciationData = angular.fromJson(res).data;
+            let pronunciationPath = pronunciationData.attributes.total !== 0 ? pronunciationData.items[0].pathmp3 : null;
 
-        let word = {
-          word: formData.word,
-          definition: formData.definition,
-          collectionId: collectionId,
-          lastReviewedEpochTime: lastReviewedEpochTime,
-          interval: 1,
-          nextReviewEpochTime: nextReviewEpochTime,
-          phase: 'learning',
-          reviewRes: {
-            again: 0,
-            hard: 0,
-            good: 0,
-            easy: 0
-          },
-          easeFactor: 2.5
-        };
+            let lastReviewed = $moment();
+            let lastReviewedEpochTime = lastReviewed.unix();
+            let nextReview = $moment().add(1, 'minutes');
+            let nextReviewEpochTime = nextReview.unix();
 
-        addWord(word);
-        
-        resetForm();
-      }
+            let word = {
+              word: formData.word,
+              definition: formData.definition,
+              collectionId: collectionId,
+              lastReviewedEpochTime: lastReviewedEpochTime,
+              interval: 1,
+              nextReviewEpochTime: nextReviewEpochTime,
+              phase: 'learning',
+              pronunciationPath: pronunciationPath,
+              reviewRes: {
+                again: 0,
+                hard: 0,
+                good: 0,
+                easy: 0
+              },
+              easeFactor: 2.5
+            };
+
+            addWord(word);
+            
+            resetForm();
+          })
+          .catch(err => {
+            console.log('Something went wrong; ', err);
+          });
+
+      };
 
       vm.copyDefinition = definition => {
         vm.formData.definition = definition;

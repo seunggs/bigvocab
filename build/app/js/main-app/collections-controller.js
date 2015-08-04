@@ -5,7 +5,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   'use strict';
 
-  var CollectionsCtrl = function CollectionsCtrl(CollectionsService, WordsService, $timeout, user) {
+  var CollectionsCtrl = function CollectionsCtrl(CollectionsService, WordsService, $timeout, user, $q) {
     _classCallCheck(this, CollectionsCtrl);
 
     var vm = this;
@@ -21,19 +21,70 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       success: false
     };
     vm.user = user;
+    vm.checks = {};
+    vm.showEdit = false;
+    vm.notification = {
+      success: false,
+      error: false
+    };
+    vm.msg = {
+      success: 'Success!',
+      error: 'Something went wrong - please try again.',
+      mergeError: 'Please select two or more collections.',
+      noneSelectedError: 'Please select one or more collections.'
+    };
+    vm.showModal = false;
 
     // init /////////////////////////////////////////////////////////////////////////////
 
-    getAllCollections();
+    getAllCollections(user);
 
     // helper functions //////////////////////////////////////////////////////////////////
 
-    function getAllCollections() {
+    function getAllCollections(user) {
       CollectionsService.getAll(user.id).then(function (res) {
         vm.collectionList = angular.fromJson(res).data;
+
+        // intiialize checks to all false
+        vm.checks = initChecks(vm.collectionList);
       })['catch'](function (err) {
         console.log('Something went wrong: ', err);
       });
+    }
+
+    function mergeCollections(collectionIds) {
+      var mainCollectionId = collectionIds[0];
+      var remainingCollectionIds = collectionIds.filter(function (collectionId) {
+        return collectionId !== mainCollectionId;
+      });
+
+      var promises = [];
+
+      remainingCollectionIds.forEach(function (collectionId) {
+        promises.push(CollectionsService.merge(collectionId, { newCollectionId: mainCollectionId }));
+      });
+
+      return $q.all(promises);
+    }
+
+    function deleteCollections(collectionIds) {
+      var promises = [];
+
+      collectionIds.forEach(function (collectionId) {
+        promises.push(CollectionsService['delete'](collectionId));
+      });
+
+      return $q.all(promises);
+    }
+
+    function initChecks(collections) {
+      var checks = {};
+
+      collections.forEach(function (collection) {
+        checks[collection.id] = false;
+      });
+
+      return checks;
     }
 
     function resetForm() {
@@ -44,6 +95,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     // main /////////////////////////////////////////////////////////////////////////////
 
+    vm.toggleEdit = function () {
+      vm.showEdit = !vm.showEdit;
+    };
+
+    vm.toggleSuccessNotification = function (successMessage) {
+      vm.notification.success = true;
+      vm.notificationSuccessMsg = successMessage;
+    };
+
+    vm.toggleErrorNotification = function (errorMessage) {
+      vm.notification.error = true;
+      vm.notificationErrorMsg = errorMessage;
+    };
+
     vm.createCollection = function (isValid, collection) {
       if (!isValid) {
         return;
@@ -51,10 +116,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       vm.btnState.loading = true;
 
-      CollectionsService.create(collection).then(function (dbRes) {
+      CollectionsService.create(collection).then(function () {
         vm.btnState.loading = false;
         vm.btnState.success = true;
-        getAllCollections();
+        getAllCollections(user);
+        resetForm();
 
         $timeout(function () {
           vm.btnState.success = false;
@@ -63,6 +129,64 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         vm.btnState.loading = false;
         console.log('Something went wrong: ', err);
       });
+    };
+
+    vm.mergeCollections = function (collections, checks) {
+
+      var mergeList = [];
+
+      collections.forEach(function (collection) {
+        if (checks[collection.id] === true) {
+          mergeList.push(collection.id);
+        }
+      });
+
+      if (mergeList.length >= 2) {
+        mergeCollections(mergeList).then(function () {
+          vm.toggleSuccessNotification(vm.msg.success);
+          getAllCollections(user);
+        })['catch'](function (err) {
+          vm.toggleErrorNotification(vm.msg.error);
+          console.log('Something went wrong: ', err);
+        });
+      } else {
+        vm.toggleErrorNotification(vm.msg.mergeError);
+      }
+    };
+
+    vm.deleteCollections = function (collections, checks) {
+
+      var deleteList = [];
+
+      collections.forEach(function (collection) {
+        if (checks[collection.id] === true) {
+          deleteList.push(collection.id);
+        }
+      });
+
+      if (deleteList.length >= 1) {
+        deleteCollections(deleteList).then(function () {
+          vm.toggleSuccessNotification(vm.msg.success);
+          getAllCollections(user);
+        })['catch'](function (err) {
+          vm.toggleErrorNotification(vm.msg.error);
+          console.log('Something went wrong: ', err);
+        });
+      } else {
+        vm.toggleErrorNotification(vm.msg.noneSelectedError);
+      }
+    };
+
+    vm.showConfirmDeleteModal = function () {
+      vm.showModal = true;
+    };
+
+    vm.confirmModal = function () {
+      vm.deleteCollections(vm.collectionList, vm.checks);
+    };
+
+    vm.closeModal = function () {
+      vm.showModal = false;
     };
   };
 

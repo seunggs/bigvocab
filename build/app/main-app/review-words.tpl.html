@@ -24,6 +24,7 @@
 		<!-- show answer button -->
 		<div ng-if="!reviewWords.showAnswer" class="sm-col-6 mx-auto px2">
 			<button ng-click="reviewWords.toggleAnswer()" 
+							ng-disabled="reviewWords.currentWord === undefined"
 							class="btn btn-primary mt2 col-12">Show Answer</button>
 		</div>
 		<!-- end: show answer button -->

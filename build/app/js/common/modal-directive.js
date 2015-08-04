@@ -12,7 +12,12 @@
    * @description
    *
    * @example
-     <modal modal-bg="bg-red" yesCb="confirm()" noCb="abort()">
+     <modal show="collections.showModal" 
+            modal-bg="bg-red" 
+            yes-cb="collections.confirmModal()" 
+            no-cb="collections.closeModal()" 
+            yes-message="Yes, delete" 
+            no-message="No, abort">
      </modal>
    *
    */
@@ -22,8 +27,9 @@
     return {
       restrict: 'EA',
       scope: {
-        yesCb: '&',
-        noCb: '&'
+        show: '=',
+        yesCb: '&?',
+        noCb: '&?'
       },
       templateUrl: 'common/modal-directive.tpl.html',
       replace: false,
@@ -32,8 +38,14 @@
         /*jshint unused:false */
         /*eslint "no-unused-vars": [2, {"args": "none"}]*/
         scope.modalBg = attrs.modalBg || '';
+        scope.yesMessage = attrs.yesMessage || 'Yes';
+        scope.noMessage = attrs.noMessage || 'No';
 
-        if (scope.yesCb === undefined && scope.noCb === undefined) {}
+        if (scope.yesCb !== undefined && scope.noCb !== undefined) {
+          scope.showButtons = true;
+        } else {
+          scope.showButtons = false;
+        }
       }
     };
   }

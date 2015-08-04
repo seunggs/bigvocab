@@ -2046,6 +2046,9 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: .08em; }
 
+.underline {
+  text-decoration: underline; }
+
 .border-lighten-1 {
   border-color: rgba(255, 255, 255, 0.0625); }
 
@@ -2432,8 +2435,8 @@ a:hover {
 
 .ng-animation-fadeInUp.ng-enter, .ng-animation-fadeInUp.ng-move {
   opacity: 0;
-  -webkit-transform: translate3d(0, 100%, 0);
-          transform: translate3d(0, 100%, 0); }
+  -webkit-transform: translate3d(0, 50%, 0);
+          transform: translate3d(0, 50%, 0); }
 
 .ng-animation-fadeInUp.ng-enter.ng-enter-active, .ng-animation-fadeInUp.ng-move.ng-move-active {
   opacity: 1;
@@ -2449,5 +2452,5 @@ a:hover {
 
 .ng-animation-fadeInUp.ng-leave.ng-leave-active {
   opacity: 0;
-  -webkit-transform: translate3d(0, 100%, 0);
-          transform: translate3d(0, 100%, 0); }
+  -webkit-transform: translate3d(0, 50%, 0);
+          transform: translate3d(0, 50%, 0); }

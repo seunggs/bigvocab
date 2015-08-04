@@ -5,7 +5,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   'use strict';
 
-  var ImportCtrl = function ImportCtrl(ImportService, user, $timeout, $window) {
+  var ImportCtrl = function ImportCtrl(ImportService, WordsService, DictionaryService, ConfigService, user, $timeout, $window, $q) {
     _classCallCheck(this, ImportCtrl);
 
     var vm = this;
@@ -28,11 +28,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       vm.btnState.loading = true;
 
-      ImportService.anki(userId, data).then(function (res) {
+      ImportService.anki(userId, data).then(function (dbRes) {
+        var dbResData = angular.fromJson(dbRes).data;
+        var collectionId = dbResData.generated_keys[0];
+
+        return WordsService.getAll(collectionId);
+      }).then(function (res) {
+        var words = angular.fromJson(res).data;
+        var promises = [];
+
+        words.forEach(function (word) {
+          promises.push(addPronunciation(ConfigService.forvoKey, word));
+        });
+
+        return $q.all(promises);
+      }).then(function () {
         vm.btnState.loading = false;
         vm.btnState.success = true;
-
-        var dbRes = angular.fromJson(res).data;
 
         $timeout(function () {
           vm.btnState.success = false;
@@ -42,6 +54,28 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         vm.btnState.loading = false;
         console.log('Something went wrong: ', err);
       });
+    }
+
+    function addPronunciation(forvoKey, word) {
+      var deferred = $q.defer();
+
+      DictionaryService.getPronunciation(forvoKey, word.word).then(function (res) {
+        var pronunciationData = angular.fromJson(res).data;
+        var pronunciationPath = pronunciationData.attributes.total !== 0 ? pronunciationData.items[0].pathmp3 : null;
+
+        var wordUpdate = {
+          pronunciationPath: pronunciationPath
+        };
+
+        return WordsService.update(word.id, wordUpdate);
+      }).then(function (dbRes) {
+        deferred.resolve(dbRes);
+      })['catch'](function (err) {
+        deferred.reject(err);
+        console.log('Something went wrong: ', err);
+      });
+
+      return deferred.promise;
     }
 
     // main /////////////////////////////////////////////////////////////////////////////

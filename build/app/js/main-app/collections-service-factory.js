@@ -28,6 +28,10 @@
       return $http.get('/api/collections/' + collectionId);
     };
 
+    CollectionsServiceBase.merge = function (collectionId, newCollectionId) {
+      return $http.put('/api/collections/merge/' + collectionId, newCollectionId);
+    };
+
     CollectionsServiceBase.update = function (collectionId, newCollection) {
       return $http.put('/api/collections/' + collectionId, newCollection);
     };

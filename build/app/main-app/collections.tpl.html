@@ -1,14 +1,27 @@
 <div class="clearfix">
 
-	<h1 class="mt1 center">My Collections</h1>
+	<h1 class="mt1 center">My Collections&nbsp;&nbsp;<a ng-click="collections.toggleEdit()" class="h5 gray underline">Edit</a></h1>
 
-	<div class="md-col-10 lg-col-8 mx-auto px2 mt3">
+	<!-- edit collection options -->
+	<div class="md-col-10 lg-col-8 mx-auto px2" ng-if="collections.showEdit">
+		<button class="btn btn-sm btn-yellow-green h6 mb2" ng-click="collections.mergeCollections(collections.collectionList, collections.checks)">Merge Selected</button>
+		<button class="btn btn-sm btn-red h6 ml1 mb2" ng-click="collections.showConfirmDeleteModal()">Delete Selected</button>
+	</div>
+	<!-- end: edit collection options -->
+
+	<div class="md-col-10 lg-col-8 mx-auto px2">
 
 		<!-- collection list -->
 		<div class="clearfix bg-white rounded p1 mb2 ng-animation-fadeInUp" ng-repeat="collection in collections.collectionList | orderBy: 'id'">
 
 			<div class="sm-col sm-col-7">
-				<div class="btn btn-md bold m1" style="cursor: text">{{ collection.title }} <span class="gray">(due: {{ collection.dueWordCount }}, new: {{ collection.newWordCount }} )</span></div>
+				
+				<!-- select collection -->
+				<input type="checkbox" style="margin-left: 8px; margin-right: -16px;" ng-model="collections.checks[collection.id]" ng-if="collections.showEdit">
+				<!-- end: select collection -->
+
+				<div class="btn btn-md bold ml1 mt1 mb1" style="cursor: text">{{ collection.title }} <span class="gray">(due: {{ collection.dueWordCount }}, new: {{ collection.newWordCount }} )</span></div>
+
 			</div>
 
 			<div class="sm-col sm-col-5 flex flex-wrap">
@@ -63,3 +76,19 @@
 	</div>
 
 </div>
+
+<!-- notification -->
+<notification color="green" show="collections.notification.success"><span class="ti-check mr1"></span>{{ collections.notificationSuccessMsg }}</notification>
+<notification color="red" show="collections.notification.error"><span class="ti-alert mr1"></span>{{ collections.notificationErrorMsg }}</notification>
+<!-- end: notification -->
+
+<!-- modal -->
+<modal show="collections.showModal" 
+	      modal-bg="bg-white" 
+	      yes-cb="collections.confirmModal()" 
+	      no-cb="collections.closeModal()" 
+	      yes-message="Yes, delete" 
+	      no-message="No, abort">
+	<div class="center h3">Are you sure you want to delete the selected collection(s)?</div>
+</modal>
+<!-- end: modal -->

@@ -30,3 +30,7 @@ logs
 pids
 *.pid
 *.seed
+
+# Keys
+keys.js
+oauth.js

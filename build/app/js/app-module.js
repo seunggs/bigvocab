@@ -15,7 +15,7 @@
   // ramda module
   // angular.module('ramda', []);
   // angular.module('ramda').factory('R', function ($window) {
-  //     return $window.R;
+  //   return $window.R;
   // });
 })();
 //# sourceMappingURL=app-module.js.map
