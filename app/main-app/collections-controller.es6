@@ -181,8 +181,20 @@
 
       };
 
-      vm.showConfirmDeleteModal = () => {
-        vm.showModal = true;
+      vm.showConfirmDeleteModal = (collections, checks) => {
+        let deleteList = [];
+
+        collections.forEach((collection) => {
+          if (checks[collection.id] === true) {
+            deleteList.push(collection.id);
+          }
+        });
+
+        if (deleteList.length >= 1) {
+          vm.showModal = true;
+        } else {
+          vm.toggleErrorNotification(vm.msg.noneSelectedError);
+        }
       };
 
       vm.confirmModal = () => {
