@@ -18,14 +18,18 @@
 <!--/////////// MOBILE ONLY ///////////-->
 <div class="sm-hide">
 
+	<!-- toggle button background -->
+	<div class="fixed z2" style="background-color: rgba(255,255,255,0.93); width: 58px; height:58px;"></div>
+	<!-- toggle button background -->
+
 	<!-- toggle button -->
-	<div class="fixed z2">
-		<a ng-click="sidebar.toggleSidebar()" class="btn btn-icon p3 h3" ng-class="{'black': sidebar.toggle === false, 'white': sidebar.toggle === true}"><span class="ti-menu"></span></a>
+	<div class="fixed z3">
+		<a ng-click="sidebar.toggleSidebar()" class="btn btn-icon p2 h3" ng-class="{'black': sidebar.toggle === false, 'white': sidebar.toggle === true}"><span class="ti-menu"></span></a>
 	</div>
 	<!-- end: toggle button -->
 
 	<!-- menu items -->
-	<div class="bg-navy fixed white z1 translateX-n-100 transition-all-300" ng-class="{'translateX-n-100': sidebar.toggle === false, 'translateX-0': sidebar.toggle === true }" style="height: 100vh;">
+	<div class="bg-navy fixed white z2 translateX-n-100 transition-all-300" ng-class="{'translateX-n-100': sidebar.toggle === false, 'translateX-0': sidebar.toggle === true }" style="height: 100vh;">
 		<div class="flex flex-column py2 mt4">
 			
 			<div style="margin-left:20px"><img class="mb2" src="../images/logo/bigvocab-logo-color.svg" width="56px"></div>
