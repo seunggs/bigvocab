@@ -1,0 +1,28 @@
+<div class="container">
+	<div class="clearfix">
+
+		<h1 class="mt1 mb3 center">List of All Words in <span class="italic">{{ listWords.collectionTitle }}</span></h1>
+
+		<!-- search words form -->
+		<div class="sm-col-6 mx-auto px2">
+			
+			<form name="listWordsForm" class="center">
+				<input name="searchWords" type="text" ng-model="listWords.searchWords" class="field col-12 mb3" placeholder="Search any word or definition">
+			</form>
+
+		</div>
+		<!-- end: search words form -->
+
+		<!-- list of words -->
+		<div class="sm-col-10 mx-auto px2">
+			
+			<div ng-repeat="word in listWords.words | filter: listWords.searchWords" class="clearfix mb2">
+				<div class="sm-col sm-col-3">{{ word.word }}</div>
+				<div class="sm-col sm-col-9 gray">{{ word.definition }}</div>
+			</div>
+			
+		</div>
+		<!-- end: list of words -->
+
+	</div>
+</div>

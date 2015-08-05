@@ -18,12 +18,12 @@
           icon: 'ti-layers-alt',
           link: 'mainApp.collections'
         },
-        {
-          id: 2,
-          title: 'Test',
-          icon: 'ti-check-box',
-          link: 'mainApp.test-words'
-        },
+        // {
+        //   id: 2,
+        //   title: 'Test',
+        //   icon: 'ti-check-box',
+        //   link: 'mainApp.test-words'
+        // },
         {
           id: 3,
           title: 'Import',
@@ -32,6 +32,12 @@
         },
         {
           id: 4,
+          title: 'Settings',
+          icon: 'ti-settings',
+          link: 'mainApp.settings'
+        },        
+        {
+          id: 5,
           title: 'Log Out',
           icon: 'ti-arrow-left',
           link: 'mainApp.logout'

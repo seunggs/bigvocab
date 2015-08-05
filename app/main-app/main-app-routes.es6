@@ -68,6 +68,12 @@
         templateUrl: 'main-app/import.tpl.html',
         controller: 'ImportCtrl',
         controllerAs: 'import'
+      })
+      .state('mainApp.settings', {
+        url: '/settings',
+        templateUrl: 'main-app/settings.tpl.html',
+        controller: 'SettingsCtrl',
+        controllerAs: 'settings'
       });
   }
 }());

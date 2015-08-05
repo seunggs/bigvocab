@@ -62,6 +62,8 @@
     Sm2ServiceBase.calcPhase = (phase, interval, choice) => {
       if (choice === 'again') {
         return 'learning';
+      } else if (choice === 'easy') {
+        return 'review';
       }
 
       if (phase === 'learning') {
@@ -82,6 +84,8 @@
     Sm2ServiceBase.calcInterval = (phase, interval, easeFactor, choice) => {
       if (choice === 'again') {
         return 1;
+      } else if (choice === 'easy' && phase === 'learning') {
+        return 4 * 24 * 60;
       }
 
       if (phase === 'learning') {

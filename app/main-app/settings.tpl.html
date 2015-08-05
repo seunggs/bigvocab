@@ -1,0 +1,21 @@
+<div class="container">
+	<div class="clearfix">
+
+		<div class="sm-col-10 md-col-6 mx-auto center px2">
+	
+			<h1 class="mt1 mb2">Settings</h1>
+
+			<form name="settings.settingsForm" 
+						ng-submit="settings.saveSettings()"
+						novalidate>
+
+				<div class="mb1 bold">Max # of study words per day</div>
+				<input name="maxWords" type="number" ng-model="settings.formData.maxWords" class="field col-12" placeholder="{{ settings.placeholder.maxWords }}" autofocus>
+
+			</form>
+
+		</div>
+
+	</div>
+</div>
+
