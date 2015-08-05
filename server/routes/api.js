@@ -280,6 +280,7 @@ router.route('/words/:wordId')
 		r.table('words')
 			.get(wordId)
 			.update(wordUpdate)
+			.changes()
 			.run()
 			.then(function (dbRes) {
 				res.json(dbRes);

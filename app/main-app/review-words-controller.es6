@@ -11,7 +11,9 @@
       let collectionId = $stateParams.collectionId;
       vm.wordCounter = 0; // keeps track of which word user is reviewing
       vm.showAnswer = false;
-      
+      vm.editToggle = false;
+      vm.formData = {};
+
       // init //////////////////////////////////////////////////////////////////////////////
 
       WordsService.getDue(collectionId)
@@ -20,6 +22,7 @@
           vm.totalWordsCount = vm.words.length;
           vm.currentWord = vm.words[vm.wordCounter];
           vm.pronunciation = vm.currentWord !== undefined ? getPronunciation(vm.currentWord) : null;
+          initEditWord(vm.currentWord);
         })
         .catch(err => {
           console.log('Something went wrong: ', err);
@@ -35,14 +38,38 @@
         return ngAudio.load(word.pronunciationPath);
       }
 
+      function initEditWord (currentWord) {
+        vm.formData.word = currentWord.word;
+        vm.formData.definition = currentWord.definition;
+      }
+
       // main //////////////////////////////////////////////////////////////////////////////
 
       vm.toggleAnswer = () => {
         vm.showAnswer = !vm.showAnswer;
       };
 
+      vm.toggleEdit = () => {
+        vm.editToggle = !vm.editToggle;
+      };
+
       vm.playPronunciation = () => {
         vm.pronunciation.play();
+      };
+
+      vm.submitEdit = (wordId, word, definition) => {
+        let wordUpdate = {
+          word: word,
+          definition: definition
+        };
+
+        WordsService.update(wordId, wordUpdate)
+          .then(() => {
+            vm.toggleEdit();
+          })
+          .catch(err => {
+            console.log('Something went wrong: ', err);
+          });
       };
 
       vm.submitRes = (word, choice) => {
@@ -70,12 +97,14 @@
         console.log('word id: ', word.id);
 
         WordsService.update(word.id, wordUpdate)
-          .then(dbRes => {
+          .then(() => {
             vm.wordCounter++;
             vm.currentWord = vm.words[vm.wordCounter];
-            console.log('vm.currentWord: ', vm.currentWord);
             vm.pronunciation = getPronunciation(vm.currentWord);
             vm.toggleAnswer();
+
+            // intialize edit fields
+            initEditWord(vm.currentWord);
           })
           .catch(err => {
             console.log('Something went wrong: ', err);

@@ -15,6 +15,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var collectionId = $stateParams.collectionId;
     vm.wordCounter = 0; // keeps track of which word user is reviewing
     vm.showAnswer = false;
+    vm.editToggle = false;
+    vm.formData = {};
 
     // init //////////////////////////////////////////////////////////////////////////////
 
@@ -23,6 +25,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       vm.totalWordsCount = vm.words.length;
       vm.currentWord = vm.words[vm.wordCounter];
       vm.pronunciation = vm.currentWord !== undefined ? getPronunciation(vm.currentWord) : null;
+      initEditWord(vm.currentWord);
     })['catch'](function (err) {
       console.log('Something went wrong: ', err);
     });
@@ -37,14 +40,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       return ngAudio.load(word.pronunciationPath);
     }
 
+    function initEditWord(currentWord) {
+      vm.formData.word = currentWord.word;
+      vm.formData.definition = currentWord.definition;
+    }
+
     // main //////////////////////////////////////////////////////////////////////////////
 
     vm.toggleAnswer = function () {
       vm.showAnswer = !vm.showAnswer;
     };
 
+    vm.toggleEdit = function () {
+      vm.editToggle = !vm.editToggle;
+    };
+
     vm.playPronunciation = function () {
       vm.pronunciation.play();
+    };
+
+    vm.submitEdit = function (wordId, word, definition) {
+      var wordUpdate = {
+        word: word,
+        definition: definition
+      };
+
+      WordsService.update(wordId, wordUpdate).then(function () {
+        vm.toggleEdit();
+      })['catch'](function (err) {
+        console.log('Something went wrong: ', err);
+      });
     };
 
     vm.submitRes = function (word, choice) {
@@ -71,12 +96,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       console.log('word id: ', word.id);
 
-      WordsService.update(word.id, wordUpdate).then(function (dbRes) {
+      WordsService.update(word.id, wordUpdate).then(function () {
         vm.wordCounter++;
         vm.currentWord = vm.words[vm.wordCounter];
-        console.log('vm.currentWord: ', vm.currentWord);
         vm.pronunciation = getPronunciation(vm.currentWord);
         vm.toggleAnswer();
+
+        // intialize edit fields
+        initEditWord(vm.currentWord);
       })['catch'](function (err) {
         console.log('Something went wrong: ', err);
         vm.toggleAnswer();
