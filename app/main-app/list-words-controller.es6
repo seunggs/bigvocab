@@ -38,6 +38,7 @@
 	      		var words = angular.fromJson(res).data;
 
 	      		vm.words = words;
+	      		vm.wordsCount = words.length;
 
 	      		initShowEdit(words);
 	      	})

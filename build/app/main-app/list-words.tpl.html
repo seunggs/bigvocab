@@ -1,13 +1,14 @@
 <div class="container">
 	<div class="clearfix">
 
-		<h1 class="mt1 mb3 center">List of All Words<span ng-if="listWords.collectionTitle"> in <span class="italic">{{ listWords.collectionTitle }}</span></span></h1>
+		<h1 class="mt1 mb2 center">List of All Words<span ng-if="listWords.collectionTitle"> in <span class="italic">{{ listWords.collectionTitle }}</span></span></h1>
 
 		<!-- search words form -->
 		<div class="sm-col-6 mx-auto px2">
 			
 			<form name="listWords.listWordsForm" class="center">
-				<input name="searchWords" type="text" ng-model="listWords.formData.searchWords" class="field col-12 mb3" placeholder="Search any word or definition">
+				<span class="center bold gray">Total word count: {{ listWords.wordsCount }}</span>
+				<input name="searchWords" type="text" ng-model="listWords.formData.searchWords" class="field col-12 mt1 mb2" placeholder="Search any word or definition">
 			</form>
 
 		</div>
@@ -22,7 +23,7 @@
 					<!-- word -->
 					<div class="sm-col sm-col-3 flex flex-center">
 
-						<a ng-click="listWords.toggleEdit(word)" ng-if="!listWords.showEdit[word.id]">{{ word.word }}</a>
+						<a ng-click="listWords.toggleEdit(word)" class="bold" ng-if="!listWords.showEdit[word.id]">{{ word.word }}</a>
 						<a ng-if="listWords.showEdit[word.id]" class="ti-close red mr1" ng-click="listWords.toggleEdit(word)"></a>
 						<input name="word" 
 									 type="text" 

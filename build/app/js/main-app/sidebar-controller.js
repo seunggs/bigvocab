@@ -22,7 +22,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       link: 'mainApp.collections'
     }, {
       id: 2,
-      title: 'List',
+      title: 'View All Words',
       icon: 'ti-list',
       link: 'mainApp.list-words'
     },

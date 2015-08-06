@@ -41,6 +41,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                         var words = angular.fromJson(res).data;
 
                         vm.words = words;
+                        vm.wordsCount = words.length;
 
                         initShowEdit(words);
                   })['catch'](errHandler);

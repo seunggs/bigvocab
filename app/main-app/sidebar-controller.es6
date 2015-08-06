@@ -20,7 +20,7 @@
         },
         {
           id: 2,
-          title: 'List',
+          title: 'View All Words',
           icon: 'ti-list',
           link: 'mainApp.list-words'
         },
