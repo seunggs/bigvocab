@@ -5,7 +5,7 @@ var router = express.Router();
 var r = require('../config/rdbdash');
 var moment = require('moment');
 var R = require('ramda');
-var Promise = require('bluebird');
+var $q = require('bluebird');
 
 // Users routes ///////////////////////////////////////////////////////
 
@@ -352,10 +352,9 @@ router.route('/words/all/:userId')
 					);
 				});
 
-				return Promise.all(promises);
+				return $q.all(promises);
 			})
 			.then(function (wordsArray) {
-				console.log(wordsArray);
 				var words = wordsArray.reduce(function (prev, curr) {
 					return prev.concat(curr);
 				}, []);
@@ -440,7 +439,7 @@ router.route('/import/anki/:userId')
 								.insert(words)
 								.run();
 			})
-			.then(function () {
+			.then(function (dbRes) {
 				res.json(dbRes);
 			})
 			.catch(function (err) {

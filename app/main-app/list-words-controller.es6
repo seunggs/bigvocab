@@ -10,6 +10,7 @@
 
       vm.formData = {};
       vm.showEdit = {};
+      vm.displayLimit = 200;
       vm.btnState = {
         loading: false,
         success: false
@@ -65,10 +66,10 @@
       	vm.showEdit[word.id] = !vm.showEdit[word.id];
       };
 
-      vm.saveChanges = (isValid, wordId, formData) => {
+      vm.saveChanges = (isValid, word, formData) => {
       	if (!isValid) { return; }
 
-      	WordsService.update(wordId, formData)
+      	WordsService.update(word.id, formData)
       		.then(() => {
             vm.btnState.loading = false;
             vm.btnState.success = true;
@@ -78,8 +79,18 @@
             $timeout(() => {
               vm.btnState.success = false;
 	
-	            vm.showEdit[wordId] = !vm.showEdit[wordId];
-	            getAllWords(user.id);
+	            vm.showEdit[word.id] = !vm.showEdit[word.id];
+
+	            // update the current view to reflect the change
+	            vm.words.map(currentWord => {
+	            	if (currentWord.id === word.id) {
+	            		currentWord.word = vm.formData.word;
+	            		currentWord.definition = vm.formData.definition;
+	            	}
+
+	            	return currentWord;
+	            }); 
+	            //getAllWords(user.id);
             }, 1500);
       		})
       		.catch(errHandler);
