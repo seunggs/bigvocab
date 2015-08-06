@@ -34,6 +34,16 @@
       return $http.get('/api/words/' + wordId);
     };
 
+    // find :: String -> String -> Promise({word})
+    WordsServiceBase.find = (collectionId, word) => {
+      return $http.get('/api/' + collectionId + '/words/' + word);
+    };
+
+    // find :: String -> String -> Promise({word})
+    WordsServiceBase.exists = (collectionId, word) => {
+      return $http.get('/api/' + collectionId + '/words/' + word + '/?exists');
+    };
+
     // get only the words to be reviewed today
     WordsServiceBase.getDue = collectionId => {
       return $http.get('/api/'+ collectionId + '/words/?filter=dueToday');

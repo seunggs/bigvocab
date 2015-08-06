@@ -242,6 +242,7 @@ router.route('/:collectionId/words')
 					.catch(function (err) {
 						res.send(err);
 					});
+
 				break;
 
 			case 'dueToday':
@@ -270,9 +271,42 @@ router.route('/:collectionId/words')
 					.catch(function (err) {
 						res.send(err);
 					});
-				break;
 
+				break;
 		}
+
+	});
+
+router.route('/:collectionId/words/:word')
+
+	// GET :: Params -> Params -> {word}
+	// GET :: Params -> Params -> Query -> {word}
+	.get(function (req, res) {
+
+		var collectionId = req.params.collectionId;
+		var word = req.params.word;
+		var exists = req.query.exists !== undefined ? true : undefined;
+		var sendBack;
+		console.log('exists: ', exists);
+
+		r.table('words')
+			.getAll(collectionId, { index: 'collectionId' })
+			.filter({ word: word })
+			.run()
+			.then(function (word) {
+				if (word.length > 0) {
+					sendBack = exists === undefined ? word : true;
+					console.log('sendBack: ', sendBack);
+					res.json(sendBack);
+				} else {
+					sendBack = exists === undefined ? word : false;
+					console.log('sendBack: ', sendBack);
+					res.json(sendBack);
+				}
+			})
+			.catch(function (err) {
+				res.send(err);
+			});
 
 	});
 
@@ -299,9 +333,6 @@ router.route('/words/:wordId')
 	.put(function (req, res) {
 		var wordId = req.params.wordId;
 		var wordUpdate = req.body;
-
-		console.log('wordId: ', wordId);
-		console.log('wordUpdate: ', wordUpdate);
 
 		r.table('words')
 			.get(wordId)

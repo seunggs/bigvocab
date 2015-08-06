@@ -33,7 +33,8 @@
           vm.totalWordsCount = vm.words.length;
           vm.currentWord = vm.words[vm.wordCounter];
 
-          
+          vm.currentWord.definition = fromHtml(vm.currentWord.definition);
+
           if (vm.currentWord.pronunciationPath !== undefined) {
             vm.pronunciation = getPronunciation(vm.currentWord);
           } else {
@@ -83,6 +84,20 @@
         }
       }
 
+      function toHtml (text) {
+        let convertedText = text.replace(/\n/g, '<br>');
+        return convertedText;
+      }
+
+      function fromHtml (text) {
+        let convertedText = text.replace(/<br>/g, '\n')
+                                .replace(/<div>/g, '\n')
+                                .replace(/<\/div>/g, '\n')
+                                .replace(/&amp;/g, '&')
+                                .replace(/&nbsp;/g, ' ');
+        return convertedText;
+      }
+
       function initEditWord (currentWord) {
         vm.formData.word = currentWord.word;
         vm.formData.definition = currentWord.definition;
@@ -105,13 +120,13 @@
       vm.submitEdit = (wordId, word, definition) => {
         let wordUpdate = {
           word: word,
-          definition: definition
+          definition: toHtml(definition)
         };
 
         WordsService.update(wordId, wordUpdate)
           .then(() => {
             vm.currentWord.word = word;
-            vm.currentWord.definition = definition;
+            vm.currentWord.definition = fromHtml(definition);
             
             vm.notification.success = true;
 
@@ -150,18 +165,20 @@
             vm.wordCounter++;
             vm.currentWord = vm.words[vm.wordCounter];
 
-            vm.finished = vm.currentWord === undefined ? true : false;
-
-            if (vm.currentWord !== undefined && vm.currentWord.pronunciationPath !== undefined) {
-              vm.pronunciation = getPronunciation(vm.currentWord);
+            if (vm.currentWord === undefined) {
+              vm.finished = true;
             } else {
-              addPronunciation(ConfigService.forvoKey, vm.currentWord);
+              if (vm.currentWord.pronunciationPath !== undefined) {
+                vm.pronunciation = getPronunciation(vm.currentWord);
+              } else {
+                addPronunciation(ConfigService.forvoKey, vm.currentWord);
+              }
+  
+              vm.toggleAnswer();
+
+              // intialize edit fields
+              initEditWord(vm.currentWord);
             }
-
-            vm.toggleAnswer();
-
-            // intialize edit fields
-            initEditWord(vm.currentWord);
           })
           .catch(err => {
             console.log('Something went wrong: ', err);

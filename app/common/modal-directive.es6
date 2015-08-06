@@ -12,10 +12,11 @@
    * @example
      <modal show="collections.showModal" 
             modal-bg="bg-red" 
-            yes-cb="collections.confirmModal()" 
-            no-cb="collections.closeModal()" 
+            yes-cb="collections.confirm()" 
+            no-cb="collections.no()" 
             yes-message="Yes, delete" 
-            no-message="No, abort">
+            no-message="No, don't save"
+            add-abort-button>
      </modal>
    *
    */
@@ -29,7 +30,7 @@
       scope: {
         show: '=',
         yesCb: '&?',
-        noCb: '&?'
+        noCb: '&?',
       },
       templateUrl: 'common/modal-directive.tpl.html',
       replace: false,
@@ -38,14 +39,18 @@
         /*jshint unused:false */
         /*eslint "no-unused-vars": [2, {"args": "none"}]*/
         scope.modalBg = attrs.modalBg || '';
+
         scope.yesMessage = attrs.yesMessage || 'Yes';
         scope.noMessage = attrs.noMessage || 'No';
 
-        if (scope.yesCb !== undefined && scope.noCb !== undefined) {
-          scope.showButtons = true;
-        } else {
-          scope.showButtons = false;
-        }
+        scope.showYesBtn = scope.yesCb !== undefined ? true : false;
+        scope.showNoBtn = scope.noCb !== undefined ? true : false;
+
+        scope.showAbortBtn = attrs.addAbortButton !== undefined ? true : false;
+
+        scope.closeModal = () => {
+          scope.show = false;
+        };
       }
     };
   }

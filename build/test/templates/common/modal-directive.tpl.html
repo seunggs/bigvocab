@@ -1,5 +1,5 @@
 <!-- overlay -->
-<div ng-if="show" class="fixed z2 top-0 right-0 bottom-0 left-0 bg-darken-3" ng-click="noCb()">
+<div ng-if="show" class="fixed z2 top-0 right-0 bottom-0 left-0 bg-darken-3" ng-click="closeModal()">
 </div>
 <!-- end: overlay -->
 
@@ -9,7 +9,7 @@
 			
 			<!-- close button -->
 			<div>
-				<a class="ti-close absolute right-0 h3 p3" ng-click="noCb()"></a>
+				<a class="ti-close absolute right-0 h3 p3" ng-click="closeModal()"></a>
 			</div>
 			<!-- end: close button -->
 
@@ -19,9 +19,10 @@
 				<!-- end: content -->
 
 				<!-- buttons -->
-				<div class="center mt2 mb1" ng-if="showButtons">
-					<button class="btn btn-primary" ng-click="yesCb()">{{ yesMessage }}</button>&nbsp;&nbsp;
-					<button class="btn btn-primary" ng-click="noCb()">{{ noMessage }}</button>
+				<div class="center mt1 mb1">
+					<button class="btn btn-primary mt2" ng-click="yesCb(); closeModal()" ng-if="showYesBtn">{{ yesMessage }}</button>&nbsp;&nbsp;
+					<button class="btn btn-primary mt2" ng-click="noCb(); closeModal()" ng-if="showNoBtn">{{ noMessage }}</button>&nbsp;&nbsp;
+					<button class="btn btn-red mt2" ng-click="closeModal()" ng-if="showAbortBtn">Cancel</button>
 				</div>
 				<!-- end: buttons -->
 			</div>

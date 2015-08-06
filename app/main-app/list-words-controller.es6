@@ -42,7 +42,7 @@
 
 	      		initShowEdit(words);
 	      	})
-	      	.catch(errHandler);
+	      	.catch(submitErrorHandler);
       }
 
       function initShowEdit (words) {
@@ -52,7 +52,7 @@
       	});
       }
 
-      function errHandler (err) {
+      function submitErrorHandler (err) {
         vm.btnState.loading = false;
         vm.notification.error = true;
         console.log('Something went wrong: ', err);
@@ -94,7 +94,7 @@
 	            //getAllWords(user.id);
             }, 1500);
       		})
-      		.catch(errHandler);
+      		.catch(submitErrorHandler);
       };
 
     }
