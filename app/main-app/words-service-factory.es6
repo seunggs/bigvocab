@@ -16,8 +16,14 @@
 
     let WordsServiceBase = {};
 
+    // every word for this user
+    WordsServiceBase.getUserAll = userId => {
+      return $http.get('/api/words/all/' + userId);
+    };
+
+    // all words for this collection
     WordsServiceBase.getAll = collectionId => {
-      return $http.get('/api/words/' + collectionId);
+      return $http.get('/api/' + collectionId + '/words');
     };
 
     WordsServiceBase.create = word => {
@@ -30,7 +36,7 @@
 
     // get only the words to be reviewed today
     WordsServiceBase.getDue = collectionId => {
-      return $http.get('/api/words/' + collectionId + '/?filter=dueToday');
+      return $http.get('/api/'+ collectionId + '/words/?filter=dueToday');
     };
 
     WordsServiceBase.update = (wordId, wordUpdate) => {

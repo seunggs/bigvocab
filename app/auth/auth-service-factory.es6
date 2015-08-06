@@ -30,9 +30,9 @@
 
       $http.get('/auth/loggedin')
         .then(user => {
-          var user = angular.fromJson(user).data;
+          var user = user.data;
           if (user !== false) {
-            deferred.resolve(user);
+            deferred.resolve(user.new_val);
           } else {
             deferred.reject();
             $window.location = '/#/login';

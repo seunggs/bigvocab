@@ -17,7 +17,7 @@
     let CollectionsServiceBase = {};
 
     CollectionsServiceBase.getAll = userId => {
-      return $http.get('/api/collections/' + userId);
+      return $http.get('/api/' + userId + '/collections');
     };
 
     CollectionsServiceBase.create = collection => {

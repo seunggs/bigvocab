@@ -5,8 +5,10 @@ var router = express.Router();
 var r = require('../config/rdbdash');
 var moment = require('moment');
 var R = require('ramda');
+var Promise = require('bluebird');
 
 // Users routes ///////////////////////////////////////////////////////
+
 router.route('/users')
 
 	// GET :: () -> [users]
@@ -41,11 +43,11 @@ router.route('/users/:userId')
 	// PUT :: Params -> {user} -> {dbRes}
 	.put(function (req, res) {
 		var userId = req.params.userId;
-		var user = req.body;
+		var userUpdate = req.body;
 
 		r.table('users')
 			.get(userId)
-			.update(user)
+			.update(userUpdate)
 			.run()
 			.then(function (dbRes) {
 				res.json(dbRes);
@@ -56,53 +58,63 @@ router.route('/users/:userId')
 	});
 
 // Colletions routes //////////////////////////////////////////////////
-router.route('/collections/:userId')
+
+router.route('/:userId/collections')
 
 	// GET :: Params -> [collections]
 	.get(function (req, res) {
 		var userId = req.params.userId;
 
-		r.table('collections')
-			.getAll(userId, { index: 'userId' })
-			.map(function (collection) {
-				return collection.merge({
-					totalWordCount: r.table('words')
-						.getAll(collection('id'), { index: 'collectionId' })
-						.count()
-				});
-			})
-			.map(function (collection) {
-				return collection.merge({
-					dueWordCount: r.table('words')
-						.getAll(collection('id'), { index: 'collectionId' })
-						.filter(function (word) {
-							return word('nextReviewEpochTime').lt(r.now().toEpochTime());
-						})
-						.count()
-				});
-			})
-			.map(function (collection) {
-				return collection.merge({
-					newWordCount: r.table('words')
-						.getAll(collection('id'), { index: 'collectionId' })
-						.filter({
-							reviewRes: {
-								again: 0,
-								hard: 0,
-								good: 0,
-								easy: 0
-							}
-						})
-						.count()
-				});
-			})
+		r.table('users')
+			.get(userId)
 			.run()
+			.then(function (user) {
+				var maxDailyWords = user.maxDailyWords;
+
+				return r.table('collections')
+								.getAll(userId, { index: 'userId' })
+								.map(function (collection) {
+									return collection.merge({
+										totalWordCount: r.table('words')
+											.getAll(collection('id'), { index: 'collectionId' })
+											.count()
+									});
+								})
+								.map(function (collection) {
+									return collection.merge({
+										dueWordCount: r.table('words')
+											.getAll(collection('id'), { index: 'collectionId' })
+											.filter(function (word) {
+												return word('nextReviewEpochTime').lt(r.now().toEpochTime());
+											})
+											.limit(maxDailyWords)
+											.count()
+									});
+								})
+								.map(function (collection) {
+									return collection.merge({
+										newWordCount: r.table('words')
+											.getAll(collection('id'), { index: 'collectionId' })
+											.filter({
+												reviewRes: {
+													again: 0,
+													hard: 0,
+													good: 0,
+													easy: 0
+												}
+											})
+											.count()
+									});
+								})
+								.run();
+			})
 			.then(function (collections) {
 				res.json(collections);
 			})
 			.catch(function (err) {
 				res.send(err);
 			});
+
 	});
 
 router.route('/collections')	
@@ -188,9 +200,6 @@ router.route('/collections/merge/:collectionId')
 		var collectionId = req.params.collectionId;
 		var newCollectionId = req.body.newCollectionId;
 
-		console.log('collectionId: ', collectionId);
-		console.log('newCollectionId: ', newCollectionId);
-
 		r.table('words')
 			.getAll(collectionId, { index: 'collectionId' })
 			.update({ collectionId: newCollectionId })
@@ -209,8 +218,10 @@ router.route('/collections/merge/:collectionId')
 			});
 
 	});
+
 // Words routes ///////////////////////////////////////////////////////
-router.route('/words/:collectionId')
+
+router.route('/:collectionId/words')
 
 	// GET :: Params -> [words]
 	// GET :: Params -> Query('filter') -> [words]
@@ -234,10 +245,25 @@ router.route('/words/:collectionId')
 				break;
 
 			case 'dueToday':
-				r.table('words')
-					.getAll(collectionId, { index: 'collectionId' })
-					.filter(r.row('nextReviewEpochTime').lt(r.now().toEpochTime()))
+				r.table('collections')
+					.get(collectionId)
 					.run()
+					.then(function (collection) {
+						var userId = collection.userId;
+
+						return r.table('users')
+										.get(userId)
+										.run();
+					})
+					.then(function (user) {
+						var maxDailyWords = user.maxDailyWords;
+
+						return r.table('words')
+										.getAll(collectionId, { index: 'collectionId' })
+										.filter(r.row('nextReviewEpochTime').lt(r.now().toEpochTime()))
+										.limit(maxDailyWords)
+										.run();
+					})
 					.then(function (words) {
 						res.json(words);
 					})
@@ -280,7 +306,6 @@ router.route('/words/:wordId')
 		r.table('words')
 			.get(wordId)
 			.update(wordUpdate)
-			.changes()
 			.run()
 			.then(function (dbRes) {
 				res.json(dbRes);
@@ -306,8 +331,44 @@ router.route('/words/:wordId')
 			});
 	});
 
+// all words for the user, not just in a collection
+router.route('/words/all/:userId')
+
+	// GET :: Params -> [a]
+	.get(function (req, res) {
+		var userId = req.params.userId;
+
+		r.table('collections')
+			.getAll(userId, { index: 'userId' })
+			.run()
+			.then(function (collections) {
+				var promises = [];
+				collections.forEach(function (collection) {
+					var collectionId = collection.id;
+
+					promises.push(r.table('words')
+													.getAll(collectionId, { index: 'collectionId' })
+													.run()
+					);
+				});
+
+				return Promise.all(promises);
+			})
+			.then(function (wordsArray) {
+				console.log(wordsArray);
+				var words = wordsArray.reduce(function (prev, curr) {
+					return prev.concat(curr);
+				}, []);
+
+				res.json(words);
+			})
+			.catch(function (err) {
+				res.send(err);
+			});
+	});
 
 // Import routes //////////////////////////////////////////////////////
+
 router.route('/import/anki/:userId')
 
 	// POST :: {collectionId, [files]} -> Params -> {dbRes}
@@ -330,7 +391,7 @@ router.route('/import/anki/:userId')
 		var mergedWordPairs = mergeWordPairs(files);
 
 		// set up the import to start 100 words per day
-		var wordsPerDay = 100; 
+		var wordsPerDay = 500; 
 
 		r.table('collections')
 			.insert(collection)
@@ -375,16 +436,12 @@ router.route('/import/anki/:userId')
 
 					});
 
-				r.table('words')
-					.insert(words)
-					.run()
-					.then(function () {
-						res.json(dbRes);
-					})
-					.catch(function (err) {
-						res.send(err);
-					});
-
+				return r.table('words')
+								.insert(words)
+								.run();
+			})
+			.then(function () {
+				res.json(dbRes);
 			})
 			.catch(function (err) {
 				res.send(err);
@@ -393,6 +450,7 @@ router.route('/import/anki/:userId')
 	});
 
 // Tests routes ///////////////////////////////////////////////////////
+
 // router.route('/tests')
 
 module.exports = router;

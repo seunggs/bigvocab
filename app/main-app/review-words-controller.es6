@@ -14,6 +14,16 @@
       vm.editToggle = false;
       vm.formData = {};
       vm.finished = false;
+      vm.notification = {
+        success: false,
+        error: false
+      };
+      vm.msg = {
+        success: 'Change successfully saved!',
+        error: 'Something went wrong. Please try again.'
+      };
+      vm.notificationSuccessMsg = vm.msg.success;
+      vm.notificationErrorMsg = vm.msg.error;
 
       // init //////////////////////////////////////////////////////////////////////////////
 
@@ -22,6 +32,7 @@
           vm.words = angular.fromJson(res).data;
           vm.totalWordsCount = vm.words.length;
           vm.currentWord = vm.words[vm.wordCounter];
+
           
           if (vm.currentWord.pronunciationPath !== undefined) {
             vm.pronunciation = getPronunciation(vm.currentWord);
@@ -60,7 +71,7 @@
                 pronunciationPath: pronunciationPath
               };
 
-              return WordsService.update(vm.currentWord.id, wordUpdate);                
+              return WordsService.update(vm.currentWord.id, wordUpdate); 
             })
             .then(() => {
               console.log('Pronunciation successfully added');
@@ -102,9 +113,12 @@
             vm.currentWord.word = word;
             vm.currentWord.definition = definition;
             
+            vm.notification.success = true;
+
             vm.toggleEdit();
           })
           .catch(err => {
+            vm.notification.error = true;
             console.log('Something went wrong: ', err);
           });
       };

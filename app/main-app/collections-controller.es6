@@ -29,6 +29,8 @@
         mergeError: 'Please select two or more collections.',
         noneSelectedError: 'Please select one or more collections.'
       };
+      vm.notificationSuccessMsg = vm.msg.success;
+      vm.notificationErrorMsg = vm.msg.error;
       vm.showModal = false;
 
       // init /////////////////////////////////////////////////////////////////////////////
@@ -38,6 +40,7 @@
       // helper functions //////////////////////////////////////////////////////////////////
       
       function getAllCollections (user) {
+        
         CollectionsService.getAll(user.id)
           .then(res => {
             vm.collectionList = angular.fromJson(res).data;
@@ -116,6 +119,9 @@
           .then(() => {
             vm.btnState.loading = false;
             vm.btnState.success = true;
+
+            vm.toggleSuccessNotification(vm.msg.success);
+
             getAllCollections(user);
             resetForm();
 
@@ -125,6 +131,8 @@
           })
           .catch(err => {
             vm.btnState.loading = false;
+            vm.toggleErrorNotification(vm.msg.mergeError);
+            
             console.log('Something went wrong: ', err);
           });
       };

@@ -19,61 +19,95 @@
             controller: 'SidebarCtrl',
             controllerAs: 'sidebar'
           }
-        },
-        resolve: {
-          user: AuthService => {
-            return AuthService.checkLoggedIn();
-          }
         }
       })
       .state('mainApp.collections', {
         url: '/collections',
         templateUrl: 'main-app/collections.tpl.html',
         controller: 'CollectionsCtrl',
-        controllerAs: 'collections'
+        controllerAs: 'collections',
+        resolve: {
+          user: AuthService => {
+            return AuthService.checkLoggedIn();
+          }
+        }
       })
       .state('mainApp.add-words', {
         url: '/collections/:collectionId/add-words',
         templateUrl: 'main-app/add-words.tpl.html',
         controller: 'AddWordsCtrl',
-        controllerAs: 'addWords'
+        controllerAs: 'addWords',
+        resolve: {
+          user: AuthService => {
+            return AuthService.checkLoggedIn();
+          }
+        }
       })
       .state('mainApp.review-words', {
         url: '/collections/:collectionId/review-words',
         templateUrl: 'main-app/review-words.tpl.html',
         controller: 'ReviewWordsCtrl',
-        controllerAs: 'reviewWords'
+        controllerAs: 'reviewWords',
+        resolve: {
+          user: AuthService => {
+            return AuthService.checkLoggedIn();
+          }
+        }
       })
       .state('mainApp.list-words', {
-        url: '/collections/:collectionId/list-words',
+        url: '/list-words',
         templateUrl: 'main-app/list-words.tpl.html',
         controller: 'ListWordsCtrl',
         controllerAs: 'listWords',
-        params: { collectionTitle: null }
+        resolve: {
+          user: AuthService => {
+            return AuthService.checkLoggedIn();
+          }
+        }
       })
       .state('mainApp.test-words', {
         url: '/test-words',
         templateUrl: 'main-app/test-words.tpl.html',
         controller: 'TestWordsCtrl',
-        controllerAs: 'testWords'
+        controllerAs: 'testWords',
+        resolve: {
+          user: AuthService => {
+            return AuthService.checkLoggedIn();
+          }
+        }
       })
       .state('mainApp.logout', {
         url: '/logout',
         templateUrl: 'main-app/logout.tpl.html',
         controller: 'LogoutCtrl',
-        controllerAs: 'logout'
+        controllerAs: 'logout',
+        resolve: {
+          user: AuthService => {
+            return AuthService.checkLoggedIn();
+          }
+        }
       })
       .state('mainApp.import', {
         url: '/import',
         templateUrl: 'main-app/import.tpl.html',
         controller: 'ImportCtrl',
-        controllerAs: 'import'
+        controllerAs: 'import',
+        resolve: {
+          user: AuthService => {
+            return AuthService.checkLoggedIn();
+          }
+        }
       })
       .state('mainApp.settings', {
         url: '/settings',
         templateUrl: 'main-app/settings.tpl.html',
         controller: 'SettingsCtrl',
-        controllerAs: 'settings'
+        controllerAs: 'settings',
+        resolve: {
+          user: AuthService => {
+            return AuthService.checkLoggedIn();
+          }
+        }
       });
   }
 }());

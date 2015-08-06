@@ -1,16 +1,22 @@
 <div class="container">
 	<div class="clearfix">
 
-		<div class="sm-col-10 md-col-6 mx-auto center px2">
+		<div class="sm-col-8 md-col-4 mx-auto center px2">
 	
 			<h1 class="mt1 mb2">Settings</h1>
 
 			<form name="settings.settingsForm" 
-						ng-submit="settings.saveSettings()"
+						ng-submit="settings.saveSettings(settings.formData.maxDailyWords)"
 						novalidate>
 
 				<div class="mb1 bold">Max # of study words per day</div>
-				<input name="maxWords" type="number" ng-model="settings.formData.maxWords" class="field col-12" placeholder="{{ settings.placeholder.maxWords }}" autofocus>
+				<input name="maxDailyWords" type="number" ng-model="settings.formData.maxDailyWords" class="field col-12" placeholder="{{ settings.placeholder.maxDailyWords }}" autofocus>
+
+				<button class="btn btn-primary col-12 mt2" type="submit">
+						<span ng-if="!settings.btnState.loading && !settings.btnState.success">Save Changes</span>
+						<span ng-if="settings.btnState.loading"><spinner width="16px"></spinner>Please wait...</span>
+						<span ng-if="settings.btnState.success"><span class="ti-check mr1"></span>Success!</span>
+				</button>
 
 			</form>
 
@@ -18,4 +24,9 @@
 
 	</div>
 </div>
+
+<!-- notification -->
+<notification color="green" show="settings.notification.success"><span class="ti-check mr1"></span>{{ settings.notificationSuccessMsg }}</notification>
+<notification color="red" show="settings.notification.error"><span class="ti-alert mr1"></span>{{ settings.notificationErrorMsg }}</notification>
+<!-- end: notification -->
 

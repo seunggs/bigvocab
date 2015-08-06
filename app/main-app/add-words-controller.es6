@@ -29,7 +29,7 @@
       vm.notificationSuccessMsg = vm.msg.success;
       vm.notificationErrorMsg = vm.msg.error;
 
-      // helper functions /////////////////////////////////////////////////////////////////
+      // helper functions //////////////////////////////////////////////////////////////////
 
       function addWord (word) {
         vm.btnState.loading = true;

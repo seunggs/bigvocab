@@ -2,7 +2,7 @@
   'use strict';
 
   class ImportCtrl {
-    constructor(ImportService, WordsService, DictionaryService, ConfigService, user, $timeout, $window, $q) {
+    constructor(ImportService, WordsService, DictionaryService, ConfigService, SettingsService, user, $timeout, $window, $q) {
 
       let vm = this;
       
@@ -17,6 +17,16 @@
         files: 'Click to upload anki text files',
         collectionTitle: 'Add collection title here'
       };
+      vm.notification = {
+        success: false,
+        error: false
+      };
+      vm.msg = {
+        success: 'Words successfully imported!',
+        error: 'Something went wrong. Please try again.'
+      };
+      vm.notificationSuccessMsg = vm.msg.success;
+      vm.notificationErrorMsg = vm.msg.error;
 
       // helper functions /////////////////////////////////////////////////////////////////
 
@@ -24,12 +34,26 @@
         
         vm.btnState.loading = true;
 
-        ImportService.anki(userId, data)
+        let promises = [
+        	ImportService.anki(userId, data), 
+        	SettingsService.update(user.id, { maxWords: 150 })
+        ];
+
+        $q.all(promises)
           .then(dbRes => {
-            let dbResData = angular.fromJson(dbRes).data;
+            let dbResData = angular.fromJson(dbRes[0]).data;
             let collectionId = dbResData.generated_keys[0];
 
             return WordsService.getAll(collectionId);
+          })
+          .catch(err => {
+            vm.btnState.loading = false;
+
+            vm.notification.error = true;
+
+            console.log('Something went wrong with importing', err);
+
+            return $q.reject(err);
           })
           .then(res => {
             let words = angular.fromJson(res).data;
@@ -44,6 +68,8 @@
           .then(() => {
             vm.btnState.loading = false;
             vm.btnState.success = true;
+
+            vm.notification.success = true;
             
             $timeout(() => {
               vm.btnState.success = false;
@@ -52,7 +78,16 @@
           })
           .catch(err => {
             vm.btnState.loading = false;
-            console.log('Something went wrong: ', err);
+            vm.btnState.success = true;
+
+            vm.notification.success = true;
+
+            $timeout(() => {
+              vm.btnState.success = false;
+              $window.location.href = '/#/main-app/collections';
+            }, 1500);
+
+            console.log('Import successful, but adding pronunciations failed: ', err);
           });
 
       }
