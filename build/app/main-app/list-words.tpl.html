@@ -8,17 +8,17 @@
 			
 			<form name="listWords.listWordsForm" class="center">
 				<span class="center bold gray">Total word count: {{ listWords.wordsCount }}</span>
-				<input name="searchWords" type="text" ng-model="listWords.formData.searchWords" class="field col-12 mt1 mb3" placeholder="Search any word or definition">
+				<input name="searchWords" id="searchWords" type="text" ng-model="listWords.formData.searchWords" class="field col-12 mt1 mb3" placeholder="Search any word or definition">
 			</form>
 
 		</div>
 		<!-- end: search words form -->
 
 		<!-- list of words -->
-		<div class="sm-col-10 mx-auto bg-lighten-2 rounded">
+		<div class="clearfix sm-col-10 mx-auto bg-lighten-2 rounded">
 			
 			<div ng-repeat="word in listWords.words | filter: listWords.formData.searchWords | orderBy: 'word' | limitTo: listWords.displayLimit" class="clearfix col col-12 p2 border-bottom" track by word.id>
-				<form name="listWordsForm" ng-submit="listWords.saveChanges(listWords.listWordsForm.$valid, word, listWords.formData)">
+				<form name="listWords.listWordsForm" ng-submit="listWords.saveChanges(listWords.listWordsForm.$valid, word, listWords.formData)">
 
 					<!-- word -->
 					<div class="sm-col sm-col-3 flex flex-center">

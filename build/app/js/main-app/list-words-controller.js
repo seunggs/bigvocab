@@ -5,7 +5,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   'use strict';
 
-  var ListWordsCtrl = function ListWordsCtrl(CollectionsService, WordsService, TextConvertService, ConfigService, DictionaryService, $timeout, user, ngAudio) {
+  var ListWordsCtrl = function ListWordsCtrl($stateParams, CollectionsService, WordsService, TextConvertService, ConfigService, DictionaryService, $timeout, user, ngAudio) {
     _classCallCheck(this, ListWordsCtrl);
 
     var vm = this;
@@ -35,6 +35,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     // init //////////////////////////////////////////////////////////////////////////////
 
     getAllWords(user.id);
+
+    if ($stateParams.searchString !== undefined) {
+      vm.formData.searchWords = $stateParams.searchString;
+      document.getElementById('searchWords').focus();
+    }
 
     // helper functions //////////////////////////////////////////////////////////////////
 

@@ -2,7 +2,7 @@
   'use strict';
 
   class ListWordsCtrl {
-    constructor(CollectionsService, WordsService, TextConvertService, ConfigService, DictionaryService, $timeout, user, ngAudio) {
+    constructor($stateParams, CollectionsService, WordsService, TextConvertService, ConfigService, DictionaryService, $timeout, user, ngAudio) {
 
       let vm = this;
 
@@ -31,6 +31,11 @@
 			// init //////////////////////////////////////////////////////////////////////////////
 
 			getAllWords(user.id);
+
+      if ($stateParams.searchString !== undefined) { 
+        vm.formData.searchWords = $stateParams.searchString; 
+        document.getElementById('searchWords').focus();
+      }
 
       // helper functions //////////////////////////////////////////////////////////////////
 

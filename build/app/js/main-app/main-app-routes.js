@@ -17,6 +17,11 @@
           templateUrl: 'main-app/sidebar.tpl.html',
           controller: 'SidebarCtrl',
           controllerAs: 'sidebar'
+        },
+        'top-menu@mainApp': {
+          templateUrl: 'main-app/top-menu.tpl.html',
+          controller: 'TopMenuCtrl',
+          controllerAs: 'topMenu'
         }
       }
     }).state('mainApp.collections', {
@@ -58,7 +63,8 @@
         user: function user(AuthService) {
           return AuthService.checkLoggedIn();
         }
-      }
+      },
+      params: { searchString: null }
     }).state('mainApp.test-words', {
       url: '/test-words',
       templateUrl: 'main-app/test-words.tpl.html',

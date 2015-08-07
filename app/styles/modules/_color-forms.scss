@@ -24,6 +24,29 @@
   background-color: $darken-2;
 }
 
+.field-search {
+  border-color: $search-form-field-border-color;
+  border-radius: $search-form-field-border-radius;
+  height: $search-form-field-height !important;
+  background: #fff url('../../images/icons/search.svg') no-repeat 8px 8px;
+  padding-left: 2rem !important;
+  width: $search-form-field-width;
+  transition: width 0.3s;
+}
+
+.field-search:focus,
+.field-search.is-focused {
+  border-color: transparent;
+}
+
+@media #{$breakpoint-sm} {
+  .field-search:focus,
+  .field-search.is-focused {
+    border-color: transparent;
+    width: $search-form-field-width-expanded;
+  }
+}
+
 .label {
 	display: block;
 	font-size: $label-font-size;
