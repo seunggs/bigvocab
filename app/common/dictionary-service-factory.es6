@@ -27,12 +27,9 @@
 
       let deferred = $q.defer();
 
-      console.log(word);
-
       $http.jsonp('http://apifree.forvo.com/action/word-pronunciations/format/json/word/' + word + '/language/en/order/rate-desc/limit/1/key/' + forvoKey + '?callback=JSON_CALLBACK')
         .then(res => {
           let pronunciationData = angular.fromJson(res).data;
-          console.log(pronunciationData);
           let pronunciationPath = pronunciationData.attributes.total !== 0 ? pronunciationData.items[0].pathmp3 : null;
 
           deferred.resolve(pronunciationPath);

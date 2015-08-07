@@ -28,10 +28,9 @@
 			<div class="p3 bg-white rounded flex flex-column flex-center-justified" style="min-height: 184px">
 
 				<!-- word -->
-				<div class="h2 mb1">{{ reviewWords.currentWord.word }}</div>
+				<div ng-if="reviewWords.showWord" class="h2 mb1">{{ reviewWords.currentWord.word }}</div>
 				<!-- end: word -->
 
-				
 				<div ng-if="reviewWords.showAnswer">
 					<!-- definition -->
 					<div class="h4 dark-gray" style="white-space: pre-wrap;">{{ reviewWords.currentWord.definition }}</div>
@@ -55,7 +54,7 @@
 
 		<!-- show answer button -->
 		<div ng-if="!reviewWords.showAnswer" class="sm-col-6 mx-auto px2">
-			<button ng-click="reviewWords.toggleAnswer()" 
+			<button ng-click="reviewWords.revealAnswer()" 
 							ng-disabled="reviewWords.finished"
 							class="btn btn-primary mt2 col-12">Show Answer</button>
 		</div>

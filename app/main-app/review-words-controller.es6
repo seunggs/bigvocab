@@ -2,7 +2,7 @@
   'use strict';
 
   class ReviewWordsCtrl {
-    constructor(WordsService, $stateParams, $moment, Sm2Service, ConfigService, DictionaryService, TextConvertService, $sce, ngAudio) {
+    constructor(WordsService, $stateParams, $moment, $timeout, Sm2Service, ConfigService, DictionaryService, TextConvertService, $sce, ngAudio) {
 
       let vm = this;
 
@@ -10,6 +10,7 @@
 
       let collectionId = $stateParams.collectionId;
       vm.wordCounter = 0; // keeps track of which word user is reviewing
+      vm.showWord = true;
       vm.showAnswer = false;
       vm.editToggle = false;
       vm.formData = {};
@@ -38,22 +39,22 @@
           return DictionaryService.getPronunciation(ConfigService.forvoKey, vm.currentWord.word);
         })
         .then(pronunciationPath => {
+          console.log(pronunciationPath);
           vm.pronunciation = pronunciationPath !== null ? ngAudio.load(pronunciationPath) : null;
 
           // initialize the edit form inputs
           initEditWord(vm.currentWord);
         })
-        .catch(errorHandler);
+        .catch(pronunciationErrorHandler);
 
       // helper functions /////////////////////////////////////////////////////////////////
 
-      function errorHandler (err) {
-        console.log('Something went wrong: ', err);
+      function pronunciationErrorHandler () {
+        vm.pronunciation = null;
       }
 
       function getCurrentWord (wordCounter, words) {
         let currentWord = words[wordCounter];
-        console.log(words);
         currentWord.definition = TextConvertService.fromHtml(currentWord.definition);
 
         return currentWord;
@@ -66,8 +67,20 @@
 
       // main //////////////////////////////////////////////////////////////////////////////
 
-      vm.toggleAnswer = () => {
-        vm.showAnswer = !vm.showAnswer;
+      vm.revealWord = () => {
+        vm.showWord = true;
+      };
+
+      vm.hideWord = () => {
+        vm.showWord = false;
+      };
+
+      vm.revealAnswer = () => {
+        vm.showAnswer = true;
+      };
+
+      vm.hideAnswer = () => {
+        vm.showAnswer = false;
       };
 
       vm.toggleEdit = () => {
@@ -102,6 +115,9 @@
       };
 
       vm.submitRes = (word, choice) => {
+
+        vm.hideWord();
+        vm.hideAnswer();
 
         let newEaseFactor = Sm2Service.calcEaseFactor(word.easeFactor, choice);
         let newPhase = Sm2Service.calcPhase(word.phase, word.interval, choice);
@@ -140,14 +156,13 @@
           .then(pronunciationPath => {
             vm.pronunciation = pronunciationPath !== null ? ngAudio.load(pronunciationPath) : null;
 
-            vm.toggleAnswer();
-
             // intialize edit fields
             initEditWord(vm.currentWord);
           })
-          .catch(err => {
-            console.log('Something went wrong: ', err);
-            vm.toggleAnswer();
+          .catch(pronunciationErrorHandler)
+          .then(() => {
+            vm.hideAnswer();
+            vm.revealWord();
           });
       
       };
