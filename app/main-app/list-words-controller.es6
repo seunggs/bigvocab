@@ -2,7 +2,7 @@
   'use strict';
 
   class ListWordsCtrl {
-    constructor(CollectionsService, WordsService, TextConvertService, $timeout, user) {
+    constructor(CollectionsService, WordsService, TextConvertService, ConfigService, DictionaryService, $timeout, user, ngAudio) {
 
       let vm = this;
 
@@ -22,7 +22,8 @@
       vm.msg = {
         success: 'Change successfully saved!',
         deleteSuccess: 'Word deleted succesfully',
-        error: 'Something went wrong. Please try again.'
+        error: 'Something went wrong. Please try again.',
+        pronunciationError: 'Sorry - pronunciation for this word cannot be found.'
       };
       vm.notificationSuccessMsg = vm.msg.success;
       vm.notificationErrorMsg = vm.msg.error;
@@ -92,6 +93,22 @@
       vm.modalClose = () => {
         vm.showModal = false;
         // delete the item on local
+      };
+
+      vm.playPronunciation = word => {
+        DictionaryService.getPronunciation(ConfigService.forvoKey, word.word)
+          .then(pronunciationPath => {
+            vm.pronunciation = pronunciationPath !== null ? ngAudio.load(pronunciationPath) : null;
+            if (vm.pronunciation !== null) {
+              vm.pronunciation.play();
+            } else {
+              vm.notificationErrorMsg = vm.msg.pronunciationError;
+              vm.notification.error = true;
+            }
+          })
+          .catch(err => {
+            console.log('Something went wrong: ', err);
+          });
       };
 
       vm.saveChanges = (isValid, word, formData) => {

@@ -31,57 +31,32 @@
         .then(res => {
           vm.words = angular.fromJson(res).data;
           vm.totalWordsCount = vm.words.length;
-          vm.currentWord = vm.words[vm.wordCounter];
 
-          vm.currentWord.definition = TextConvertService.fromHtml(vm.currentWord.definition);
+          vm.currentWord = getCurrentWord(vm.wordCounter, vm.words);
 
-          if (vm.currentWord.pronunciationPath !== undefined) {
-            vm.pronunciation = getPronunciation(vm.currentWord);
-          } else {
-            addPronunciation(ConfigService.forvoKey, vm.currentWord);
-          }
-          
+          // get pronunciation of the current word
+          return DictionaryService.getPronunciation(ConfigService.forvoKey, vm.currentWord.word);
+        })
+        .then(pronunciationPath => {
+          vm.pronunciation = pronunciationPath !== null ? ngAudio.load(pronunciationPath) : null;
+
+          // initialize the edit form inputs
           initEditWord(vm.currentWord);
         })
-        .catch(err => {
-          console.log('Something went wrong: ', err);
-        });
+        .catch(errorHandler);
 
       // helper functions /////////////////////////////////////////////////////////////////
 
-      function getPronunciation (word) {
-        console.log(word);
-
-        if (word === undefined || 
-            word.pronunciationPath === undefined || 
-            word.pronunciationPath === null) { return null; }
-
-        return ngAudio.load(word.pronunciationPath);
+      function errorHandler (err) {
+        console.log('Something went wrong: ', err);
       }
 
-      function addPronunciation (forvoKey, word) {
-        if (word !== undefined) {
-          DictionaryService.getPronunciation(forvoKey, word)
-            .then(res => {
-              let pronunciationData = angular.fromJson(res).data;
-              let pronunciationPath = pronunciationData.attributes.total !== 0 ? pronunciationData.items[0].pathmp3 : null;
+      function getCurrentWord (wordCounter, words) {
+        let currentWord = words[wordCounter];
+        console.log(words);
+        currentWord.definition = TextConvertService.fromHtml(currentWord.definition);
 
-              vm.pronunciation = pronunciationPath;
-
-              let wordUpdate = {
-                pronunciationPath: pronunciationPath
-              };
-
-              return WordsService.update(vm.currentWord.id, wordUpdate); 
-            })
-            .then(() => {
-              console.log('Pronunciation successfully added');
-            })
-            .catch(err => {
-              vm.pronunciation = null;
-              console.log('Pronunciation not added: ', err);
-            });
-        }
+        return currentWord;
       }
 
       function initEditWord (currentWord) {
@@ -100,7 +75,9 @@
       };
 
       vm.playPronunciation = () => {
-        vm.pronunciation.play();
+        if (vm.pronunciation !== null) {
+          vm.pronunciation.play();
+        }
       };
 
       vm.submitEdit = (wordId, word, definition) => {
@@ -154,17 +131,19 @@
             if (vm.currentWord === undefined) {
               vm.finished = true;
             } else {
-              if (vm.currentWord.pronunciationPath !== undefined) {
-                vm.pronunciation = getPronunciation(vm.currentWord);
-              } else {
-                addPronunciation(ConfigService.forvoKey, vm.currentWord);
-              }
-  
-              vm.toggleAnswer();
+              vm.currentWord.definition = TextConvertService.fromHtml(vm.currentWord.definition);
 
-              // intialize edit fields
-              initEditWord(vm.currentWord);
+              // get pronunciation of the current word
+              return DictionaryService.getPronunciation(ConfigService.forvoKey, vm.currentWord.word);
             }
+          })
+          .then(pronunciationPath => {
+            vm.pronunciation = pronunciationPath !== null ? ngAudio.load(pronunciationPath) : null;
+
+            vm.toggleAnswer();
+
+            // intialize edit fields
+            initEditWord(vm.currentWord);
           })
           .catch(err => {
             console.log('Something went wrong: ', err);

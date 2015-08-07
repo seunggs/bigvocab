@@ -26,7 +26,8 @@
                               .replace(/<div>/g, '\n')
                               .replace(/<\/div>/g, '\n')
                               .replace(/&amp;/g, '&')
-                              .replace(/&nbsp;/g, ' ');
+                              .replace(/&nbsp;/g, ' ')
+                              .replace(/&gt;/g, '>');
       return convertedText;
     };
 

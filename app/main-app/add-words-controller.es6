@@ -48,9 +48,7 @@
 
       function submitErrorHandler (err) {
         vm.btnState.loading = false;
-
         vm.notification.error = true;
-
         console.log('Something went wrong: ', err);
       }
 
@@ -85,20 +83,7 @@
       function addWord (collectionId, formData) {
         var word = composeWordDetails(collectionId, formData);
 
-        getPronunciation(ConfigService.forvoKey, formData.word)
-          .then(res => {
-            let pronunciationData = angular.fromJson(res).data;
-            let pronunciationPath = pronunciationData.attributes.total !== 0 ? pronunciationData.items[0].pathmp3 : null;
-
-            word.pronunciationPath = pronunciationPath;
-
-            return WordsService.create(word);
-          })
-          .catch(err => {
-            console.log('Something went wrong while trying to get pronuncation from Forvo: ', err);
-
-            return WordsService.create(word);
-          })
+        WordsService.create(word)
           .then(submitSuccessHandler)
           .catch(submitErrorHandler);
       }
@@ -118,7 +103,6 @@
       function checkDuplicate (collectionId, formData) {
         WordsService.exists(collectionId, formData.word)
           .then(res => {
-            console.log('checkDuplicate res: ', res);
             var isDuplicate = angular.fromJson(res).data;
 
             if (isDuplicate) { 
@@ -131,12 +115,6 @@
           .catch(err => {
             console.log('checkDuplicate err: ', err);
           });
-      }
-
-      function getPronunciation (forvoKey, word) {
-        if (word !== undefined) {
-          return DictionaryService.getPronunciation(forvoKey, word);
-        }
       }
 
       function resetForm () {
