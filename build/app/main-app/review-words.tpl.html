@@ -1,0 +1,96 @@
+<div class="container">
+	<div class="clearfix center">
+
+		<h1 class="mt1 mb3">Study Time!</h1>
+
+		<div class="sm-col-6 mx-auto px2">
+			<div class="flex flex-justify">
+				<div class="mb2 bold">
+					<span class="gray">Today's Quota:</span> {{ reviewWords.totalWordsCount - reviewWords.wordCounter }} <span class="gray">/ {{ reviewWords.totalWordsCount }} words left</span>
+				</div>
+				<div>
+					<a ng-click="reviewWords.toggleEdit()" ng-if="!reviewWords.finished" class="h5 gray underline">Edit</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- edit word -->
+		<div class="sm-col-6 mx-auto px2 bg-lighten-3 rounded py2 mb2" ng-if="reviewWords.editToggle && !reviewWords.finished">
+			<form>
+				<input type="text" name="editWord" ng-model="reviewWords.formData.word" class="field col-12 mb1" required>
+				<textarea name="editDefinition" ng-model="reviewWords.formData.definition" class="field col-12" style="height: 80px;"></textarea>
+				<button ng-click="reviewWords.submitEdit(reviewWords.currentWord.id, reviewWords.formData.word, reviewWords.formData.definition)" class="btn btn-green btn-form col-12 mt1">Save Changes</button>
+			</form>
+		</div>
+		<!-- end: edit word -->
+
+		<div class="sm-col-6 mx-auto px2">
+			<div class="p3 bg-white rounded flex flex-column flex-center-justified" style="min-height: 184px">
+
+				<!-- word -->
+				<div ng-if="reviewWords.showWord" class="h2 mb1">{{ reviewWords.currentWord.word }}</div>
+				<!-- end: word -->
+
+				<div ng-if="reviewWords.showAnswer">
+					<!-- definition -->
+					<div class="h4 dark-gray" style="white-space: pre-wrap;">{{ reviewWords.currentWord.definition }}</div>
+					<!-- end: definition -->
+
+					<!-- pronunciation -->
+					<button ng-if="reviewWords.pronunciation !== null && !reviewWords.finished" 
+									ng-click="reviewWords.playPronunciation()" 
+									class="btn btn-blue-outline btn-sm mt2 mx-auto center" style="width: 48px; height: 48px; border-radius: 50%;">
+						<span class="ti-control-play" style="margin-left:4px"></span>
+					</button>
+					<!-- end: pronunciation -->
+				</div>
+
+				<!-- finish message -->
+				<div class="h2 mb1" ng-if="reviewWords.finished">All done for the day!</div>
+				<!-- finish message -->
+
+			</div>
+		</div>
+
+		<!-- show answer button -->
+		<div ng-if="!reviewWords.showAnswer" class="sm-col-6 mx-auto px2">
+			<button ng-click="reviewWords.revealAnswer()" 
+							ng-disabled="reviewWords.finished"
+							class="btn btn-primary mt2 col-12">Show Answer</button>
+		</div>
+		<!-- end: show answer button -->
+
+		<!-- review response buttons -->
+		<div ng-if="reviewWords.showAnswer && !reviewWords.finished" class="sm-col-6 mx-auto px2">
+			<div class="clearfix mxn1">
+				<div class="col col-3 px1 red">
+					<button ng-click="reviewWords.submitRes(reviewWords.currentWord, 'again')" 
+									class="btn btn-red mt2 col-12">Again</button>
+					<div class="h6 gray center mt1">Can't recall</div>
+				</div>
+				<div class="col col-3 px1 green">
+					<button ng-click="reviewWords.submitRes(reviewWords.currentWord, 'hard')" 
+									class="btn btn-yellow-green mt2 col-12">Hard</button>
+					<div class="h6 gray center mt1">Challenging</div>
+				</div>
+				<div class="col col-3 px1 green">
+					<button ng-click="reviewWords.submitRes(reviewWords.currentWord, 'good')" 
+									class="btn btn-green mt2 col-12">Good</button>
+					<div class="h6 gray center mt1">Just right</div>
+				</div>
+				<div class="col col-3 px1 green">
+					<button ng-click="reviewWords.submitRes(reviewWords.currentWord, 'easy')" 
+									class="btn btn-green mt2 col-12">Easy</button>
+					<div class="h6 gray center mt1">Too easy</div>
+				</div>
+			</div>
+		</div>
+		<!-- end: review response buttons -->
+
+	</div>
+</div>
+
+<!-- notification -->
+<notification color="green" show="addWords.notification.success"><span class="ti-check mr1"></span>{{ addWords.notificationSuccessMsg }}</notification>
+<notification color="red" show="addWords.notification.error"><span class="ti-alert mr1"></span>{{ addWords.notificationErrorMsg }}</notification>
+<!-- end: notification -->
