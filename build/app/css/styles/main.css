@@ -2262,6 +2262,10 @@ a:hover {
 .btn-text:active {
   opacity: 1; }
 
+textarea {
+  line-height: 1.35;
+  padding: 0.5rem 0.9rem; }
+
 .field {
   border-style: solid;
   border-width: 1px;

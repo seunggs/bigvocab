@@ -1,0 +1,35 @@
+(() => {
+  'use strict';
+
+  /**
+   * @ngdoc service
+   * @name common.factory:TextConvertService
+   *
+   * @description
+   *
+   */
+  angular
+    .module('common')
+    .factory('TextConvertService', TextConvertService);
+
+  function TextConvertService() {
+
+    let TextConvertServiceBase = {};
+
+    TextConvertServiceBase.toHtml = text => {
+      let convertedText = text.replace(/\n/g, '<br>');
+      return convertedText;
+    };
+
+    TextConvertServiceBase.fromHtml = text => {
+      let convertedText = text.replace(/<br>/g, '\n')
+                              .replace(/<div>/g, '\n')
+                              .replace(/<\/div>/g, '\n')
+                              .replace(/&amp;/g, '&')
+                              .replace(/&nbsp;/g, ' ');
+      return convertedText;
+    };
+
+    return TextConvertServiceBase;
+  }
+}());

@@ -2,7 +2,7 @@
   'use strict';
 
   class ListWordsCtrl {
-    constructor(CollectionsService, WordsService, $timeout, user) {
+    constructor(CollectionsService, WordsService, TextConvertService, $timeout, user) {
 
       let vm = this;
 
@@ -21,6 +21,7 @@
       };
       vm.msg = {
         success: 'Change successfully saved!',
+        deleteSuccess: 'Word deleted succesfully',
         error: 'Something went wrong. Please try again.'
       };
       vm.notificationSuccessMsg = vm.msg.success;
@@ -32,6 +33,12 @@
 
       // helper functions //////////////////////////////////////////////////////////////////
 
+      function submitErrorHandler (err) {
+        vm.btnState.loading = false;
+        vm.notification.error = true;
+        console.log('Something went wrong: ', err);
+      }
+
       function getAllWords (userId) {
 	      WordsService.getUserAll(userId)
 	      	.then(res => {
@@ -39,6 +46,11 @@
 
 	      		vm.words = words;
 	      		vm.wordsCount = words.length;
+
+            vm.words.map(word => {
+              word.definition = TextConvertService.fromHtml(word.definition);
+              return word;
+            });
 
 	      		initShowEdit(words);
 	      	})
@@ -52,12 +64,6 @@
       	});
       }
 
-      function submitErrorHandler (err) {
-        vm.btnState.loading = false;
-        vm.notification.error = true;
-        console.log('Something went wrong: ', err);
-      }
-
       // main //////////////////////////////////////////////////////////////////////////////
 
       vm.toggleEdit = word => {
@@ -65,6 +71,27 @@
 	  		vm.formData.definition = word.definition;
 
       	vm.showEdit[word.id] = !vm.showEdit[word.id];
+      };
+
+      vm.modalYes = wordId => {
+        WordsService.delete(wordId)
+          .then(() => {
+            // update the current view to reflect the removal
+            var currentWord = vm.words.filter(currentWord => {
+              return currentWord.id === wordId;
+            })[0];
+            var index = vm.words.indexOf(currentWord);
+            vm.words.splice(index, 1);
+
+            vm.notificationSuccessMsg = vm.msg.deleteSuccess;
+            vm.notification.success = true;
+          })
+          .catch(submitErrorHandler);
+      };
+
+      vm.modalClose = () => {
+        vm.showModal = false;
+        // delete the item on local
       };
 
       vm.saveChanges = (isValid, word, formData) => {
@@ -75,6 +102,7 @@
             vm.btnState.loading = false;
             vm.btnState.success = true;
 
+            vm.notificationSuccessMsg = vm.msg.success;
             vm.notification.success = true;
 
             $timeout(() => {
@@ -86,15 +114,19 @@
 	            vm.words.map(currentWord => {
 	            	if (currentWord.id === word.id) {
 	            		currentWord.word = vm.formData.word;
-	            		currentWord.definition = vm.formData.definition;
+	            		currentWord.definition = TextConvertService.fromHtml(vm.formData.definition);
 	            	}
 
 	            	return currentWord;
 	            }); 
-	            //getAllWords(user.id);
             }, 1500);
       		})
       		.catch(submitErrorHandler);
+      };
+
+      vm.submitDelete = wordId => {
+        vm.showModal = true;
+        vm.selectedWordId = wordId;
       };
 
     }

@@ -2,7 +2,7 @@
   'use strict';
 
   class AddWordsCtrl {
-    constructor(ConfigService, DictionaryService, WordsService, $stateParams, $timeout, $moment) {
+    constructor(ConfigService, DictionaryService, WordsService, TextConvertService, $stateParams, $timeout, $moment) {
 
       let vm = this;
 
@@ -54,18 +54,13 @@
         console.log('Something went wrong: ', err);
       }
 
-      function toHtml (text) {
-        let convertedText = text.replace(/\n/g, '<br>');
-        return convertedText;
-      }
-
       function composeWordDetails (collectionId, formData) {
         let lastReviewed = $moment();
         let lastReviewedEpochTime = lastReviewed.unix();
         let nextReview = $moment().add(1, 'minutes');
         let nextReviewEpochTime = nextReview.unix();
 
-        let convertedDefinition = toHtml(formData.definition);
+        let convertedDefinition = TextConvertService.toHtml(formData.definition);
 
         let word = {
           word: formData.word,
@@ -186,7 +181,11 @@
       };
 
       vm.copyDefinition = definition => {
-        vm.formData.definition = definition;
+        if (vm.formData.definition !== undefined) {
+          vm.formData.definition = vm.formData.definition + '\n\n' + definition;
+        } else {
+          vm.formData.definition = definition;
+        }
       };
 
       vm.resetForm = () => {

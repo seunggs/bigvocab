@@ -5,7 +5,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   'use strict';
 
-  var AddWordsCtrl = function AddWordsCtrl(ConfigService, DictionaryService, WordsService, $stateParams, $timeout, $moment) {
+  var AddWordsCtrl = function AddWordsCtrl(ConfigService, DictionaryService, WordsService, TextConvertService, $stateParams, $timeout, $moment) {
     _classCallCheck(this, AddWordsCtrl);
 
     var vm = this;
@@ -58,18 +58,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       console.log('Something went wrong: ', err);
     }
 
-    function toHtml(text) {
-      var convertedText = text.replace(/\n/g, '<br>');
-      return convertedText;
-    }
-
     function composeWordDetails(collectionId, formData) {
       var lastReviewed = $moment();
       var lastReviewedEpochTime = lastReviewed.unix();
       var nextReview = $moment().add(1, 'minutes');
       var nextReviewEpochTime = nextReview.unix();
 
-      var convertedDefinition = toHtml(formData.definition);
+      var convertedDefinition = TextConvertService.toHtml(formData.definition);
 
       var word = {
         word: formData.word,
@@ -181,7 +176,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     };
 
     vm.copyDefinition = function (definition) {
-      vm.formData.definition = definition;
+      if (vm.formData.definition !== undefined) {
+        vm.formData.definition = vm.formData.definition + '\n\n' + definition;
+      } else {
+        vm.formData.definition = definition;
+      }
     };
 
     vm.resetForm = function () {

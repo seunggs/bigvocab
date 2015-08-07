@@ -24,7 +24,9 @@
 					<div class="sm-col sm-col-3 flex flex-center">
 
 						<a ng-click="listWords.toggleEdit(word)" class="link bold" ng-if="!listWords.showEdit[word.id]">{{ word.word }}</a>
-						<a ng-if="listWords.showEdit[word.id]" class="ti-close red mr1" ng-click="listWords.toggleEdit(word)"></a>
+
+						<!-- edit form -->
+						<a ng-if="listWords.showEdit[word.id]" class="ti-close mr1" ng-click="listWords.toggleEdit(word)"></a>
 						<input name="word" 
 									 type="text" 
 									 ng-model="listWords.formData.word" 
@@ -32,6 +34,7 @@
 									 class="field flex-auto mr1" 
 									 placeholder="{{ listWords.placeholder.word }}" 
 									 autofocus required>
+						<!-- end: edit form -->
 	
 						<!-- error handling -->
 						<div ng-messages="listWords.listWordsForm.word.$error" 
@@ -46,7 +49,19 @@
 
 					<!-- definition -->
 					<div class="sm-col sm-col-9 dark-gray flex flex-start flex-wrap">
-						<span ng-if="!listWords.showEdit[word.id]">{{ word.definition }}</span>
+
+						<div class="flex flex-center flex-justify col-12">
+							<span ng-if="!listWords.showEdit[word.id]" class="flex-auto" style="white-space: pre-wrap;">{{ word.definition }}</span>
+							<!-- delete button -->
+							<a ng-click="listWords.submitDelete(word.id)"
+								 ng-disabled="listWords.btnState.success || listWords.btnState.loading"
+								 ng-if="!listWords.showEdit[word.id]" 
+								 class="ti-trash red inline-block ml2">
+							</a>
+							<!-- end: delete button -->
+						</div>
+
+						<!-- edit form -->
 						<textarea name="definition" 
 											ng-model="listWords.formData.definition" 
 											ng-if="listWords.showEdit[word.id]" 
@@ -54,14 +69,20 @@
 											style="height: 96px;" 
 											placeholder="{{ listWords.placeholder.definition }}">
 						</textarea>
-						<button type="submit" 
-										ng-if="listWords.showEdit[word.id]" 
-										ng-disabled="listWords.btnState.success || listWords.btnState.loading"
-										class="btn btn-form btn-primary sm-col-4 ml1">
-							<span ng-if="!listWords.btnState.loading && !listWords.btnState.success">Save Changes</span>
-							<span ng-if="listWords.btnState.loading"><spinner width="16px"></spinner>Please wait...</span>
-							<span ng-if="listWords.btnState.success"><span class="ti-check mr1"></span>Success!</span>
-						</button>
+						<div class="sm-col-4 flex flex-wrap">
+							<!-- save button -->
+							<button type="submit" 
+											ng-if="listWords.showEdit[word.id]" 
+											ng-disabled="listWords.btnState.success || listWords.btnState.loading"
+											class="btn btn-form btn-primary col-12 ml1">
+								<span ng-if="!listWords.btnState.loading && !listWords.btnState.success">Save Changes</span>
+								<span ng-if="listWords.btnState.loading"><spinner width="16px"></spinner>Please wait...</span>
+								<span ng-if="listWords.btnState.success"><span class="ti-check mr1"></span>Success!</span>
+							</button>
+							<!-- end: save button -->
+						</div>
+						<!-- end: edit form -->
+
 					</div>
 					<!-- end: definition -->
 
@@ -79,3 +100,13 @@
 <notification color="red" show="listWords.notification.error"><span class="ti-alert mr1"></span>{{ listWords.notificationErrorMsg }}</notification>
 <!-- end: notification -->
 
+<!-- modal -->
+<modal show="listWords.showModal" 
+	      modal-bg="bg-white" 
+	      yes-cb="listWords.modalYes(listWords.selectedWordId)" 
+	      no-cb="listWords.modalClose()"
+	      yes-message="Yes, delete"
+	      no-message="No, cancel">
+	<div class="center h3">You already have this word in your collection. Are you sure you want to overwrite the existing word?</div>
+</modal>
+<!-- end: modal -->
