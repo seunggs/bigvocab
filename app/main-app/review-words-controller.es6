@@ -42,10 +42,12 @@
           console.log(pronunciationPath);
           vm.pronunciation = pronunciationPath !== null ? ngAudio.load(pronunciationPath) : null;
 
+        })
+        .catch(pronunciationErrorHandler)
+        .then(() => {
           // initialize the edit form inputs
           initEditWord(vm.currentWord);
-        })
-        .catch(pronunciationErrorHandler);
+        });
 
       // helper functions /////////////////////////////////////////////////////////////////
 
@@ -61,6 +63,7 @@
       }
 
       function initEditWord (currentWord) {
+        console.log(currentWord);
         vm.formData.word = currentWord.word;
         vm.formData.definition = currentWord.definition;
       }
