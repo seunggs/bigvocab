@@ -1,0 +1,32 @@
+<!-- overlay -->
+<div ng-if="show" class="fixed z2 top-0 right-0 bottom-0 left-0 bg-darken-3" ng-click="closeModal()">
+</div>
+<!-- end: overlay -->
+
+<div ng-if="show" class="fixed z3 top-0 right-0 bottom-0 left-0 ng-animation-fadeInUp">
+	<div class="flex flex-center flex-center-justified px2" style="width: 100%; height: 100vh;">
+		<div class="sm-col-8 md-col-7 lg-col-5 relative {{ modalBg }}">
+			
+			<!-- close button -->
+			<div>
+				<a class="ti-close absolute right-0 h3 p3" ng-click="closeModal()"></a>
+			</div>
+			<!-- end: close button -->
+
+			<!-- content -->
+			<div class="px4 py3 mt1">
+				<div ng-transclude></div>
+				<!-- end: content -->
+
+				<!-- buttons -->
+				<div class="center mt1 mb1">
+					<button class="btn btn-primary mt2" ng-click="yesCb(); closeModal()" ng-if="showYesBtn">{{ yesMessage }}</button>&nbsp;&nbsp;
+					<button class="btn btn-primary mt2" ng-click="noCb(); closeModal()" ng-if="showNoBtn">{{ noMessage }}</button>&nbsp;&nbsp;
+					<button class="btn btn-red mt2" ng-click="closeModal()" ng-if="showAbortBtn">Cancel</button>
+				</div>
+				<!-- end: buttons -->
+			</div>
+
+		</div>
+	</div>
+</div>

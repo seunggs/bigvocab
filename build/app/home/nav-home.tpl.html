@@ -1,0 +1,25 @@
+<div class="fixed white border-bottom border-lighten-2" style="width: 100%">
+	<div class="container">
+		<div class="flex flex-center">
+			<a class="btn btn-sm" ui-sref="root.home">
+				<img src="../images/logo/bigvocab-logo-white.svg" width="50px" />
+			</a>
+
+			<div class="flex-auto"></div>
+
+			<div>
+
+				<!-- nav items -->
+				<a ui-sref="root.home" ng-click="navHome.setActive('home')" class="btn btn-narrow btn-text py2 h6" ng-class="{'bold muted-0': navHome.active === 'home'}">Home</a>
+				<a ui-sref="root.features" ng-click="navHome.setActive('features')" class="btn btn-narrow btn-text py2 h6" ng-class="{'bold muted-0': navHome.active === 'features'}">How it works</a>
+				<!--<a ui-sref="root.about" ng-click="navHome.setActive('about')" class="btn btn-narrow btn-text py2 h6" ng-class="{'bold muted-0': navHome.active === 'about'}">About</a>-->
+				<!-- end: nav items -->
+
+				<!-- login button -->
+				<a href="/auth/google" ng-if="!navHome.user" class="btn btn-outline btn-sm ml2 mr2 py2 h6">Login&nbsp;&rarr;</a>
+				<!-- end: login button -->
+
+			</div>
+		</div>
+	</div>
+</div>

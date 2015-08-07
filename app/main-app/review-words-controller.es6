@@ -34,22 +34,18 @@
           vm.totalWordsCount = vm.words.length;
 
           vm.currentWord = getCurrentWord(vm.wordCounter, vm.words);
-
-          // get pronunciation of the current word
-          return DictionaryService.getPronunciation(ConfigService.forvoKey, vm.currentWord.word);
         })
-        .then(pronunciationPath => {
-          console.log(pronunciationPath);
-          vm.pronunciation = pronunciationPath !== null ? ngAudio.load(pronunciationPath) : null;
-
-        })
-        .catch(pronunciationErrorHandler)
         .then(() => {
           // initialize the edit form inputs
           initEditWord(vm.currentWord);
         });
 
       // helper functions /////////////////////////////////////////////////////////////////
+      
+      function submitErrorHandler (err) {
+        vm.notification.error = true;
+        console.log('Something went wrong: ', err);
+      }
 
       function pronunciationErrorHandler () {
         vm.pronunciation = null;
@@ -63,9 +59,26 @@
       }
 
       function initEditWord (currentWord) {
-        console.log(currentWord);
         vm.formData.word = currentWord.word;
         vm.formData.definition = currentWord.definition;
+      }
+
+      function getNextWord () {
+        vm.wordCounter++;
+        vm.currentWord = vm.words[vm.wordCounter];
+
+        if (vm.currentWord === undefined) {
+          vm.finished = true;
+          return;
+        }
+
+        vm.currentWord.definition = TextConvertService.fromHtml(vm.currentWord.definition);
+
+        // intialize edit fields
+        initEditWord(vm.currentWord);
+
+        vm.hideAnswer();
+        vm.revealWord();
       }
 
       // main //////////////////////////////////////////////////////////////////////////////
@@ -91,9 +104,26 @@
       };
 
       vm.playPronunciation = () => {
-        if (vm.pronunciation !== null) {
-          vm.pronunciation.play();
-        }
+        DictionaryService.getPronunciation(ConfigService.forvoKey, vm.currentWord.word)
+          .then(pronunciationPath => {
+            console.log(pronunciationPath);
+            vm.pronunciation = pronunciationPath !== null ? ngAudio.load(pronunciationPath) : null;
+
+            if (vm.pronunciation !== null) {
+              vm.pronunciation.play();
+            }
+          })
+          .catch(pronunciationErrorHandler);
+      };
+
+      vm.submitDelete = wordId => {
+        WordsService.delete(wordId)
+          .then(() => {
+            vm.notification.success = true;
+            vm.toggleEdit();
+            getNextWord();
+          })
+          .catch(submitErrorHandler);
       };
 
       vm.submitEdit = (wordId, word, definition) => {
@@ -108,13 +138,9 @@
             vm.currentWord.definition = TextConvertService.fromHtml(definition);
             
             vm.notification.success = true;
-
             vm.toggleEdit();
           })
-          .catch(err => {
-            vm.notification.error = true;
-            console.log('Something went wrong: ', err);
-          });
+          .catch(submitErrorHandler);
       };
 
       vm.submitRes = (word, choice) => {
@@ -144,29 +170,10 @@
 
         WordsService.update(word.id, wordUpdate)
           .then(() => {
-            vm.wordCounter++;
-            vm.currentWord = vm.words[vm.wordCounter];
-
-            if (vm.currentWord === undefined) {
-              vm.finished = true;
-            } else {
-              vm.currentWord.definition = TextConvertService.fromHtml(vm.currentWord.definition);
-
-              // get pronunciation of the current word
-              return DictionaryService.getPronunciation(ConfigService.forvoKey, vm.currentWord.word);
-            }
+            vm.notification.success = true;
+            getNextWord();
           })
-          .then(pronunciationPath => {
-            vm.pronunciation = pronunciationPath !== null ? ngAudio.load(pronunciationPath) : null;
-
-            // intialize edit fields
-            initEditWord(vm.currentWord);
-          })
-          .catch(pronunciationErrorHandler)
-          .then(() => {
-            vm.hideAnswer();
-            vm.revealWord();
-          });
+          .catch(submitErrorHandler);
       
       };
 
