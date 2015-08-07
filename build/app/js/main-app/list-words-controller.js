@@ -36,10 +36,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     getAllWords(user.id);
 
-    if ($stateParams.searchString !== undefined) {
+    if ($stateParams.searchString !== null) {
       vm.formData.searchWords = $stateParams.searchString;
-      document.getElementById('searchWords').focus();
     }
+
+    document.getElementById('searchWords').focus();
 
     // helper functions //////////////////////////////////////////////////////////////////
 

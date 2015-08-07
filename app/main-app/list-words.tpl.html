@@ -17,7 +17,7 @@
 		<!-- list of words -->
 		<div class="clearfix sm-col-10 mx-auto bg-lighten-2 rounded">
 			
-			<div ng-repeat="word in listWords.words | filter: listWords.formData.searchWords | orderBy: 'word' | limitTo: listWords.displayLimit" class="clearfix col col-12 p2 border-bottom" track by word.id>
+			<div ng-repeat="word in listWords.words | filter: listWords.formData.searchWords | orderBy: 'word' | limitTo: listWords.displayLimit" class="clearfix col col-12 p2" ng-class="{ 'border-bottom': !$last }" track by word.id>
 				<form name="listWords.listWordsForm" ng-submit="listWords.saveChanges(listWords.listWordsForm.$valid, word, listWords.formData)">
 
 					<!-- word -->
