@@ -12,6 +12,7 @@
       vm.wordCounter = 0; // keeps track of which word user is reviewing
       vm.showWord = true;
       vm.showAnswer = false;
+      vm.showModal = false;
       vm.editToggle = false;
       vm.formData = {};
       vm.finished = false;
@@ -103,6 +104,20 @@
         vm.editToggle = !vm.editToggle;
       };
 
+      vm.deleteWord = wordId => {
+        WordsService.delete(wordId)
+          .then(() => {
+            vm.notification.success = true;
+            vm.toggleEdit();
+            getNextWord();
+          })
+          .catch(submitErrorHandler);
+      };
+
+      vm.closeModal = () => {
+        vm.showModal = false;
+      };
+
       vm.playPronunciation = () => {
         DictionaryService.getPronunciation(ConfigService.forvoKey, vm.currentWord.word)
           .then(pronunciationPath => {
@@ -117,13 +132,8 @@
       };
 
       vm.submitDelete = wordId => {
-        WordsService.delete(wordId)
-          .then(() => {
-            vm.notification.success = true;
-            vm.toggleEdit();
-            getNextWord();
-          })
-          .catch(submitErrorHandler);
+        vm.deleteId = wordId;
+        vm.showModal = true;
       };
 
       vm.submitEdit = (wordId, word, definition) => {
