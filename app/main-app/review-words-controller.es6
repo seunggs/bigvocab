@@ -180,7 +180,6 @@
 
         WordsService.update(word.id, wordUpdate)
           .then(() => {
-            vm.notification.success = true;
             getNextWord();
           })
           .catch(submitErrorHandler);
