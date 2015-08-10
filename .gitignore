@@ -32,5 +32,4 @@ pids
 *.seed
 
 # Keys
-keys.js
 oauth.js
