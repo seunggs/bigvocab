@@ -2,7 +2,7 @@
   'use strict';
 
   class ReviewWordsCtrl {
-    constructor(WordsService, $stateParams, $moment, $timeout, Sm2Service, ConfigService, DictionaryService, TextConvertService, $sce, ngAudio, $q) {
+    constructor(WordsService, UsersService, $stateParams, $moment, $timeout, Sm2Service, ConfigService, DictionaryService, TextConvertService, $sce, ngAudio, user) {
 
       let vm = this;
 
@@ -28,6 +28,8 @@
       vm.notificationErrorMsg = vm.msg.error;
 
       // init //////////////////////////////////////////////////////////////////////////////
+
+      vm.studyCountToday = user.studyCountToday;
 
       WordsService.getDue(collectionId)
         .then(res => {
@@ -207,6 +209,15 @@
             vm.revealWord();
           })
           .catch(submitErrorHandler);
+
+        // update study count for today
+        UsersService.update(user.id, { studyCountToday: vm.studyCountToday })
+          .then(() => {
+            vm.studyCountToday++;
+          })
+          .catch(err => {
+            console.log('Something went wrong while updating study count for today: ', err);
+          });
       
       };
 

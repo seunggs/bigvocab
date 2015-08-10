@@ -2,7 +2,7 @@
   'use strict';
 
   class SettingsCtrl {
-    constructor(SettingsService, user, $timeout) {
+    constructor(UsersService, user, $timeout) {
 
       let vm = this;
 
@@ -35,7 +35,7 @@
       	let settingsUpdate = { maxDailyWords: maxDailyWords };
       	console.log(settingsUpdate);
 
-      	return SettingsService.update(userId, settingsUpdate);
+      	return UsersService.update(userId, settingsUpdate);
       }
 
       // main //////////////////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@
               vm.btnState.success = false;
             }, 1500);
           })
-          .catch(err => {
+          .catch(() => {
             vm.btnState.loading = false;
 
             vm.notification.error = true;

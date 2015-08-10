@@ -117,6 +117,7 @@ router.route('/:userId/collections')
 			.run()
 			.then(function (user) {
 				var maxDailyWords = user.maxDailyWords;
+				var studyCountToday = user.studyCountToday || 0;
 
 				return r.table('collections')
 								.getAll(userId, { index: 'userId' })
@@ -134,7 +135,7 @@ router.route('/:userId/collections')
 											.filter(function (word) {
 												return word('nextReviewEpochTime').lt(r.now().toEpochTime());
 											})
-											.limit(maxDailyWords)
+											.limit(maxDailyWords - studyCountToday)
 											.count()
 									});
 								})
@@ -305,11 +306,12 @@ router.route('/:collectionId/words')
 					})
 					.then(function (user) {
 						var maxDailyWords = user.maxDailyWords;
+						var studyCountToday = user.studyCountToday || 0;
 
 						return r.table('words')
 										.getAll(collectionId, { index: 'collectionId' })
 										.filter(r.row('nextReviewEpochTime').lt(r.now().toEpochTime()))
-										.limit(maxDailyWords)
+										.limit(maxDailyWords - studyCountToday)
 										.run();
 					})
 					.then(function (words) {
