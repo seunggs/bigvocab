@@ -29,7 +29,7 @@
 
       // init //////////////////////////////////////////////////////////////////////////////
 
-      vm.studyCountToday = user.studyCountToday;
+      vm.studyCountToday = user.studyCountToday || 0;
 
       WordsService.getDue(collectionId)
         .then(res => {
@@ -211,10 +211,10 @@
           .catch(submitErrorHandler);
 
         // update study count for today
+        vm.studyCountToday++;
+        console.log('vm.studyCountToday: ', vm.studyCountToday);
+
         UsersService.update(user.id, { studyCountToday: vm.studyCountToday })
-          .then(() => {
-            vm.studyCountToday++;
-          })
           .catch(err => {
             console.log('Something went wrong while updating study count for today: ', err);
           });

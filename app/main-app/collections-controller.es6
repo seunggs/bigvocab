@@ -48,9 +48,9 @@
           return endOfDay - now + 1000;          
         }
 
-        function resetAt4am () {
-          var attemptCount = 0;
+        var attemptCount = 0;
 
+        function resetAt4am () {
           UsersService.update(user.id, { studyCountToday: 0 })
             .then(() => {
               $timeout(resetAt4am, timeTo4am());
