@@ -37,6 +37,11 @@
           vm.totalWordsCount = vm.words.length;
 
           vm.currentWord = getNextWord(vm.wordCounter, vm.words);
+
+          // check to see if there are no more words
+          vm.finished = isFinished(vm.currentWord);
+          
+          if (vm.finished) { return; }
           
           // handle pronunciations
           if (vm.currentWord.pronunciations !== undefined) {
