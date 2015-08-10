@@ -1,0 +1,46 @@
+<!--/////////// DESKTOP ONLY ///////////-->
+<div class="sm-show" style="margin-right: 63px;">
+
+	<div class="bg-navy fixed white z1" style="height: 100vh;">
+		<div class="flex flex-column flex-center py3">
+			
+			<a ui-sref="mainApp.collections"><img class="mb2" src="../images/logo/bigvocab-logo-color.svg" width="56px"></a>
+			<a ui-sref="{{ navItem.link }}" tooltips title="{{ navItem.title }}" tooltip-placement="right" class="btn btn-icon h2 center p2" ng-repeat="navItem in sidebar.navItems | orderBy:'id'" tabindex="-1">
+				<span class="{{ navItem.icon }}"></span>
+			</a>
+
+		</div>
+	</div>
+
+</div>
+<!--/////////// end: DESKTOP ONLY ///////////-->
+
+<!--/////////// MOBILE ONLY ///////////-->
+<div class="sm-hide">
+
+	<!-- toggle button background -->
+	<div class="fixed z2" style="background-color: rgba(255,255,255,0.93); width: 58px; height:58px;"></div>
+	<!-- toggle button background -->
+
+	<!-- toggle button -->
+	<div class="fixed z3">
+		<a ng-click="sidebar.toggleSidebar()" class="btn btn-icon p2 h3" ng-class="{'black': sidebar.toggle === false, 'white': sidebar.toggle === true}"><span class="ti-menu"></span></a>
+	</div>
+	<!-- end: toggle button -->
+
+	<!-- menu items -->
+	<div class="bg-navy fixed white z2 translateX-n-100 transition-all-300" ng-class="{'translateX-n-100': sidebar.toggle === false, 'translateX-0': sidebar.toggle === true }" style="height: 100vh;">
+		<div class="flex flex-column py2 mt4">
+			
+			<div style="margin-left:20px"><img class="mb2" src="../images/logo/bigvocab-logo-color.svg" width="56px"></div>
+			<a ui-sref="{{ navItem.link }}" ng-click="sidebar.toggleSidebar();" class="btn btn-icon py2 px3 flex flex-center" ng-repeat="navItem in sidebar.navItems | orderBy:'id'" tabindex="-1">
+				<div class="{{ navItem.icon }} h3 mr2"></div>
+				<div class="h5">{{ navItem.title }}</div>
+			</a>
+
+		</div>
+	</div>
+	<!-- end: menu items -->
+
+</div>
+<!--/////////// end: MOBILE ONLY ///////////-->

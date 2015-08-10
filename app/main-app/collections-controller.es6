@@ -68,7 +68,6 @@
       }
 
       function getAllCollections (user) {
-        
         CollectionsService.getAll(user.id)
           .then(res => {
             vm.collectionList = angular.fromJson(res).data;

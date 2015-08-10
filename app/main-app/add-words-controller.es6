@@ -40,6 +40,7 @@
         vm.definitions = []; // reset definition list
 
         vm.notification.success = true;
+        document.getElementById('addWords').focus();
 
         $timeout(() => {
           vm.btnState.success = false;
