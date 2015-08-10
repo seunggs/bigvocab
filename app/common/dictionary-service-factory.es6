@@ -24,7 +24,7 @@
 
     // getPronunciation :: String -> Promise([a])
     DictionaryServiceBase.getPronunciationMw = word => {
-      return $http.get('/pronunciations/' + word);
+      return $http.get('/api/pronunciations/' + word);
     };
 
     // getPronunciation :: string -> string -> Promise([a])

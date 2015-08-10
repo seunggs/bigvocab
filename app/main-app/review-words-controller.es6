@@ -79,12 +79,12 @@
       // IMPURE
       function pronunciationFallback (wordObj) {
         // fallback if there are no pronunciations in the word obj
-        DictionaryService.getPronunciationMw(ConfigService.mwKey, wordObj.word)
+        DictionaryService.getPronunciationMw(wordObj.word)
           .then(pronunciationPaths => {
-            vm.pronunciations = pronunciationPaths;
+            vm.pronunciations = angular.fromJson(pronunciationPaths).data;
 
             // and add the pronunciations to the word while we're at it
-            return WordsService.update(wordObj.id, { pronunciations: pronunciationPaths });
+            return WordsService.update(wordObj.id, { pronunciations: vm.pronunciations });
           })
           .then(() => {
             console.log('Successfully added pronunciations');

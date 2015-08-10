@@ -5,35 +5,33 @@ var router = express.Router();
 var r = require('../config/rdbdash');
 var moment = require('moment');
 var R = require('ramda');
-var Promise = require('bluebird');
+var p = require('bluebird');
 var rp = require('request-promise');
 var keys = require('../config/keys');
-var parseString = require('xml2js').parseString;
+var parser = require('xml2json');
 
 // helper functions ///////////////////////////////////////////////////
 
 // parsePronunciations :: String -> [a]
 function parsePronunciations (xmlText) {
 
-	var entrylist;
+	var jsObj = parser.toJson(xmlText, { object: true });
 
-	parseString(xmlText, function (err, result) {
-    entrylist = result.entry_list;
-	});
+	var entryList = jsObj.entry_list;
 
   // if xml returned doesn't have any entries, return an empty array
-  var entries = entrylist.entry === undefined ? [] : entrylist.entry;
+  var entries = entryList.entry === undefined ? [] : entryList.entry;
 
   // xml could return arrays of objects or just an object based on # of definitions
   // so make everything an array
-  entries = entries.isArray() ? entries : R.append(entries, []); 
+  entries = Array.isArray(entries) ? entries : R.append(entries, []); 
 
   var getAudioNames = R.compose(R.uniq, R.map(R.path(['sound', 'wav'])), R.filter(R.has('sound')));
   var audioNames = getAudioNames(entries);
   var pronunciationPaths;
 
   // if no sound, return an empty array
-  if (R.empty(audioNames)) { 
+  if (R.isEmpty(audioNames)) { 
   	pronunciationPaths = [];
   } else {
     var subDir = R.head(audioNames[0]);
@@ -51,6 +49,7 @@ function parsePronunciations (xmlText) {
     });
   }
 
+  console.log('pronunciationPaths: ', pronunciationPaths);
   return pronunciationPaths;
 
 }
@@ -370,14 +369,14 @@ router.route('/words')
 							.run();
 		} 
 
-	  rp.get('http://www.dictionaryapi.com/api/v1/references/collegiate/xml/' + word.word + '?key=' + keys.mwKey)
+	  rp('http://www.dictionaryapi.com/api/v1/references/collegiate/xml/' + word.word + '?key=' + keys.mwKey)
 	  	.then(function (xmlText) {
 	  		var pronunciationPaths = parsePronunciations(xmlText);
 	  		word.pronunciations = pronunciationPaths;
 
 	  		return insertWord(word);
 	  	})
-      .catch(err => {
+      .catch(function (err) {
       	console.log('Adding pronunciation failed: ', err);
 
         return insertWord(word); // proceed if pronunciation call fails
@@ -446,7 +445,7 @@ router.route('/words/all/:userId')
 					);
 				});
 
-				return Promise.all(promises);
+				return p.all(promises);
 			})
 			.then(function (wordsArray) {
 				var words = wordsArray.reduce(function (prev, curr) {
@@ -465,17 +464,18 @@ router.route('/pronunciations/:word')
 	// GET :: String -> [a]
 	.get(function (req, res) {
 		var wordStr = req.params.word;
+		console.log(wordStr);
 
-		rp.get('http://www.dictionaryapi.com/api/v1/references/collegiate/xml/' + wordStr + '?key=' + keys.mwKey)
+		rp('http://www.dictionaryapi.com/api/v1/references/collegiate/xml/' + wordStr + '?key=' + keys.mwKey)
 	  	.then(function (xmlText) {
 	  		var pronunciationPaths = parsePronunciations(xmlText);
 	  		res.json(pronunciationPaths);
 	  	})
-      .catch(err => {
+      .catch(function (err) {
       	res.send(err);
       });
 	});
-	
+
 // Import routes //////////////////////////////////////////////////////
 
 router.route('/import/anki/:userId')

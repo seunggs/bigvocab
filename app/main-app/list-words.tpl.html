@@ -25,10 +25,13 @@
 
 						<!-- pronunciation -->
 						<a ng-click="listWords.playPronunciation(word)" 
-							 ng-if="!listWords.showEdit[word.id] && listWords.pronunciation !== [] && listWords.pronunciation !== undefined"  
-							 class="btn btn-blue-outline mr2 center" style="padding: 0.3em 0.24em; border-radius: 50%;">
+							 ng-if="!listWords.showEdit[word.id] && word.pronunciations !== [] && word.pronunciations !== undefined"  
+							 class="btn btn-blue-outline mr2 center" style="padding: 0.3em 0.24em; border-radius: 50%; width: 22px;">
 							<span class="ti-control-play" style="margin-left:4px"></span>
 						</a>
+
+						<div ng-if="!listWords.showEdit[word.id] && (word.pronunciations === [] || word.pronunciations === undefined)" 
+								 class="inline mr2" style="width: 32px">&nbsp;</div>
 						<!-- end: pronunciation -->
 
 						<a ng-click="listWords.toggleEdit(word)" class="link bold" ng-if="!listWords.showEdit[word.id]">{{ word.word }}</a>

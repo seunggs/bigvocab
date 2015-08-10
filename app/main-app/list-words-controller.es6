@@ -103,8 +103,8 @@
 
       vm.playPronunciation = word => {
         if (word.pronunciations !== [] && word.pronunciations !== undefined) {
-          vm.pronunciation = ngAudio.load(word.pronunciations[0]);
-          vm.pronunciation.play();
+          let pronunciation = ngAudio.load(word.pronunciations[0]);
+          pronunciation.play();
         }
       };
 

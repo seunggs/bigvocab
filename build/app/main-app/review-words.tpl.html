@@ -44,11 +44,11 @@
 					<!-- end: definition -->
 
 					<!-- pronunciation -->
-					<div ng-repeat="pronunciation in reviewWords.pronunciations" 
-							 ng-if="reviewWords.pronunciation !== [] && !reviewWords.finished" 
-							 class="mt2 mx-auto flex">
-						<button ng-click="reviewWords.playPronunciation(pronunciation)" 
-										class="btn btn-blue-outline btn-sm ml2 mr2" style="width: 48px; height: 48px; border-radius: 50%;">
+					<div ng-if="reviewWords.pronunciations !== [] && !reviewWords.finished" 
+							 class="mt1 mx-auto">
+						<button ng-repeat="pronunciation in reviewWords.pronunciations" 
+										ng-click="reviewWords.playPronunciation(pronunciation)" 
+										class="btn btn-blue-outline btn-sm ml1 mr1" style="width: 48px; height: 48px; border-radius: 50%;">
 							<span class="ti-control-play" style="margin-left:4px"></span>
 						</button>
 					</div>
