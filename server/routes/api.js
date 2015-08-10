@@ -5,7 +5,55 @@ var router = express.Router();
 var r = require('../config/rdbdash');
 var moment = require('moment');
 var R = require('ramda');
-var $q = require('bluebird');
+var Promise = require('bluebird');
+var rp = require('request-promise');
+var keys = require('../config/keys');
+var parseString = require('xml2js').parseString;
+
+// helper functions ///////////////////////////////////////////////////
+
+// parsePronunciations :: String -> [a]
+function parsePronunciations (xmlText) {
+
+	var entrylist;
+
+	parseString(xmlText, function (err, result) {
+    entrylist = result.entry_list;
+	});
+
+  // if xml returned doesn't have any entries, return an empty array
+  var entries = entrylist.entry === undefined ? [] : entrylist.entry;
+
+  // xml could return arrays of objects or just an object based on # of definitions
+  // so make everything an array
+  entries = entries.isArray() ? entries : R.append(entries, []); 
+
+  var getAudioNames = R.compose(R.uniq, R.map(R.path(['sound', 'wav'])), R.filter(R.has('sound')));
+  var audioNames = getAudioNames(entries);
+  var pronunciationPaths;
+
+  // if no sound, return an empty array
+  if (R.empty(audioNames)) { 
+  	pronunciationPaths = [];
+  } else {
+    var subDir = R.head(audioNames[0]);
+
+    // exceptions to subDir rule
+    if (R.take(3, audioNames[0]) === 'bix') {
+      subDir = 'bix';
+    } else if (R.take(2, audioNames[0]) === 'gg') {
+      subDir = 'gg';
+    }
+
+    pronunciationPaths = audioNames.map(function (audioName) {
+      var pronunciationPath = 'http://media.merriam-webster.com/soundc11/' + subDir + '/' + audioName;
+      return pronunciationPath;
+    });
+  }
+
+  return pronunciationPaths;
+
+}
 
 // Users routes ///////////////////////////////////////////////////////
 
@@ -234,7 +282,7 @@ router.route('/:collectionId/words')
 
 			case undefined:
 				r.table('words')
-					.getAll(collectionId, { index: 'collectionId' })
+					.get(collectionId, { index: 'collectionId' })
 					.run()
 					.then(function (words) {
 						res.json(words);
@@ -277,6 +325,7 @@ router.route('/:collectionId/words')
 
 	});
 
+// search words by word rather than id
 router.route('/:collectionId/words/:word')
 
 	// GET :: Params -> Params -> {word}
@@ -287,7 +336,6 @@ router.route('/:collectionId/words/:word')
 		var word = req.params.word;
 		var exists = req.query.exists !== undefined ? true : undefined;
 		var sendBack;
-		console.log('exists: ', exists);
 
 		r.table('words')
 			.getAll(collectionId, { index: 'collectionId' })
@@ -316,9 +364,24 @@ router.route('/words')
 	.post(function (req, res) {
 		var word = req.body;
 
-		r.table('words')
-			.insert(word)
-			.run()
+		function insertWord (word) {
+			return r.table('words')
+							.insert(word)
+							.run();
+		} 
+
+	  rp.get('http://www.dictionaryapi.com/api/v1/references/collegiate/xml/' + word.word + '?key=' + keys.mwKey)
+	  	.then(function (xmlText) {
+	  		var pronunciationPaths = parsePronunciations(xmlText);
+	  		word.pronunciations = pronunciationPaths;
+
+	  		return insertWord(word);
+	  	})
+      .catch(err => {
+      	console.log('Adding pronunciation failed: ', err);
+
+        return insertWord(word); // proceed if pronunciation call fails
+      })
 			.then(function (dbRes) {
 				res.json(dbRes);
 			})
@@ -383,7 +446,7 @@ router.route('/words/all/:userId')
 					);
 				});
 
-				return $q.all(promises);
+				return Promise.all(promises);
 			})
 			.then(function (wordsArray) {
 				var words = wordsArray.reduce(function (prev, curr) {
@@ -397,6 +460,22 @@ router.route('/words/all/:userId')
 			});
 	});
 
+router.route('/pronunciations/:word')
+
+	// GET :: String -> [a]
+	.get(function (req, res) {
+		var wordStr = req.params.word;
+
+		rp.get('http://www.dictionaryapi.com/api/v1/references/collegiate/xml/' + wordStr + '?key=' + keys.mwKey)
+	  	.then(function (xmlText) {
+	  		var pronunciationPaths = parsePronunciations(xmlText);
+	  		res.json(pronunciationPaths);
+	  	})
+      .catch(err => {
+      	res.send(err);
+      });
+	});
+	
 // Import routes //////////////////////////////////////////////////////
 
 router.route('/import/anki/:userId')

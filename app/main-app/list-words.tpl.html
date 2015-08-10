@@ -15,7 +15,7 @@
 		<!-- end: search words form -->
 
 		<!-- list of words -->
-		<div class="clearfix sm-col-10 mx-auto bg-lighten-2 rounded">
+		<div class="clearfix sm-col-10 mx-auto bg-lighten-2 rounded mb4">
 			
 			<div ng-repeat="word in listWords.words | filter: listWords.formData.searchWords | orderBy: 'word' | limitTo: listWords.displayLimit" class="clearfix col col-12 p2" ng-class="{ 'border-bottom': !$last }" track by word.id>
 				<form name="listWords.listWordsForm" ng-submit="listWords.saveChanges(listWords.listWordsForm.$valid, word, listWords.formData)">
@@ -25,7 +25,7 @@
 
 						<!-- pronunciation -->
 						<a ng-click="listWords.playPronunciation(word)" 
-							 ng-if="!listWords.showEdit[word.id]" 
+							 ng-if="!listWords.showEdit[word.id] && listWords.pronunciation !== [] && listWords.pronunciation !== undefined"  
 							 class="btn btn-blue-outline mr2 center" style="padding: 0.3em 0.24em; border-radius: 50%;">
 							<span class="ti-control-play" style="margin-left:4px"></span>
 						</a>

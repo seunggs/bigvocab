@@ -15,6 +15,7 @@
       '720kb.tooltips',
       'ngAudio',
       'angular-momentjs',
+      'cb.x2js',
       'home',
       'auth',
       'mainApp',

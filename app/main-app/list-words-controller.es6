@@ -102,19 +102,10 @@
       };
 
       vm.playPronunciation = word => {
-        DictionaryService.getPronunciation(ConfigService.forvoKey, word.word)
-          .then(pronunciationPath => {
-            vm.pronunciation = pronunciationPath !== null ? ngAudio.load(pronunciationPath) : null;
-            if (vm.pronunciation !== null) {
-              vm.pronunciation.play();
-            } else {
-              vm.notificationErrorMsg = vm.msg.pronunciationError;
-              vm.notification.error = true;
-            }
-          })
-          .catch(err => {
-            console.log('Something went wrong: ', err);
-          });
+        if (word.pronunciations !== [] && word.pronunciations !== undefined) {
+          vm.pronunciation = ngAudio.load(word.pronunciations[0]);
+          vm.pronunciation.play();
+        }
       };
 
       vm.saveChanges = (isValid, word, formData) => {

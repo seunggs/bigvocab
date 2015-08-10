@@ -2,7 +2,7 @@
   'use strict';
 
   class ImportCtrl {
-    constructor(ImportService, WordsService, DictionaryService, ConfigService, SettingsService, user, $timeout, $window, $q) {
+    constructor(ImportService, WordsService, ConfigService, SettingsService, user, $timeout, $window) {
 
       let vm = this;
       
@@ -34,36 +34,12 @@
         
         vm.btnState.loading = true;
 
-        let promises = [
-        	ImportService.anki(userId, data), 
-        	SettingsService.update(user.id, { maxWords: 150 })
-        ];
-
-        $q.all(promises)
+        ImportService.anki(userId, data)
           .then(dbRes => {
-            let dbResData = angular.fromJson(dbRes[0]).data;
+            let dbResData = angular.fromJson(dbRes).data;
             let collectionId = dbResData.generated_keys[0];
 
             return WordsService.getAll(collectionId);
-          })
-          .catch(err => {
-            vm.btnState.loading = false;
-
-            vm.notification.error = true;
-
-            console.log('Something went wrong with importing', err);
-
-            return $q.reject(err);
-          })
-          .then(res => {
-            let words = angular.fromJson(res).data;
-            let promises = [];
-
-            words.forEach(word => {
-              promises.push(addPronunciation(ConfigService.forvoKey, word));
-            });
-
-            return $q.all(promises);
           })
           .then(() => {
             vm.btnState.loading = false;
@@ -78,43 +54,12 @@
           })
           .catch(err => {
             vm.btnState.loading = false;
-            vm.btnState.success = true;
 
-            vm.notification.success = true;
+            vm.notification.error = true;
 
-            $timeout(() => {
-              vm.btnState.success = false;
-              $window.location.href = '/#/main-app/collections';
-            }, 1500);
-
-            console.log('Import successful, but adding pronunciations failed: ', err);
+            console.log('Something went wrong with importing', err);
           });
 
-      }
-
-      function addPronunciation (forvoKey, word) {
-        let deferred = $q.defer();
-
-        DictionaryService.getPronunciation(forvoKey, word.word)
-          .then(res => {
-            let pronunciationData = angular.fromJson(res).data;
-            let pronunciationPath = pronunciationData.attributes.total !== 0 ? pronunciationData.items[0].pathmp3 : null;
-
-            let wordUpdate = {
-              pronunciationPath: pronunciationPath
-            };
-
-            return WordsService.update(word.id, wordUpdate);
-          })
-          .then(dbRes => {
-            deferred.resolve(dbRes);
-          })
-          .catch(err => {
-            deferred.reject(err);
-            console.log('Something went wrong: ', err);
-          });
-
-        return deferred.promise;
       }
 
       // main /////////////////////////////////////////////////////////////////////////////

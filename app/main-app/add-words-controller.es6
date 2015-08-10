@@ -140,7 +140,7 @@
 
       vm.getDefinition = word => {
         if (word !== undefined) {
-          DictionaryService.getDefinition(ConfigService.mashapeKey, word)
+          DictionaryService.getDefinitionFree(ConfigService.mashapeKey, word)
             .then(res => {
               vm.definitions = res.data.definitions;
             })

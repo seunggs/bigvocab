@@ -2,7 +2,7 @@
   'use strict';
 
   class ReviewWordsCtrl {
-    constructor(WordsService, $stateParams, $moment, $timeout, Sm2Service, ConfigService, DictionaryService, TextConvertService, $sce, ngAudio) {
+    constructor(WordsService, $stateParams, $moment, $timeout, Sm2Service, ConfigService, DictionaryService, TextConvertService, $sce, ngAudio, $q) {
 
       let vm = this;
 
@@ -34,12 +34,19 @@
           vm.words = angular.fromJson(res).data;
           vm.totalWordsCount = vm.words.length;
 
-          vm.currentWord = getCurrentWord(vm.wordCounter, vm.words);
-        })
-        .then(() => {
+          vm.currentWord = getNextWord(vm.wordCounter, vm.words);
+          
+          // handle pronunciations
+          if (vm.currentWord.pronunciations !== undefined) {
+            vm.pronunciations = vm.currentWord.pronunciations;
+          } else {
+            pronunciationFallback(vm.currentWord);
+          }
+
           // initialize the edit form inputs
-          initEditWord(vm.currentWord);
-        });
+          vm.formData = initEditWord(vm.currentWord);
+        })
+        .catch(submitErrorHandler);
 
       // helper functions /////////////////////////////////////////////////////////////////
       
@@ -48,38 +55,43 @@
         console.log('Something went wrong: ', err);
       }
 
-      function pronunciationErrorHandler () {
-        vm.pronunciation = null;
+      function initEditWord (currentWord) {
+        return {
+          word: currentWord.word,
+          definition: currentWord.definition
+        };
       }
 
-      function getCurrentWord (wordCounter, words) {
+      // IMPURE
+      function getNextWord (wordCounter, words) {
         let currentWord = words[wordCounter];
+
+        if (currentWord === undefined) {
+          vm.finished = true;
+          return;
+        }
+
         currentWord.definition = TextConvertService.fromHtml(currentWord.definition);
 
         return currentWord;
       }
 
-      function initEditWord (currentWord) {
-        vm.formData.word = currentWord.word;
-        vm.formData.definition = currentWord.definition;
-      }
+      // IMPURE
+      function pronunciationFallback (wordObj) {
+        // fallback if there are no pronunciations in the word obj
+        DictionaryService.getPronunciationMw(ConfigService.mwKey, wordObj.word)
+          .then(pronunciationPaths => {
+            vm.pronunciations = pronunciationPaths;
 
-      function getNextWord () {
-        vm.wordCounter++;
-        vm.currentWord = vm.words[vm.wordCounter];
-
-        if (vm.currentWord === undefined) {
-          vm.finished = true;
-          return;
-        }
-
-        vm.currentWord.definition = TextConvertService.fromHtml(vm.currentWord.definition);
-
-        // intialize edit fields
-        initEditWord(vm.currentWord);
-
-        vm.hideAnswer();
-        vm.revealWord();
+            // and add the pronunciations to the word while we're at it
+            return WordsService.update(wordObj.id, { pronunciations: pronunciationPaths });
+          })
+          .then(() => {
+            console.log('Successfully added pronunciations');
+          })
+          .catch(err => {
+            console.log('Adding pronunciations failed: ', err);
+          });
       }
 
       // main //////////////////////////////////////////////////////////////////////////////
@@ -118,17 +130,9 @@
         vm.showModal = false;
       };
 
-      vm.playPronunciation = () => {
-        DictionaryService.getPronunciation(ConfigService.forvoKey, vm.currentWord.word)
-          .then(pronunciationPath => {
-            console.log(pronunciationPath);
-            vm.pronunciation = pronunciationPath !== null ? ngAudio.load(pronunciationPath) : null;
-
-            if (vm.pronunciation !== null) {
-              vm.pronunciation.play();
-            }
-          })
-          .catch(pronunciationErrorHandler);
+      vm.playPronunciation = pronunciation => {
+        let pronunciationAudioObj = ngAudio.load(pronunciation);
+        pronunciationAudioObj.play();
       };
 
       vm.submitDelete = wordId => {
@@ -136,15 +140,15 @@
         vm.showModal = true;
       };
 
-      vm.submitEdit = (wordId, word, definition) => {
+      vm.submitEdit = (wordId, wordStr, definition) => {
         let wordUpdate = {
-          word: word,
+          word: wordStr,
           definition: TextConvertService.toHtml(definition)
         };
 
         WordsService.update(wordId, wordUpdate)
           .then(() => {
-            vm.currentWord.word = word;
+            vm.currentWord.word = wordStr;
             vm.currentWord.definition = TextConvertService.fromHtml(definition);
             
             vm.notification.success = true;
@@ -153,20 +157,20 @@
           .catch(submitErrorHandler);
       };
 
-      vm.submitRes = (word, choice) => {
+      vm.submitRes = (wordObj, choice) => {
 
         vm.hideWord();
         vm.hideAnswer();
 
-        let newEaseFactor = Sm2Service.calcEaseFactor(word.easeFactor, choice);
-        let newPhase = Sm2Service.calcPhase(word.phase, word.interval, choice);
-        let newInterval = Sm2Service.calcInterval(word.phase, word.interval, word.easeFactor, choice);
+        let newEaseFactor = Sm2Service.calcEaseFactor(wordObj.easeFactor, choice);
+        let newPhase = Sm2Service.calcPhase(wordObj.phase, wordObj.interval, choice);
+        let newInterval = Sm2Service.calcInterval(wordObj.phase, wordObj.interval, wordObj.easeFactor, choice);
         let lastReviewed = $moment();
         let lastReviewedEpochTime = lastReviewed.unix();
         let newNextReview = Sm2Service.calcNextReview(newInterval);
         let newNextReviewEpochTime = newNextReview.unix();
 
-        let newReviewRes = angular.copy(word.reviewRes);
+        let newReviewRes = angular.copy(wordObj.reviewRes);
         newReviewRes[choice]++;
 
         let wordUpdate = {
@@ -178,9 +182,23 @@
           nextReviewEpochTime: newNextReviewEpochTime
         };
 
-        WordsService.update(word.id, wordUpdate)
+        WordsService.update(wordObj.id, wordUpdate)
           .then(() => {
-            getNextWord();
+            vm.wordCounter++;
+            vm.currentWord = getNextWord(vm.wordCounter, vm.words);
+
+            // handle pronunciations
+            if (vm.currentWord.pronunciations !== undefined) {
+              vm.pronunciations = vm.currentWord.pronunciations;
+            } else {
+              pronunciationFallback(vm.currentWord);
+            }
+
+            // initialize the edit form inputs
+            vm.formData = initEditWord(vm.currentWord);
+
+            vm.hideAnswer();
+            vm.revealWord();
           })
           .catch(submitErrorHandler);
       

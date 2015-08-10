@@ -26,6 +26,11 @@
       return $http.get('/api/' + collectionId + '/words');
     };
 
+    // get only the words to be reviewed today
+    WordsServiceBase.getDue = collectionId => {
+      return $http.get('/api/'+ collectionId + '/words/?filter=dueToday');
+    };
+
     WordsServiceBase.create = word => {
       return $http.post('/api/words', word);
     };
@@ -35,18 +40,13 @@
     };
 
     // find :: String -> String -> Promise({word})
-    WordsServiceBase.find = (collectionId, word) => {
-      return $http.get('/api/' + collectionId + '/words/' + word);
+    WordsServiceBase.find = (collectionId, wordStr) => {
+      return $http.get('/api/' + collectionId + '/words/' + wordStr);
     };
 
     // find :: String -> String -> Promise({word})
     WordsServiceBase.exists = (collectionId, word) => {
       return $http.get('/api/' + collectionId + '/words/' + word + '/?exists');
-    };
-
-    // get only the words to be reviewed today
-    WordsServiceBase.getDue = collectionId => {
-      return $http.get('/api/'+ collectionId + '/words/?filter=dueToday');
     };
 
     WordsServiceBase.update = (wordId, wordUpdate) => {

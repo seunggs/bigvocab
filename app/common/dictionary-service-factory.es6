@@ -16,23 +16,34 @@
 
     let DictionaryServiceBase = {};
     
-    DictionaryServiceBase.getDefinition = (mashapeKey, word) => {
+    DictionaryServiceBase.getDefinitionFree = (mashapeKey, word) => {
       return $http.get('https://montanaflynn-dictionary.p.mashape.com/define?word=' + word, {
         headers: { 'X-Mashape-Key': mashapeKey }
       });
     };
 
-    // getPronunciation :: string -> string -> Promise(String)
-    DictionaryServiceBase.getPronunciation = (forvoKey, word) => {
+    // getPronunciation :: String -> Promise([a])
+    DictionaryServiceBase.getPronunciationMw = word => {
+      return $http.get('/pronunciations/' + word);
+    };
+
+    // getPronunciation :: string -> string -> Promise([a])
+    DictionaryServiceBase.getPronunciationForvo = (forvoKey, word) => {
 
       let deferred = $q.defer();
 
       $http.jsonp('http://apifree.forvo.com/action/word-pronunciations/format/json/word/' + word + '/language/en/order/rate-desc/limit/1/key/' + forvoKey + '?callback=JSON_CALLBACK')
         .then(res => {
           let pronunciationData = angular.fromJson(res).data;
-          let pronunciationPath = pronunciationData.attributes.total !== 0 ? pronunciationData.items[0].pathmp3 : null;
+          let pronunciationPaths;
 
-          deferred.resolve(pronunciationPath);
+          if (pronunciationData.attributes.total !== 0) {
+            pronunciationPaths = pronunciationPaths.push(pronunciationData.items[0].pathmp3);
+          } else {
+            pronunciationPaths = null;
+          }
+
+          deferred.resolve(pronunciationPaths);
         })
         .catch(err => {
           deferred.reject(err);
