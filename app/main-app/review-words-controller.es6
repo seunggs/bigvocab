@@ -66,14 +66,15 @@
       function getNextWord (wordCounter, words) {
         let currentWord = words[wordCounter];
 
-        if (currentWord === undefined) {
-          vm.finished = true;
-          return;
-        }
+        if (currentWord === undefined) { return undefined; }
 
         currentWord.definition = TextConvertService.fromHtml(currentWord.definition);
 
         return currentWord;
+      }
+
+      function isFinished (currentWord) {
+        return currentWord === undefined ? true : false;
       }
 
       // IMPURE
@@ -186,6 +187,11 @@
           .then(() => {
             vm.wordCounter++;
             vm.currentWord = getNextWord(vm.wordCounter, vm.words);
+
+            // check to see if there are no more words
+            vm.finished = isFinished(vm.currentWord);
+            
+            if (vm.finished) { return; }
 
             // handle pronunciations
             if (vm.currentWord.pronunciations !== undefined) {
