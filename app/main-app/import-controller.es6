@@ -2,7 +2,7 @@
   'use strict';
 
   class ImportCtrl {
-    constructor(ImportService, WordsService, ConfigService, SettingsService, user, $timeout, $window) {
+    constructor(ImportService, WordsService, ConfigService, user, $timeout, $window) {
 
       let vm = this;
       
