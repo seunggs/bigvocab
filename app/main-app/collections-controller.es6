@@ -37,34 +37,34 @@
       
       getAllCollections(user);
 
-      resetStudyCountAt4am();
+      resetStudyCountAtMidnight();
 
       // helper functions //////////////////////////////////////////////////////////////////
 
-      function resetStudyCountAt4am () {
-        function timeTo4am () {
+      function resetStudyCountAtMidnight () {
+        function timeToMidnight () {
           var now = new Date();
-          var endOfDay = $moment().endOf('day').add(4, 'hours');
+          var endOfDay = $moment().endOf('day');
           return endOfDay - now + 1000;          
         }
 
         var attemptCount = 0;
 
-        function resetAt4am () {
+        function resetAtMidnight () {
           UsersService.update(user.id, { studyCountToday: 0 })
             .then(() => {
-              $timeout(resetAt4am, timeTo4am());
+              $timeout(resetAtMidnight, timeToMidnight());
             })
             .catch(err => {
               console.log('Something went wrong (attempt ', attemptCount , '): ', err);
               if (attemptCount <= 5) { // retry 5 times after waiting 2 seconds before each attempt
                 attemptCount++;
-                $timeout(resetAt4am, 2000);
+                $timeout(resetAtMidnight, 2000);
               }
             });
         }
 
-        $timeout(resetAt4am, timeTo4am());
+        $timeout(resetAtMidnight, timeToMidnight());
       }
 
       function getAllCollections (user) {
