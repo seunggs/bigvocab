@@ -27,6 +27,11 @@
       return $http.get('/api/pronunciations/' + word);
     };
 
+    // getPronunciation :: String -> String -> Promise([a])
+    DictionaryServiceBase.updatePronunciationMw = wordObj => {
+      return $http.put('/api/pronunciations/' + wordObj.id, wordObj);
+    };
+
     // getPronunciation :: string -> string -> Promise([a])
     DictionaryServiceBase.getPronunciationForvo = (forvoKey, word) => {
 

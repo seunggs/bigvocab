@@ -69,7 +69,6 @@
         };
       }
 
-      // IMPURE
       function getNextWord (wordCounter, words) {
         let currentWord = words[wordCounter];
 
@@ -87,14 +86,9 @@
       // IMPURE
       function pronunciationFallback (wordObj) {
         // fallback if there are no pronunciations in the word obj
-        DictionaryService.getPronunciationMw(wordObj.word)
+        DictionaryService.updatePronunciationMw(wordObj)
           .then(pronunciationPaths => {
             vm.pronunciations = angular.fromJson(pronunciationPaths).data;
-
-            // and add the pronunciations to the word while we're at it
-            return WordsService.update(wordObj.id, { pronunciations: vm.pronunciations });
-          })
-          .then(() => {
             console.log('Successfully added pronunciations');
           })
           .catch(err => {

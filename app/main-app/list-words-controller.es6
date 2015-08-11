@@ -2,7 +2,7 @@
   'use strict';
 
   class ListWordsCtrl {
-    constructor($stateParams, CollectionsService, WordsService, TextConvertService, ConfigService, DictionaryService, $timeout, user, ngAudio) {
+    constructor($stateParams, CollectionsService, WordsService, TextConvertService, ConfigService, DictionaryService, $timeout, user, ngAudio, $q) {
 
       let vm = this;
 
@@ -12,6 +12,10 @@
       vm.showEdit = {};
       vm.displayLimit = 200;
       vm.btnState = {
+        loading: false,
+        success: false
+      };
+      vm.pronunciationBtnState = {
         loading: false,
         success: false
       };
@@ -141,6 +145,50 @@
       vm.submitDelete = wordId => {
         vm.showModal = true;
         vm.selectedWordId = wordId;
+      };
+
+      vm.addAllPronunciations = words => {
+        vm.pronunciationBtnState.loading = true;
+
+        let count = 0;
+
+        let promises = words.reduce((prev, curr) => {
+          count++;
+          return prev.concat(DictionaryService.updatePronunciationMw(curr));
+        }, []);
+
+        $q.all(promises)
+          .then(() => {
+            vm.pronunciationBtnState.loading = false;
+            vm.pronunciationBtnState.success = true;
+
+            vm.notificationSuccessMsg = vm.msg.success;
+            vm.notification.success = true;
+
+            $timeout(() => {
+              vm.pronunciationBtnState.success = false;
+            }, 1500);
+            
+            getAllWords(user.id);
+          })
+          .catch(err => {
+            console.log('Adding pronunciations failed: ', err);
+          });
+
+        // words.forEach(function (wordObj) {
+        //   if (wordObj.pronunciations === undefined) {
+        //     DictionaryService.updatePronunciationMw(wordObj)
+        //       .then(() => {
+        //         count++;
+        //         console.log('Successfully added pronunciations');
+        //       })
+        //       .catch(err => {
+        //         console.log('Adding pronunciations failed: ', err);
+        //       });
+        //   }
+        // });
+
+        
       };
 
     }

@@ -461,17 +461,58 @@ router.route('/words/all/:userId')
 			});
 	});
 
-router.route('/pronunciations/:word')
+router.route('/pronunciations/:wordId')
 
 	// GET :: String -> [a]
 	.get(function (req, res) {
-		var wordStr = req.params.word;
-		console.log(wordStr);
+		var wordId = req.params.wordId;
+
+		r.table('words')
+			.get(wordId)
+			.run()
+			.then(function (word) {
+				var wordStr = word.word;
+				return rp('http://www.dictionaryapi.com/api/v1/references/collegiate/xml/' + wordStr + '?key=' + keys.mwKey);
+			})
+	  	.then(function (xmlText) {
+	  		var pronunciationPaths = parsePronunciations(xmlText);
+	  		res.json(pronunciationPaths);
+	  	})
+      .catch(function (err) {
+      	res.send(err);
+      });
+	})
+
+	// PUT :: String -> Obj -> {dbRes}
+	.put(function (req, res) {
+		var wordId = req.params.wordId;
+		var wordStr = req.body.word;
+
+		console.log('wordStr: ', wordStr);
 
 		rp('http://www.dictionaryapi.com/api/v1/references/collegiate/xml/' + wordStr + '?key=' + keys.mwKey)
 	  	.then(function (xmlText) {
 	  		var pronunciationPaths = parsePronunciations(xmlText);
-	  		res.json(pronunciationPaths);
+
+	  		console.log('pronunciationPaths: ', pronunciationPaths);
+	  		
+	  		return r.table('words')
+	  						.get(wordId)
+				  			.update({ pronunciations: pronunciationPaths }, { returnChanges: true })
+				  			.run();
+	  	})
+	  	.then(function (dbRes) {
+	  		if (R.isEmpty(dbRes.changes)) { return; }
+
+	  		console.log('dbRes.changes: ', dbRes.changes);
+
+	  		var pronunciations = R.chain(function (change) {
+	  			return change.new_val.pronunciations;
+	  		})(dbRes.changes);
+
+	  		console.log('pronunciations: ', pronunciations);
+
+	  		res.json(pronunciations);
 	  	})
       .catch(function (err) {
       	res.send(err);

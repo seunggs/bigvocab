@@ -1,0 +1,79 @@
+<div class="container">
+	<div class="clearfix">
+
+		<h1 class="mt1 mb3 center">Add New Words</h1>
+
+		<!-- add words form -->
+		<div class="md-col md-col-6 px2">
+
+			<form name="addWords.addWordForm" 
+						ng-submit="addWords.submit(addWords.addWordForm.$valid, addWords.collectionId, addWords.formData)"
+						novalidate>
+
+				<div class="mb1 bold">WORD</div>
+				<input id="addWords" name="word" type="text" ng-model="addWords.formData.word" ng-blur="addWords.getDefinition(addWords.formData.word)" class="field col-12" placeholder="{{ addWords.placeholder.word }}" autofocus required>
+
+				<!-- error handling -->
+				<div ng-messages="addWords.addWordForm.word.$error" 
+						 ng-if="addWords.addWordForm.$submitted && addWords.addWordForm.word.$touched" 
+						 class="red bold h6 mt1">
+					<div ng-message="required"><span class="ti-alert mr1"></span>This field is required</div>
+				</div>
+				<!-- end: error handling -->
+
+				<div class="mb1 mt2 bold">MEANING</div>
+				<textarea name="definition" ng-model="addWords.formData.definition" class="field col-12" style="height: 160px;" placeholder="{{ addWords.placeholder.definition }}"></textarea>
+
+				<div class="flex flex-justify">
+					<button ng-click="addWords.resetForm()" class="btn btn-outline mt2 mb2">Reset Form</button>
+					
+					<!-- submit button -->
+					<button type="submit" class="btn btn-primary mt2 mb2" ng-disabled="addWords.btnState.success || addWords.btnState.loading">
+						<span ng-if="!addWords.btnState.loading && !addWords.btnState.success"><span class="ti-plus mr1"></span>Add Word</span>
+						<span ng-if="addWords.btnState.loading"><spinner width="16px"></spinner>Please wait...</span>
+						<span ng-if="addWords.btnState.success"><span class="ti-check mr1"></span>Success!</span>
+					</button>
+					<!-- end: submit button -->
+				</div>
+
+			</form>
+
+		</div>
+		<!-- end: add words form -->
+
+		<!-- definitions from dictionary API -->
+		<div class="md-col md-col-6 px2">
+
+			<div class="bold gray mb2">Word definitions from <span class="italic">The American Heritage® Dictionary of the English Language, 4th Edition</span></div>
+
+			<div class="bg-light-green rounded p2 mb2 near-black ng-animation-fadeInUp" ng-repeat="definition in addWords.definitions">
+				<div class="flex flex-center">
+					<div class="flex-none" style="width: 52px">
+						<a ng-click="addWords.copyDefinition(definition.text)" class="btn btn-sm btn-green-outline" tabindex="-1"><span class="ti-plus"></span></a>
+					</div>
+					<div class="h5">{{ definition.text }}</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- definitions from dictionary API -->
+
+	</div>
+</div>
+
+<!-- notification -->
+<notification color="green" show="addWords.notification.success"><span class="ti-check mr1"></span>{{ addWords.notificationSuccessMsg }}</notification>
+<notification color="red" show="addWords.notification.error"><span class="ti-alert mr1"></span>{{ addWords.notificationErrorMsg }}</notification>
+<!-- end: notification -->
+
+<!-- modal -->
+<modal show="addWords.showModal" 
+	      modal-bg="bg-white" 
+	      yes-cb="addWords.modalYes(addWords.collectionId, addWords.formData)" 
+	      no-cb="addWords.modalNo(addWords.collectionId, addWords.formData)"
+	      yes-message="Yes, overwrite"
+	      no-message="No, add new"
+	      add-abort-button>
+	<div class="center h3">You already have this word in your collection. Are you sure you want to overwrite the existing word?</div>
+</modal>
+<!-- end: modal -->
