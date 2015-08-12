@@ -34,12 +34,15 @@ function parsePronunciations (xmlText) {
   if (R.isEmpty(audioNames)) { 
   	pronunciationPaths = [];
   } else {
-    var subDir = R.head(audioNames[0]);
+  	audioNames = R.flatten(audioNames);
+
+  	var firstAudioName = audioNames[0];
+		var subDir = R.head(firstAudioName);
 
     // exceptions to subDir rule
-    if (R.take(3, audioNames[0]) === 'bix') {
+    if (R.take(3, firstAudioName) === 'bix') {
       subDir = 'bix';
-    } else if (R.take(2, audioNames[0]) === 'gg') {
+    } else if (R.take(2, firstAudioName) === 'gg') {
       subDir = 'gg';
     }
 
@@ -49,7 +52,6 @@ function parsePronunciations (xmlText) {
     });
   }
 
-  console.log('pronunciationPaths: ', pronunciationPaths);
   return pronunciationPaths;
 
 }
@@ -225,7 +227,6 @@ router.route('/collections/:collectionId')
 			.delete()
 			.run()
 			.then(function (dbRes) {
-				console.log(dbRes);
 				return r.table('words')
 								.getAll(collectionId, { index: 'collectionId' })
 								.delete()
