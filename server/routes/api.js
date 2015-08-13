@@ -36,17 +36,16 @@ function parsePronunciations (xmlText) {
   } else {
   	audioNames = R.flatten(audioNames);
 
-  	var firstAudioName = audioNames[0];
-		var subDir = R.head(firstAudioName);
-
-    // exceptions to subDir rule
-    if (R.take(3, firstAudioName) === 'bix') {
-      subDir = 'bix';
-    } else if (R.take(2, firstAudioName) === 'gg') {
-      subDir = 'gg';
-    }
-
     pronunciationPaths = audioNames.map(function (audioName) {
+			var subDir = R.head(audioName);
+
+	    // exceptions to subDir rule
+	    if (R.take(3, audioName) === 'bix') {
+	      subDir = 'bix';
+	    } else if (R.take(2, audioName) === 'gg') {
+	      subDir = 'gg';
+	    }
+
       var pronunciationPath = 'http://media.merriam-webster.com/soundc11/' + subDir + '/' + audioName;
       return pronunciationPath;
     });
