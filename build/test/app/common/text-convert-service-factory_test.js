@@ -1,12 +1,12 @@
 /*global describe, beforeEach, it, expect, inject, module*/
 'use strict';
 
-describe('TextConvertService', () => {
-  let factory;
+describe('TextConvertService', function () {
+  var factory = undefined;
 
   beforeEach(module('common'));
 
-  beforeEach(inject((TextConvertService) => {
+  beforeEach(inject(function (TextConvertService) {
     factory = TextConvertService;
   }));
 

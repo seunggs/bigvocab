@@ -10,11 +10,11 @@ describe('DictionaryService', () => {
     factory = DictionaryService;
   }));
 
-  it('should have someValue be DictionaryService', () => {
-    expect(factory.someValue).toEqual('DictionaryService');
-  });
+  // it('should have someValue be DictionaryService', () => {
+  //   expect(factory.someValue).toEqual('DictionaryService');
+  // });
 
-  it('should have someMethod return DictionaryService', () => {
-    expect(factory.someMethod()).toEqual('DictionaryService');
-  });
+  // it('should have someMethod return DictionaryService', () => {
+  //   expect(factory.someMethod()).toEqual('DictionaryService');
+  // });
 });

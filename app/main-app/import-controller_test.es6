@@ -10,7 +10,7 @@ describe('ImportCtrl', () => {
     ctrl = $controller('ImportCtrl');
   }));
 
-  it('should have ctrlName as ImportCtrl', () => {
-    expect(ctrl.ctrlName).toEqual('ImportCtrl');
-  });
+  // it('should have ctrlName as ImportCtrl', () => {
+  //   expect(ctrl.ctrlName).toEqual('ImportCtrl');
+  // });
 });

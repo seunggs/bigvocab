@@ -10,11 +10,14 @@ describe('Sm2Service', () => {
     factory = Sm2Service;
   }));
 
-  it('should have someValue be Sm2Service', () => {
-    expect(factory.someValue).toEqual('Sm2Service');
+  it('ease factor should return a correct value', () => {
+    var currentEaseFactor = 2.5;
+    var choices = ['again', 'hard', 'good', 'easy'];
+    var newEaseFactor = [2.3, 2.35, 2.5, 2.65];
+
+    choices.forEach((choice, index) => {
+      expect(factory.calcEaseFactor(currentEaseFactor, choice)).toEqual(newEaseFactor[index]);
+    });
   });
 
-  it('should have someMethod return Sm2Service', () => {
-    expect(factory.someMethod()).toEqual('Sm2Service');
-  });
 });

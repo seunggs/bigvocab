@@ -1,12 +1,12 @@
 /*global describe, beforeEach, it, expect, inject, module*/
 'use strict';
 
-describe('SettingsCtrl', () => {
-  let ctrl;
+describe('SettingsCtrl', function () {
+  var ctrl = undefined;
 
   beforeEach(module('mainApp'));
 
-  beforeEach(inject(($rootScope, $controller) => {
+  beforeEach(inject(function ($rootScope, $controller) {
     ctrl = $controller('SettingsCtrl');
   }));
 

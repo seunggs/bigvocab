@@ -10,7 +10,7 @@ describe('ReviewWordsCtrl', () => {
     ctrl = $controller('ReviewWordsCtrl');
   }));
 
-  it('should have ctrlName as ReviewWordsCtrl', () => {
-    expect(ctrl.ctrlName).toEqual('ReviewWordsCtrl');
-  });
+  // it('should have ctrlName as ReviewWordsCtrl', () => {
+  //   expect(ctrl.ctrlName).toEqual('ReviewWordsCtrl');
+  // });
 });

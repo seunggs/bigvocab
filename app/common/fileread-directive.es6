@@ -32,7 +32,7 @@
         /*jshint unused:false */
         /*eslint "no-unused-vars": [2, {"args": "none"}]*/
 
-        element.bind("change", function (changeEvent) {
+        element.bind('change', function (changeEvent) {
           scope.fileread = [];
           var files = changeEvent.target.files;
 

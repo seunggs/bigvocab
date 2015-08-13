@@ -1,4 +1,5 @@
 'use strict';
+/*jshint camelcase: false */
 
 var express = require('express');
 var router = express.Router();
@@ -225,7 +226,7 @@ router.route('/collections/:collectionId')
 			.get(collectionId)
 			.delete()
 			.run()
-			.then(function (dbRes) {
+			.then(function () {
 				return r.table('words')
 								.getAll(collectionId, { index: 'collectionId' })
 								.delete()

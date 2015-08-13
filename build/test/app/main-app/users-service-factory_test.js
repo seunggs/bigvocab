@@ -1,12 +1,12 @@
 /*global describe, beforeEach, it, expect, inject, module*/
 'use strict';
 
-describe('UsersService', () => {
-  let factory;
+describe('UsersService', function () {
+  var factory = undefined;
 
   beforeEach(module('mainApp'));
 
-  beforeEach(inject((UsersService) => {
+  beforeEach(inject(function (UsersService) {
     factory = UsersService;
   }));
 

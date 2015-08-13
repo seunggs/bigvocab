@@ -10,11 +10,7 @@ describe('WordsService', () => {
     factory = WordsService;
   }));
 
-  it('should have someValue be WordsService', () => {
-    expect(factory.someValue).toEqual('WordsService');
-  });
-
-  it('should have someMethod return WordsService', () => {
-    expect(factory.someMethod()).toEqual('WordsService');
-  });
+  // it('should have someValue be WordsService', () => {
+  //   expect(factory.someValue).toEqual('WordsService');
+  // });
 });
