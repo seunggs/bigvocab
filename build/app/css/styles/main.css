@@ -2529,3 +2529,20 @@ textarea {
   opacity: 0;
   -webkit-transform: translate3d(0, -50%, 0);
           transform: translate3d(0, -50%, 0); }
+
+.pagination {
+  padding-left: 0;
+  text-align: center; }
+
+.pagination .active {
+  font-weight: bold;
+  color: #333; }
+
+.pagination > li {
+  list-style-type: none;
+  display: inline-block; }
+
+.pagination > li > a {
+  padding: 0.5rem 0.7rem;
+  margin-left: 0.3rem;
+  margin-right: 0.3rem; }

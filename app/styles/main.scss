@@ -2,7 +2,7 @@
 @import '../../node_modules/basscss-sass/basscss.scss';
 @import 'base/base';
 
-// custom module
+// custom implementation of basscss
 @import 'modules/grid';
 
 @import 'modules/color-base';
@@ -38,3 +38,6 @@
 @import 'modules/animate';
 @import 'modules/transitions';
 @import 'modules/ng-animate';
+
+// external modules
+@import 'external/pagination';

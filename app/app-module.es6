@@ -15,7 +15,7 @@
       '720kb.tooltips',
       'ngAudio',
       'angular-momentjs',
-      'cb.x2js',
+      'angularUtils.directives.dirPagination',
       'home',
       'auth',
       'mainApp',

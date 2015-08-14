@@ -29,9 +29,9 @@
 		<!-- end: update all words with pronunciations -->
 
 		<!-- list of words -->
-		<div class="clearfix sm-col-10 mx-auto bg-lighten-2 rounded mb4">
+		<div class="clearfix sm-col-10 mx-auto bg-lighten-2 rounded mb2">
 			
-			<div ng-repeat="word in listWords.words | filter: listWords.formData.searchWords | orderBy: 'word' | limitTo: listWords.displayLimit" class="clearfix col col-12 p2" ng-class="{ 'border-bottom': !$last }" track by word.id>
+			<div dir-paginate="word in listWords.words | filter: listWords.formData.searchWords | orderBy: 'word' | itemsPerPage: 50" class="clearfix col col-12 p2" ng-class="{ 'border-bottom': !$last }" track by word.id>
 				<form name="listWords.listWordsForm" ng-submit="listWords.saveChanges(listWords.listWordsForm.$valid, word, listWords.formData)">
 
 					<!-- word -->
@@ -116,6 +116,10 @@
 			
 		</div>
 		<!-- end: list of words -->
+
+		<!-- pagination controls -->
+		<dir-pagination-controls class="h5 mx-auto"></dir-pagination-controls>
+		<!-- end: pagination controls -->
 
 	</div>
 </div>

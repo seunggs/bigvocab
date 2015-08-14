@@ -8,7 +8,7 @@
    * @description
    *
    */
-  angular.module('bigvocab', ['ngAria', 'ngAnimate', 'ngMessages', 'ui.router', '720kb.tooltips', 'ngAudio', 'angular-momentjs', 'cb.x2js', 'home', 'auth', 'mainApp',
+  angular.module('bigvocab', ['ngAria', 'ngAnimate', 'ngMessages', 'ui.router', '720kb.tooltips', 'ngAudio', 'angular-momentjs', 'angularUtils.directives.dirPagination', 'home', 'auth', 'mainApp',
   // 'ramda',
   'common']);
 
