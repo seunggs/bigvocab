@@ -43,24 +43,26 @@
 
       function resetStudyCountAtMidnight () {
         function timeToMidnight () {
-          var now = new Date();
-          var endOfDay = $moment().endOf('day');
-          return endOfDay - now + 1000;          
+          let now = new Date();
+          let endOfDay = $moment().endOf('day');
+          return endOfDay - now + 1000;
         }
 
-        var attemptCount = 0;
+        console.log(timeToMidnight());
+
+        let attemptCount = 0;
 
         function resetAtMidnight () {
           UsersService.update(user.id, { studyCountToday: 0 })
-            .then(() => {
-              $timeout(resetAtMidnight, timeToMidnight());
-            })
             .catch(err => {
               console.log('Something went wrong (attempt ', attemptCount , '): ', err);
               if (attemptCount <= 5) { // retry 5 times after waiting 2 seconds before each attempt
                 attemptCount++;
                 $timeout(resetAtMidnight, 2000);
               }
+            })
+            .then(() => {
+              $timeout(resetAtMidnight, timeToMidnight());
             });
         }
 
