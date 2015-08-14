@@ -174,21 +174,6 @@
           .catch(err => {
             console.log('Adding pronunciations failed: ', err);
           });
-
-        // words.forEach(function (wordObj) {
-        //   if (wordObj.pronunciations === undefined) {
-        //     DictionaryService.updatePronunciationMw(wordObj)
-        //       .then(() => {
-        //         count++;
-        //         console.log('Successfully added pronunciations');
-        //       })
-        //       .catch(err => {
-        //         console.log('Adding pronunciations failed: ', err);
-        //       });
-        //   }
-        // });
-
-        
       };
 
     }
