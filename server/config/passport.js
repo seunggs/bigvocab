@@ -33,7 +33,7 @@ module.exports = function (passport) {
 				firstName: profile._json.given_name,
 				lastName: profile._json.family_name,
 				picture: profile._json.picture,
-				maxDailyWords: 150,
+				maxDailyWords: 100,
 				type: 'google'
 			};
 		}, 'google')
