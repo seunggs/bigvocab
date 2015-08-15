@@ -25,7 +25,6 @@ module.exports = {
   browsers: ['PhantomJS'],
   frameworks: ['jasmine', 'sinon'],
   reporters: ['progress', 'coverage'],
-  files: ['bower_components/angular-momentjs/angular-momentjs.js'],
   preprocessors: preprocessors,
   ngHtml2JsPreprocessor: {
     stripPrefix: templateDir

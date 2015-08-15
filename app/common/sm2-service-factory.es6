@@ -85,7 +85,7 @@
       if (choice === 'again') {
         return 1;
       } else if (choice === 'easy' && phase === 'learning') {
-        return 4 * 24 * 60;
+        return 4 * 24 * 60; // 4 days in minutes
       }
 
       if (phase === 'learning') {

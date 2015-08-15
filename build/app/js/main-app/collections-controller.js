@@ -5,7 +5,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   'use strict';
 
-  var CollectionsCtrl = function CollectionsCtrl(CollectionsService, WordsService, UsersService, $timeout, user, $q, $moment) {
+  var CollectionsCtrl = function CollectionsCtrl(CollectionsService, WordsService, UsersService, $timeout, user, $q) {
     _classCallCheck(this, CollectionsCtrl);
 
     var vm = this;
@@ -41,36 +41,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     getAllCollections(user);
 
-    resetStudyCountAtMidnight();
-
     // helper functions //////////////////////////////////////////////////////////////////
-
-    function resetStudyCountAtMidnight() {
-      function timeToMidnight() {
-        var now = new Date();
-        var endOfDay = $moment().endOf('day');
-        return endOfDay - now + 1000;
-      }
-
-      console.log(timeToMidnight());
-
-      var attemptCount = 0;
-
-      function resetAtMidnight() {
-        UsersService.update(user.id, { studyCountToday: 0 })['catch'](function (err) {
-          console.log('Something went wrong (attempt ', attemptCount, '): ', err);
-          if (attemptCount <= 5) {
-            // retry 5 times after waiting 2 seconds before each attempt
-            attemptCount++;
-            $timeout(resetAtMidnight, 2000);
-          }
-        }).then(function () {
-          $timeout(resetAtMidnight, timeToMidnight());
-        });
-      }
-
-      $timeout(resetAtMidnight, timeToMidnight());
-    }
 
     function getAllCollections(user) {
       CollectionsService.getAll(user.id).then(function (res) {

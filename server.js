@@ -14,6 +14,9 @@ var flash = require('connect-flash');
 var passport = require('passport');
 var favicon = require('serve-favicon');
 
+var r = require('./server/config/rdbdash');
+var moment = require('moment');
+
 var config = require('./server/config/default');
 
 
@@ -45,6 +48,40 @@ app.use(flash());
 
 // routes ========================================================
 app.use('/', require('./server/routes'));
+
+
+// recurring code ================================================
+
+function resetStudyCountAtMidnight () {
+  function timeToMidnight () {
+    var now = new Date();
+    var endOfDay = moment().endOf('day');
+    return endOfDay - now + 1000;
+  }
+
+  var attemptCount = 0;
+  console.log(timeToMidnight());
+
+  function resetAtMidnight () {
+		r.table('users')
+			.update({ studyCountToday: 0 })
+			.run()
+      .catch(function (err) {
+        console.log('Something went wrong (attempt ', attemptCount , '): ', err);
+        if (attemptCount <= 5) { // retry 5 times after waiting 2 seconds before each attempt
+          attemptCount++;
+          setTimeout(resetAtMidnight, 2000);
+        }
+      })
+      .then(function () {
+        setTimeout(resetAtMidnight, timeToMidnight());
+      });
+  }
+
+  setTimeout(resetAtMidnight, timeToMidnight());
+}
+
+resetStudyCountAtMidnight();
 
 
 // start app =====================================================

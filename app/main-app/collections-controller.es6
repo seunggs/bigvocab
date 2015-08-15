@@ -2,7 +2,7 @@
   'use strict';
 
   class CollectionsCtrl {
-    constructor(CollectionsService, WordsService, UsersService, $timeout, user, $q, $moment) {
+    constructor(CollectionsService, WordsService, UsersService, $timeout, user, $q) {
 
       let vm = this;
 
@@ -37,37 +37,7 @@
       
       getAllCollections(user);
 
-      resetStudyCountAtMidnight();
-
       // helper functions //////////////////////////////////////////////////////////////////
-
-      function resetStudyCountAtMidnight () {
-        function timeToMidnight () {
-          let now = new Date();
-          let endOfDay = $moment().endOf('day');
-          return endOfDay - now + 1000;
-        }
-
-        console.log(timeToMidnight());
-
-        let attemptCount = 0;
-
-        function resetAtMidnight () {
-          UsersService.update(user.id, { studyCountToday: 0 })
-            .catch(err => {
-              console.log('Something went wrong (attempt ', attemptCount , '): ', err);
-              if (attemptCount <= 5) { // retry 5 times after waiting 2 seconds before each attempt
-                attemptCount++;
-                $timeout(resetAtMidnight, 2000);
-              }
-            })
-            .then(() => {
-              $timeout(resetAtMidnight, timeToMidnight());
-            });
-        }
-
-        $timeout(resetAtMidnight, timeToMidnight());
-      }
 
       function getAllCollections (user) {
         CollectionsService.getAll(user.id)
