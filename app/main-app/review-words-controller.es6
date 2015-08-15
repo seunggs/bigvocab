@@ -123,7 +123,27 @@
           .then(() => {
             vm.notification.success = true;
             vm.toggleEdit();
-            getNextWord();
+
+            vm.wordCounter++;
+            vm.currentWord = getNextWord(vm.wordCounter, vm.words);
+
+            // check to see if there are no more words
+            vm.finished = isFinished(vm.currentWord);
+            
+            if (vm.finished) { return; }
+
+            // handle pronunciations
+            if (vm.currentWord.pronunciations !== undefined) {
+              vm.pronunciations = vm.currentWord.pronunciations;
+            } else {
+              pronunciationFallback(vm.currentWord);
+            }
+
+            // initialize the edit form inputs
+            vm.formData = initEditWord(vm.currentWord);
+
+            vm.hideAnswer();
+            vm.revealWord();          
           })
           .catch(submitErrorHandler);
       };

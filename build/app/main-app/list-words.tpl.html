@@ -1,0 +1,141 @@
+<div class="container">
+	<div class="clearfix">
+
+		<h1 class="mt1 mb2 center">List of All Words</h1>
+
+		<!-- search words form -->
+		<div class="sm-col-6 mx-auto px2">
+			
+			<form name="listWords.listWordsForm" class="center">
+				<span class="center bold gray">Total word count: {{ listWords.wordsCount }}</span>
+				<input name="searchWords" id="searchWords" type="text" ng-model="listWords.formData.searchWords" class="field col-12 mt1 mb3" placeholder="Search any word or definition">
+			</form>
+
+		</div>
+		<!-- end: search words form -->
+
+		<!-- update all words with pronunciations -->
+		<div class="clearfix">
+			<div class="sm-col-10 mx-auto">
+				<button class="btn btn-sm btn-primary mb1 h6 right" 
+								ng-click="listWords.addAllPronunciations(listWords.words)"
+								ng-disabled="listWords.pronunciationBtnState.success || listWords.pronunciationBtnState.loading">
+					<span ng-if="!listWords.pronunciationBtnState.loading && !listWords.pronunciationBtnState.success">Update All Pronunciations</span>
+					<span ng-if="listWords.pronunciationBtnState.loading"><spinner width="12px"></spinner>Please wait...</span>
+					<span ng-if="listWords.pronunciationBtnState.success"><span class="ti-check mr1"></span>Success!</span>
+				</button>
+			</div>
+		</div>
+		<!-- end: update all words with pronunciations -->
+
+		<!-- list of words -->
+		<div class="clearfix sm-col-10 mx-auto bg-lighten-2 rounded mb2">
+			
+			<div dir-paginate="word in listWords.words | filter: listWords.formData.searchWords | orderBy: 'word' | itemsPerPage: 50" class="clearfix col col-12 p2" ng-class="{ 'border-bottom': !$last }" track by word.id>
+				<form name="listWords.listWordsForm" ng-submit="listWords.saveChanges(listWords.listWordsForm.$valid, word, listWords.formData)">
+
+					<!-- word -->
+					<div class="sm-col sm-col-3 flex flex-center">
+
+						<!-- pronunciation -->
+						<a ng-click="listWords.playPronunciation(word)" 
+							 ng-if="!listWords.showEdit[word.id] && word.pronunciations.length > 0 && word.pronunciations !== undefined"  
+							 class="btn btn-blue-outline mr2 center" style="padding: 0.3em 0.24em; border-radius: 50%; width: 22px;">
+							<span class="ti-control-play" style="margin-left:4px"></span>
+						</a>
+
+						<div ng-if="!listWords.showEdit[word.id] && (word.pronunciations.length === 0 || word.pronunciations === undefined)" 
+								 class="inline mr2" style="width: 32px">&nbsp;</div>
+						<!-- end: pronunciation -->
+
+						<a ng-click="listWords.toggleEdit(word)" class="link bold" ng-if="!listWords.showEdit[word.id]">{{ word.word }}</a>
+
+						<!-- edit form -->
+						<a ng-if="listWords.showEdit[word.id]" class="ti-close mr1" ng-click="listWords.toggleEdit(word)"></a>
+						<input name="word" 
+									 type="text" 
+									 ng-model="listWords.formData.word" 
+									 ng-if="listWords.showEdit[word.id]" 
+									 class="field flex-auto mr1" 
+									 placeholder="{{ listWords.placeholder.word }}" 
+									 autofocus required>
+						<!-- end: edit form -->
+	
+						<!-- error handling -->
+						<div ng-messages="listWords.listWordsForm.word.$error" 
+								 ng-if="listWords.listWordsForm.$submitted && listWords.listWordsForm.word.$touched" 
+								 class="red bold h6 mt1">
+							<div ng-message="required"><span class="ti-alert mr1"></span>This field is required</div>
+						</div>
+						<!-- end: error handling -->
+
+					</div>
+					<!-- word -->
+
+					<!-- definition -->
+					<div class="sm-col sm-col-9 dark-gray flex flex-start flex-wrap">
+
+						<div class="flex flex-center flex-justify col-12">
+							<span ng-if="!listWords.showEdit[word.id]" class="flex-auto" style="white-space: pre-wrap;">{{ word.definition }}</span>
+							<!-- delete button -->
+							<a ng-click="listWords.submitDelete(word.id)"
+								 ng-disabled="listWords.btnState.success || listWords.btnState.loading"
+								 ng-if="!listWords.showEdit[word.id]" 
+								 class="ti-trash red inline-block ml2">
+							</a>
+							<!-- end: delete button -->
+						</div>
+
+						<!-- edit form -->
+						<textarea name="definition" 
+											ng-model="listWords.formData.definition" 
+											ng-if="listWords.showEdit[word.id]" 
+											class="field flex-auto" 
+											style="height: 96px;" 
+											placeholder="{{ listWords.placeholder.definition }}">
+						</textarea>
+						<div class="sm-col-4 flex flex-wrap">
+							<!-- save button -->
+							<button type="submit" 
+											ng-if="listWords.showEdit[word.id]" 
+											ng-disabled="listWords.btnState.success || listWords.btnState.loading"
+											class="btn btn-form btn-primary col-12 ml1">
+								<span ng-if="!listWords.btnState.loading && !listWords.btnState.success">Save Changes</span>
+								<span ng-if="listWords.btnState.loading"><spinner width="16px"></spinner>Please wait...</span>
+								<span ng-if="listWords.btnState.success"><span class="ti-check mr1"></span>Success!</span>
+							</button>
+							<!-- end: save button -->
+						</div>
+						<!-- end: edit form -->
+
+					</div>
+					<!-- end: definition -->
+
+				</form>
+			</div>
+			
+		</div>
+		<!-- end: list of words -->
+
+		<!-- pagination controls -->
+		<dir-pagination-controls class="h5 mx-auto"></dir-pagination-controls>
+		<!-- end: pagination controls -->
+
+	</div>
+</div>
+
+<!-- notification -->
+<notification color="green" show="listWords.notification.success"><span class="ti-check mr1"></span>{{ listWords.notificationSuccessMsg }}</notification>
+<notification color="red" show="listWords.notification.error"><span class="ti-alert mr1"></span>{{ listWords.notificationErrorMsg }}</notification>
+<!-- end: notification -->
+
+<!-- modal -->
+<modal show="listWords.showModal" 
+	      modal-bg="bg-white" 
+	      yes-cb="listWords.modalYes(listWords.selectedWordId)" 
+	      no-cb="listWords.modalClose()"
+	      yes-message="Yes, delete"
+	      no-message="No, cancel">
+	<div class="center h3">You already have this word in your collection. Are you sure you want to overwrite the existing word?</div>
+</modal>
+<!-- end: modal -->
