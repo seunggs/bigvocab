@@ -31,8 +31,8 @@
       return $http.get('/api/'+ collectionId + '/words/?filter=dueToday');
     };
 
-    WordsServiceBase.create = word => {
-      return $http.post('/api/words', word);
+    WordsServiceBase.create = wordObj => {
+      return $http.post('/api/words', wordObj);
     };
 
     WordsServiceBase.get = wordId => {
@@ -45,8 +45,8 @@
     };
 
     // find :: String -> String -> Promise({word})
-    WordsServiceBase.exists = (collectionId, word) => {
-      return $http.get('/api/' + collectionId + '/words/' + word + '/?exists');
+    WordsServiceBase.exists = (collectionId, wordStr) => {
+      return $http.get('/api/' + collectionId + '/words/' + wordStr + '/?exists');
     };
 
     WordsServiceBase.update = (wordId, wordUpdate) => {

@@ -1,6 +1,11 @@
 /*global describe, beforeEach, it, expect, inject, module*/
 'use strict';
 
+/*
+	WHAT TO TEST:
+	- can the user edit things? Does the work flow work properly? DB call + Success msg + 
+ */
+
 describe('ReviewWordsCtrl', () => {
   let ctrl;
 

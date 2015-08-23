@@ -17,14 +17,14 @@
     let TextConvertServiceBase = {};
 
     TextConvertServiceBase.toHtml = text => {
-      if (text === undefined) { return; }
+      if (text === undefined) { return ''; }
       
       let convertedText = text.replace(/\n/g, '<br>');
       return convertedText;
     };
 
     TextConvertServiceBase.fromHtml = text => {
-      if (text === undefined) { return; }
+      if (text === undefined) { return ''; }
 
       let convertedText = text.replace(/<br>/g, '\n')
                               .replace(/<div>/g, '\n')

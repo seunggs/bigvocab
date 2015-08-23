@@ -133,16 +133,18 @@ describe('Sm2Service', () => {
   });
 
   describe('calcNextReview', () => {
-    let newInterval, momentMock;
-
-    beforeEach(inject(($moment) => {
-      momentMock = $moment;
-    }));
+    let newInterval;
+    let now = new Date();
+    let tenMinutesLater = Math.floor((now.getTime() + (10 * 60 * 1000)) / 1000);
 
     it('should return the time of 10 minutes from now if the new interval is 10', () => {
       newInterval = 10;
-      console.log(momentMock().add(10, 'minutes'));
-      expect(factory.calcNextReview(newInterval)).toEqual(momentMock().add(10, 'minutes'));
+      expect(factory.calcNextReview(newInterval).unix()).toEqual(tenMinutesLater);
+    });
+
+    it('should NOT equal the time of 10 minutes from now if the new interval is 1', () => {
+      newInterval = 1;
+      expect(factory.calcNextReview(newInterval).unix()).not.toEqual(tenMinutesLater);
     });
   });
   

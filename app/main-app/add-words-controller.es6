@@ -2,7 +2,7 @@
   'use strict';
 
   class AddWordsCtrl {
-    constructor(ConfigService, DictionaryService, WordsService, TextConvertService, $stateParams, $timeout, $moment) {
+    constructor(ConfigService, DictionaryService, WordsService, TextConvertService, $stateParams, $timeout, $moment, $q) {
 
       let vm = this;
 
@@ -29,6 +29,8 @@
       vm.notificationSuccessMsg = vm.msg.success;
       vm.notificationErrorMsg = vm.msg.error;
       vm.showModal = false;
+      vm.mashapeKey = ConfigService.mashapeKey;
+      vm.wordNotFound = false;
 
       // helper functions //////////////////////////////////////////////////////////////////
       
@@ -82,9 +84,9 @@
       }
 
       function addWord (collectionId, formData) {
-        var word = composeWordDetails(collectionId, formData);
+        var wordObj = composeWordDetails(collectionId, formData);
 
-        WordsService.create(word)
+        WordsService.create(wordObj)
           .then(submitSuccessHandler)
           .catch(submitErrorHandler);
       }
@@ -139,13 +141,18 @@
         addWord(collectionId, formData);
       };
 
-      vm.getDefinition = word => {
-        if (word !== undefined) {
-          DictionaryService.getDefinitionFree(ConfigService.mashapeKey, word)
+      vm.getDefinition = (mashapeKey, wordStr) => {
+        if (wordStr !== undefined) {
+          DictionaryService.getDefinitionFree(mashapeKey, wordStr)
             .then(res => {
+              if (res.data.definitions.length === 0) { return $q.reject('No words found.'); }
+
+              vm.wordNotFound = false;
               vm.definitions = res.data.definitions;
             })
             .catch(err => {
+              vm.definitions = [{ text: 'Sorry - this word could not be found.'}];
+              vm.wordNotFound = true;
               console.log('Something went wrong; ', err);
             });
         }

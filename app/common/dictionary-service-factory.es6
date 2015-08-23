@@ -16,8 +16,8 @@
 
     let DictionaryServiceBase = {};
     
-    DictionaryServiceBase.getDefinitionFree = (mashapeKey, word) => {
-      return $http.get('https://montanaflynn-dictionary.p.mashape.com/define?word=' + word, {
+    DictionaryServiceBase.getDefinitionFree = (mashapeKey, wordStr) => {
+      return $http.get('https://montanaflynn-dictionary.p.mashape.com/define?word=' + wordStr, {
         headers: { 'X-Mashape-Key': mashapeKey }
       });
     };
