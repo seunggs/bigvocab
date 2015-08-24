@@ -41,12 +41,14 @@
 
     // find :: String -> String -> Promise({word})
     WordsServiceBase.find = (collectionId, wordStr) => {
-      return $http.get('/api/' + collectionId + '/words/' + wordStr);
+      var encodedWordStr = encodeURIComponent(wordStr);
+      return $http.get('/api/' + collectionId + '/words/' + encodedWordStr);
     };
 
     // find :: String -> String -> Promise({word})
     WordsServiceBase.exists = (collectionId, wordStr) => {
-      return $http.get('/api/' + collectionId + '/words/' + wordStr + '/?exists');
+      var encodedWordStr = encodeURIComponent(wordStr);
+      return $http.get('/api/' + collectionId + '/words/' + encodedWordStr + '/?exists');
     };
 
     WordsServiceBase.update = (wordId, wordUpdate) => {

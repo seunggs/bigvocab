@@ -337,7 +337,7 @@ router.route('/:collectionId/words/:word')
 	.get(function (req, res) {
 
 		var collectionId = req.params.collectionId;
-		var word = req.params.word;
+		var word = decodeURIComponent(req.params.word);
 		var exists = req.query.exists !== undefined ? true : undefined;
 		var sendBack;
 
