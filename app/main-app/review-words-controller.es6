@@ -194,6 +194,7 @@
 
         let newReviewRes = angular.copy(wordObj.reviewRes);
         newReviewRes[choice]++;
+        newReviewRes.total++;
 
         let wordUpdate = {
           reviewRes: newReviewRes,

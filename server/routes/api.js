@@ -314,6 +314,7 @@ router.route('/:collectionId/words')
 						return r.table('words')
 										.getAll(collectionId, { index: 'collectionId' })
 										.filter(r.row('nextReviewEpochTime').lt(r.now().toEpochTime()))
+										.orderBy(r.row('reviewRes')('total'))
 										.limit(dueCountLimit)
 										.run();
 					})
