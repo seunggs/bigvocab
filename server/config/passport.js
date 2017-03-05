@@ -45,7 +45,6 @@ function loginCallbackHandler (objMapper, type) {
 	return function (token, refreshToken, profile, done) {
 		if (token !== null) {
 			console.log(profile);
-			console.log('profile id: ', profile.id);
 
 			r.table('users')
 				.getAll(profile.id, { index: 'login' })
